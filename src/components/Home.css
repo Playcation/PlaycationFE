@@ -1,0 +1,30 @@
+.home-container {
+  text-align: center;
+  padding: 25px 50px;
+}
+
+.header {
+  margin-top: 60px;
+  font-size: 32px;
+  text-align: center;
+  color: #ffffff;
+}
+
+.steam-logo {
+  width: 100%;
+  max-width: 180px;
+  margin: 0 auto;
+}
+
+button {
+  background: #db4437;
+  color: white;
+  padding: 10px;
+  margin: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #c33b30;
+}

@@ -1,0 +1,176 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  background-color: #1b2838;
+  color: #c6d4df;
+}
+
+.profile-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.profile-header {
+  position: relative;
+  height: 200px;
+}
+
+.profile-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background: linear-gradient(135deg, #1b2838 0%, #2a475e 100%);
+  z-index: 1;
+}
+
+.profile-summary {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  padding: 20px;
+  align-items: center;
+  height: 100%;
+}
+
+.avatar {
+  position: relative;
+  width: 164px;
+  height: 164px;
+  margin: 0 auto; /* 아바타 이미지를 중앙에 배치 */
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  border: 2px solid #66c0f4;
+  border-radius: 50%; /* 둥근 모양 추가 */
+}
+
+.avatar-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px; /* 버튼 간 간격 */
+  margin: 15px auto 0;
+
+}
+
+.upload-button {
+  background-color: #66c0f4;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.upload-button:hover {
+  background-color: #417a9b;
+}
+
+.avatar-upload {
+  display: none; /* 기본 파일 선택창 숨김 */
+}
+
+.profile-nav {
+  background-color: #2a475e;
+  padding: 15px;
+  display: flex;
+  gap: 20px;
+}
+
+.profile-nav a {
+  color: #c6d4df;
+  text-decoration: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+}
+
+.profile-nav a.active {
+  background-color: #66c0f4;
+  color: white;
+}
+
+.edit-form {
+  background-color: #2a475e;
+  border-radius: 3px;
+  padding: 20px;
+  margin: 20px;
+}
+
+.edit-form h2 {
+  color: #66c0f4;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #c6d4df;
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px;
+  background-color: #1b2838;
+  border: 1px solid #4b5f74;
+  color: #c6d4df;
+  border-radius: 3px;
+}
+
+.form-input:focus {
+  border-color: #66c0f4;
+  outline: none;
+}
+
+select.form-input {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23c6d4df'%3E%3Cpath d='M6 9L0 0h12'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 30px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 30px;
+}
+
+.save-button, .cancel-button {
+  padding: 8px 20px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.save-button {
+  background-color: #66c0f4;
+  color: white;
+}
+
+.save-button:hover {
+  background-color: #417a9b;
+}
+
+.cancel-button {
+  background-color: #32404e;
+  color: #c6d4df;
+}
+
+.cancel-button:hover {
+  background-color: #3d4b5a;
+}
