@@ -17,13 +17,11 @@ const Home = () => {
       try {
         const token = localStorage.getItem('Authorization');
 
-        // Redirect to login if token is missing
         if (!token) {
-          navigate('/login');
+          navigate('/');
           return;
         }
 
-        // Validate access token
         const response = await axios.post(
             'http://localhost:8080/check/token',
             {},
@@ -31,7 +29,7 @@ const Home = () => {
               headers: {
                 Authorization: `Bearer ${token}`,
               },
-              withCredentials: true, // Include cookies
+              withCredentials: true,
             }
         );
         const { username, description } = response.data;
@@ -44,7 +42,7 @@ const Home = () => {
         if (error.response && error.response.status === 401) {
           navigate('/refresh');
         } else {
-          navigate('/login');
+          navigate('/');
         }
       }
     };
@@ -98,6 +96,7 @@ const Home = () => {
 
       alert('변경사항이 성공적으로 저장되었습니다!');
       console.log(response.data);
+      navigate('/profile');
     } catch (error) {
       console.error('변경사항 저장 실패:', error);
       alert('변경사항 저장에 실패했습니다.');
@@ -110,7 +109,12 @@ const Home = () => {
       setPassword('');
       setDescription(user?.description || '');
       setSelectedFile(null);
+      navigate('/profile');
     }
+  };
+
+  const changePassword = () => {
+    navigate('/change-password');
   };
 
   return (
@@ -193,6 +197,9 @@ const Home = () => {
             <div className="form-actions">
               <button className="cancel-button" onClick={cancelChange}>
                 취소
+              </button>
+              <button className="change-password-button" onClick={changePassword}>
+                비밀번호 변경
               </button>
               <button className="save-button" onClick={saveChange}>
                 변경사항 저장

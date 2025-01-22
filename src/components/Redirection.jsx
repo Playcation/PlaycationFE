@@ -21,7 +21,7 @@ const Redirection = () => {
       console.error('No token found in the URL.');
 
       // Redirect to login page
-      navigate('/login');
+      navigate('/');
     }
   }, [navigate, location]);
 

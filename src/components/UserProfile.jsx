@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './UserProfile.css';
 import {useNavigate} from "react-router-dom";
+import ErrorPage from './ErrorPage';
 
 const UserProfile = () => {
   const [user, setUser] = useState(null);
@@ -45,6 +46,34 @@ const UserProfile = () => {
     navigate('/user-update');
   };
 
+  const daliyCheck = async () => {
+    const token = localStorage.getItem('Authorization');
+    if (!token) {
+      setError('Authorization token is missing.');
+      return;
+    }
+    try {
+      const response = await axios.put('http://localhost:8080/users/attendance', null, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        withCredentials: true,
+      });
+      console.log(response);
+    } catch (error) {
+      const errorData = error.response?.data || {};
+      const status = errorData.httpStatus || error.response?.status || 500;
+      const message = errorData.message || 'An unexpected error occurred.';
+
+      console.error(`Error ${status}: ${message}`);
+      setError({ status, message });
+    }
+  };
+
+  if (error) {
+    return <ErrorPage status={error.status} message={error.message} />;
+  }
+
   const formattedJoinDate = user?.updatedDate
       ? new Date(user.updatedDate).toISOString().split('T')[0]
       : 'N/A';
@@ -80,6 +109,7 @@ const UserProfile = () => {
                     {user.description || '상태 메시지를 입력하세요'}
                   </span>
                       <button onClick={changeProfile}>프로필 변경</button>
+                      <button onClick={daliyCheck}>일일 출석체크</button>
                     </div>
                   </div>
                 </div>
