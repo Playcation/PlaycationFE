@@ -9,6 +9,8 @@ import UserProfile from "./components/UserProfile";
 import UserUpdate from "./components/UserUpdate";
 import ErrorPage from './components/ErrorPage';
 import UserPasswordUpdate from "./components/UserPasswordUpdate";
+import OAuth2RedirectHandler from "./OAuth2RedirectHandler";
+import UserDelete from "./components/UserDelete";
 
 const App = () => {
   return (
@@ -24,6 +26,9 @@ const App = () => {
           <Route path="/error" element={<ErrorPage status={500} message="Something went wrong." />} />
           <Route path="*" element={<ErrorPage status={404} message="Page not found." />} />
           <Route path="/change-password" element={<UserPasswordUpdate />} />
+          <Route path="/user-delete" element={<UserDelete />} />
+          <Route path="/oauth2/callback" element={<OAuth2RedirectHandler />} />
+          <Route path="/error" element={<ErrorPage />} />
         </Routes>
       </Router>
   );

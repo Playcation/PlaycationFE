@@ -70,6 +70,10 @@ const UserProfile = () => {
     }
   };
 
+  const deleteUser = () =>{
+    navigate("/user-delete");
+  }
+
   if (error) {
     return <ErrorPage status={error.status} message={error.message} />;
   }
@@ -110,6 +114,7 @@ const UserProfile = () => {
                   </span>
                       <button onClick={changeProfile}>프로필 변경</button>
                       <button onClick={daliyCheck}>일일 출석체크</button>
+                      <button onClick={deleteUser}>회원 탈퇴</button>
                     </div>
                   </div>
                 </div>

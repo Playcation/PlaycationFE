@@ -26,8 +26,21 @@ const Home = () => {
         );
       } catch (error) {
         console.error("Invalid token:", error);
-        localStorage.removeItem("Authorization");
-        navigate("/");
+        try {
+          await axios.post(
+              "http://localhost:8080/logout",
+              {},
+              {
+                headers: { Authorization: `Bearer ${token}` },
+                withCredentials: true,
+              }
+          );
+          localStorage.removeItem("Authorization");
+          navigate("/");
+        } catch (error) {
+          console.error("Logout failed:", error);
+          alert("Failed to log out. Please try again.");
+        }
       }
     };
 

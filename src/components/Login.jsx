@@ -25,7 +25,21 @@ const Login = () => {
         navigate("/home");
       } catch {
         console.error("Invalid token. Staying on login page.");
-        localStorage.removeItem("Authorization");
+        try {
+          await axios.post(
+              "http://localhost:8080/logout",
+              {},
+              {
+                headers: { Authorization: `Bearer ${token}` },
+                withCredentials: true,
+              }
+          );
+          localStorage.removeItem("Authorization");
+          navigate("/");
+        } catch (error) {
+          console.error("Logout failed:", error);
+          alert("Failed to log out. Please try again.");
+        }
       }
     };
 
