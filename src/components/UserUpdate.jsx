@@ -19,7 +19,7 @@ const Home = () => {
 
         // Redirect to login if token is missing
         if (!token) {
-          navigate('/login');
+          navigate('/');
           return;
         }
 
@@ -44,7 +44,7 @@ const Home = () => {
         if (error.response && error.response.status === 401) {
           navigate('/refresh');
         } else {
-          navigate('/login');
+          navigate('/');
         }
       }
     };
@@ -98,6 +98,7 @@ const Home = () => {
 
       alert('변경사항이 성공적으로 저장되었습니다!');
       console.log(response.data);
+      navigate('/profile');
     } catch (error) {
       console.error('변경사항 저장 실패:', error);
       alert('변경사항 저장에 실패했습니다.');
@@ -110,6 +111,7 @@ const Home = () => {
       setPassword('');
       setDescription(user?.description || '');
       setSelectedFile(null);
+      navigate('/profile');
     }
   };
 
