@@ -7,6 +7,7 @@ import Refresh from "./components/Refresh";
 import Signup from "./components/Signup";
 import UserProfile from "./components/UserProfile";
 import UserUpdate from "./components/UserUpdate";
+import Main from "./components/main/Main";
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
           <Route path="/sign-up" element={<Signup />} />
           <Route path="/profile" element={<UserProfile />} />
           <Route path="/user-update" element={<UserUpdate />} />
+          <Route path="/main" element={<Main/>}/>
         </Routes>
       </Router>
   );
