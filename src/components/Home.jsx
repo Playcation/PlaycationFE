@@ -14,7 +14,7 @@ const Home = () => {
 
         // Redirect to login if token is missing
         if (!token) {
-          navigate('/login');
+          navigate('/');
           return;
         }
 
@@ -38,7 +38,7 @@ const Home = () => {
           console.log('Token expired. Redirecting to /refresh');
           navigate('/refresh');
         } else {
-          navigate('/login');
+          navigate('/');
         }
       }
     };
