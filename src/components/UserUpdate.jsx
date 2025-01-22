@@ -17,13 +17,11 @@ const Home = () => {
       try {
         const token = localStorage.getItem('Authorization');
 
-        // Redirect to login if token is missing
         if (!token) {
           navigate('/');
           return;
         }
 
-        // Validate access token
         const response = await axios.post(
             'http://localhost:8080/check/token',
             {},
@@ -31,7 +29,7 @@ const Home = () => {
               headers: {
                 Authorization: `Bearer ${token}`,
               },
-              withCredentials: true, // Include cookies
+              withCredentials: true,
             }
         );
         const { username, description } = response.data;
@@ -115,6 +113,10 @@ const Home = () => {
     }
   };
 
+  const changePassword = () => {
+    navigate('/change-password');
+  };
+
   return (
       <div className="profile-container">
         <div className="profile-header">
@@ -195,6 +197,9 @@ const Home = () => {
             <div className="form-actions">
               <button className="cancel-button" onClick={cancelChange}>
                 취소
+              </button>
+              <button className="change-password-button" onClick={changePassword}>
+                비밀번호 변경
               </button>
               <button className="save-button" onClick={saveChange}>
                 변경사항 저장
