@@ -1,9 +1,9 @@
 import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { CheckoutPage } from './Checkout.jsx';
-import { SuccessPage } from './Success.jsx';
-import { FailPage } from './Fail.jsx';
-import './style.css';
+import { CheckoutPage } from '../jsx/Checkout.jsx';
+import { SuccessPage } from '../jsx/Success.jsx';
+import { FailPage } from '../jsx/Fail.jsx';
+import '../style.css';
 
 const router = createBrowserRouter([
   {
