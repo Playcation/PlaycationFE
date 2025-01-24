@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import axiosInstance from "../../api/api";
 import '../css/UserUpdate.css';
 
 const Home = () => {
@@ -22,14 +23,14 @@ const Home = () => {
           return;
         }
 
-        const response = await axios.post(
-            'http://localhost:8080/check/token',
+        const response = await axiosInstance.post(
+            '/check/token',
             {},
             {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-              withCredentials: true,
+              // headers: {
+              //   Authorization: `Bearer ${token}`,
+              // },
+              // withCredentials: true,
             }
         );
         const { username, description } = response.data;
@@ -87,11 +88,12 @@ const Home = () => {
     }
 
     try {
-      const response = await axios.put('http://localhost:8080/users', formData, {
-        headers: {
-          Authorization: token,
-          'Content-Type': 'multipart/form-data',
-        },
+      const response = await axiosInstance.put(
+          '/users', formData, {
+        // headers: {
+        //   Authorization: token,
+        //   'Content-Type': 'multipart/form-data',
+        // },
       });
 
       alert('변경사항이 성공적으로 저장되었습니다!');

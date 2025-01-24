@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import axiosInstance from "../../api/api";
 import "../css/UserUpdate.css";
 
 const UserDelete = () => {
@@ -19,14 +20,14 @@ const UserDelete = () => {
           return;
         }
 
-        const response = await axios.post(
-            "http://localhost:8080/check/token",
+        const response = await axiosInstance.post(
+            "/check/token",
             {},
             {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-              withCredentials: true,
+              // headers: {
+              //   Authorization: `Bearer ${token}`,
+              // },
+              // withCredentials: true,
             }
         );
 
@@ -57,13 +58,14 @@ const UserDelete = () => {
     const token = localStorage.getItem("Authorization");
 
     try {
-      const response = await axios.delete("http://localhost:8080/users/delete", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
+      const response = await axiosInstance.delete(
+          "/users/delete", {
+        // headers: {
+        //   Authorization: `Bearer ${token}`,
+        //   "Content-Type": "application/json",
+        // },
         data: { password }, // RequestBody에 password를 추가
-        withCredentials: true,
+        // withCredentials: true,
       });
 
       alert("회원 탈퇴가 되었습니다.");
@@ -74,12 +76,12 @@ const UserDelete = () => {
 
       if (!token) return;
       try {
-        await axios.post(
-            "http://localhost:8080/logout",
+        await axiosInstance.post(
+            "/logout",
             {},
             {
-              headers: { Authorization: `Bearer ${token}` },
-              withCredentials: true,
+              // headers: { Authorization: `Bearer ${token}` },
+              // withCredentials: true,
             }
         );
         localStorage.removeItem("Authorization");

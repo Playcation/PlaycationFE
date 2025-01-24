@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import axiosInstance from "../../api/api";
 import '../css/UserProfile.css';
 import {useNavigate} from "react-router-dom";
-import ErrorPage from '../../ErrorPage';
+import ErrorPage from '../../error/ErrorPage';
 
 const UserProfile = () => {
   const [user, setUser] = useState(null);
@@ -18,11 +19,12 @@ const UserProfile = () => {
       }
 
       try {
-        const response = await axios.get('http://localhost:8080/users', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          withCredentials: true,
+        const response = await axiosInstance.get('/users',
+            {
+          // headers: {
+          //   Authorization: `Bearer ${token}`,
+          // },
+          // withCredentials: true,
         });
 
         setUser({
@@ -53,11 +55,11 @@ const UserProfile = () => {
       return;
     }
     try {
-      const response = await axios.put('http://localhost:8080/users/attendance', null, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        withCredentials: true,
+      const response = await axiosInstance.put('/users/attendance', null, {
+        // headers: {
+        //   Authorization: `Bearer ${token}`,
+        // },
+        // withCredentials: true,
       });
       console.log(response);
     } catch (error) {
@@ -75,12 +77,12 @@ const UserProfile = () => {
     if (!token) return;
 
     try {
-      await axios.post(
-          "http://localhost:8080/logout",
+      await axiosInstance.post(
+          "/logout",
           {},
           {
-            headers: { Authorization: `Bearer ${token}` },
-            withCredentials: true,
+            // headers: { Authorization: `Bearer ${token}` },
+            // withCredentials: true,
           }
       );
       localStorage.removeItem("Authorization");

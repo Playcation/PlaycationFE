@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../css/Login.css";
+import axiosInstance from "../../api/api";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -15,25 +16,25 @@ const Login = () => {
       if (!token) return;
 
       try {
-        await axios.post(
-            "http://localhost:8080/check/token",
+        await axiosInstance.post(
+            "/check/token",
             {},
-            {
-              headers: { Authorization: `Bearer ${token}` },
-              withCredentials: true,
-            }
+            // {
+            //   headers: { Authorization: `Bearer ${token}` },
+            //   withCredentials: true,
+            // }
         );
         navigate("/main");
       } catch {
         console.error("Invalid token. Staying on login page.");
         try {
-          await axios.post(
-              "http://localhost:8080/logout",
+          await axiosInstance.post(
+              "/logout",
               {},
-              {
-                headers: { Authorization: `Bearer ${token}` },
-                withCredentials: true,
-              }
+              // {
+              //   headers: { Authorization: `Bearer ${token}` },
+              //   withCredentials: true,
+              // }
           );
           localStorage.removeItem("Authorization");
           navigate("/");
@@ -70,10 +71,10 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-          "http://localhost:8080/login",
+      const response = await axiosInstance.post(
+          "/login",
           { email, password },
-          { withCredentials: true }
+          // { withCredentials: true }
       );
       localStorage.setItem("Authorization", response.data.token);
       navigate("/main");

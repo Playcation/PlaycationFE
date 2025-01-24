@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import ErrorPage from "./ErrorPage";
+import ErrorPage from "../error/ErrorPage";
 
 const OAuth2RedirectHandler = () => {
   const [error, setError] = useState(null);

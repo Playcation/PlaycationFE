@@ -1,25 +1,23 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './components/user/jsx/Login';
-import Home from './components/Home';
-import Redirection from "./components/Redirection";
-import Refresh from "./components/Refresh";
+import Redirection from "./components/common/Redirection";
+import Refresh from "./components/common/Refresh";
 import Signup from "./components/user/jsx/Signup";
 import UserProfile from "./components/user/jsx/UserProfile";
 import UserUpdate from "./components/user/jsx/UserUpdate";
 import Main from "./components/main/Main";
-import ErrorPage from './components/ErrorPage';
+import ErrorPage from './components/error/ErrorPage';
 import UserPasswordUpdate from "./components/user/jsx/UserPasswordUpdate";
-import OAuth2RedirectHandler from "./components/OAuth2RedirectHandler";
+import OAuth2RedirectHandler from "./components/common/OAuth2RedirectHandler";
 import UserDelete from "./components/user/jsx/UserDelete";
-import ErrorHandler from "./components/ErrorHandler";
+import ErrorHandler from "./components/error/ErrorHandler";
 
 const App = () => {
   return (
       <Router>
         <Routes>
           <Route path="/" element={<Login />} />
-          <Route path="/home" element={<Home />} />
           <Route path="/redirect" element={<Redirection />} />
           <Route path="/refresh" element={<Refresh />} />
           <Route path="/sign-up" element={<Signup />} />

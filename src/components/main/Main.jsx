@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import axiosInstance from "../api/api";
 import { Pagination } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import './styles.css'
@@ -154,24 +154,21 @@ const Games = () => {
     const [games, setGames] = useState({ list: [], count: 0 });
     const [error, setError] = useState(null);
     const [page, setPage] = useState(1);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchGames = async () => {
             try {
                 const token = localStorage.getItem('Authorization');
                 if (!token) {
-                    setError('Authorization token is missing.');
-                    return;
+                    console.log('Authorization token is missing.');
+                    navigate('/redirect')
                 }
 
-                const response = await axios.get('http://localhost:8080/games', {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
+                const response = await axiosInstance.get('/games', {
                     params: {
                         page: page - 1,
                     },
-                    withCredentials: true,
                 })
                 setGames(response.data)
             } catch (err) {
