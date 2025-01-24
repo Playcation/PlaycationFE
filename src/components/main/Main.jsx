@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import './styles.css'
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
+import './styles.css'
 
 /**
  * 단일 배너
@@ -118,6 +118,30 @@ function GameCard(props) {
     </>
 }
 
+function PageDiv(props) {
+    const [page, setPage] = React.useState(1);
+
+    const handlePageChange = (event, value) => {
+        setPage(value);
+        if (props.onPageChange) {
+            props.onPageChange(value); // 부모 컴포넌트에 페이지 값 전달
+        }
+    };
+
+    return <>
+        <div class="pagination">
+            <Stack spacing={2}>
+                <Pagination
+                    count={Math.ceil(props.count / props.length)}
+                    color="primary"
+                    page={page}
+                    onChange={handlePageChange} />
+            </Stack>
+        </div>
+    </>
+}
+
+
 /**
  * 게임 다건 조회api 호출해서 페이징된 게임 목록 생성
  * 
@@ -127,6 +151,7 @@ function Games() {
     const list = [];
     const [games, setGames] = useState({ list: [], count: 0 });
     const [error, setError] = useState(null);
+    const [page, setPage] = useState(1);
 
     useEffect(() => {
         const fetchGames = async () => {
@@ -142,9 +167,7 @@ function Games() {
                         Authorization: `Bearer ${token}`,
                     },
                     params: {
-                        page: 0,
-                        createdAt: "2025-01-23",
-                        categoryId: 1
+                        page: page - 1,
                     },
                     withCredentials: true,
                 })
@@ -154,7 +177,7 @@ function Games() {
             }
         };
         fetchGames();
-    }, []);
+    }, [page]);
 
     if (error) {
         return <div>Error: {error}</div>
@@ -177,11 +200,10 @@ function Games() {
         <main>
             <div class="game-grid">{list}</div>
         </main>
-        <div class="pagination">
-            <Stack spacing={2}>
-                <Pagination count={games.count / games.list.length} color="primary" />
-            </Stack>
-        </div>
+        <PageDiv
+            count={games.count}
+            length={games.list.length}
+            onPageChange={(value) => setPage(value)} />
     </>
 }
 
