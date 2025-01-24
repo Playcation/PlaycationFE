@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
-export function SuccessPage() {
+export default function SuccessPage() {
   const [isConfirmed, setIsConfirmed] = useState(false);
   const [searchParams] = useSearchParams();
   const paymentKey = searchParams.get("paymentKey");
@@ -83,17 +83,17 @@ export function SuccessPage() {
                 <div className="flex" style={{ gap: "16px" }}>
                   <a
                       className="btn w-100"
-                      href="https://developers.tosspayments.com/sandbox"
+                      href="http://localhost:3000/sandbox"
                   >
                     다시 테스트하기
                   </a>
                   <a
                       className="btn w-100"
-                      href="https://docs.tosspayments.com/guides/v2/payment-widget/integration"
+                      href="http://localhost:3000"
                       target="_blank"
                       rel="noopner noreferer"
                   >
-                    결제 연동 문서가기
+                    메인 페이지
                   </a>
                 </div>
               </div>

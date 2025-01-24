@@ -1,17 +1,19 @@
 import { loadTossPayments, ANONYMOUS } from "@tosspayments/tosspayments-sdk";
 import { useEffect, useRef, useState } from "react";
+import axiosInstance from "../../api/api";
+import {useNavigate} from "react-router-dom";
 
 const clientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
 const customerKey = "q4MjXjPHAG20v-iOzeqq2";
 
-export function CheckoutPage() {
+export default function CheckoutPage() {
   const [ready, setReady] = useState(false);
   const [widgets, setWidgets] = useState(null);
+  const navigate = useNavigate();
   const [amount, setAmount] = useState({
     currency: "KRW",
     value: 50_000,
   });
-
 
   useEffect(() => {
     async function fetchPaymentWidgets() {
@@ -63,6 +65,42 @@ export function CheckoutPage() {
     renderPaymentWidgets();
   }, [widgets]);
 
+  const requestPayment = async () => {
+    try {
+      const response = await axiosInstance.post("/api/v1/payments/toss", {
+        orderId: "ScoR6da5suvaGaef1Nr0D",
+        orderName: "토스 티셔츠 외 2건",
+        customerName: "김토스",
+        customerEmail: "customer123@gmail.com",
+        yourSuccessUrl: window.location.origin + "/sandbox/success"
+            + window.location.search,
+        yourFailUrl: window.location.origin + "/sandbox/fail"
+            + window.location.search,
+        amount: 50000,
+        payType: "CARD", // 필요한 경우 추가
+      }, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      // Toss Payments 호출
+      await widgets?.requestPayment({
+        orderId: response.data.body.orderId,
+        orderName: response.data.body.orderName,
+        customerName: response.data.body.customerName,
+        customerEmail: response.data.body.customerEmail,
+        successUrl: response.data.body.successUrl,
+        failUrl: response.data.body.failUrl,
+      });
+
+    } catch (error) {
+      console.error("결제 요청 실패:", error.response?.data || error.message);
+      alert("결제 요청 중 문제가 발생했습니다. 다시 시도해주세요.");
+      navigate("/profile");
+    }
+  }
+
 
   return (
       <div className="wrapper w-100">
@@ -72,21 +110,7 @@ export function CheckoutPage() {
           <div className="btn-wrapper w-100">
             <button
                 className="btn primary w-100"
-                onClick={async () => {
-                  try {
-                    await widgets?.requestPayment({
-                      orderId: "85Z7cU3oARAk326bYbAU6",
-                      orderName: "토스 티셔츠 외 2건",
-                      customerName: "김토스",
-                      customerEmail: "customer123@gmail.com",
-                      successUrl: window.location.origin + "http://localhost:8080/api/v1/payments/toss/success" + window.location.search,
-                      failUrl: window.location.origin + "http://localhost:8080/api/v1/payments/toss/fail" + window.location.search
-                    });
-                  } catch (error) {
-                    console.error('네트워크 오류', error);
-                    alert('결제에 실패했습니다. 다시 시도해주세요.')
-                  }
-                }}
+                onClick={requestPayment}
             >
               결제하기
             </button>
