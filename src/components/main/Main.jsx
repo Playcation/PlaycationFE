@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import Pagination from '@mui/material/Pagination';
+import axiosInstance from "../api/api";
+import { Pagination } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import './styles.css'
 
@@ -13,7 +13,7 @@ import './styles.css'
 const Banner = (props) => {
     return (
         <a href=''>
-            <div class="banner active">
+            <div className="banner active">
                 <h2>{props.title}</h2>
             </div>
         </a>
@@ -37,10 +37,10 @@ const Header = (props) => {
 
     return (
         <header>
-            <div class="banner-container">
+            <div className="banner-container">
                 <Banner key="0" title="쿠폰 발급 이벤트"></Banner>
             </div>
-            <div class="search-container">
+            <div className="search-container">
                 <input
                     type="text"
                     value={searchContent}
@@ -62,15 +62,15 @@ const Header = (props) => {
 const NavItems = () => {
     // TODO: url 추가하기
     const itemList = [
-        { url: "", class: "fas fa-user", name: "프로필" },
+        { url: "/profile", class: "fas fa-user", name: "프로필" },
         { url: "", class: "fas fa-gamepad", name: "라이브러리" },
     ];
 
     const list = [];
     for (let i = 0; i < itemList.length; i++) {
         list.push(
-            <a key={i} href={itemList[i].url} class="nav-item">
-                <i class={itemList[i].class}></i>
+            <a key={i} href={itemList[i].url} className="nav-item">
+                <i className={itemList[i].class}></i>
                 <span>{itemList[i].name}</span>
             </a>
         );
@@ -78,15 +78,15 @@ const NavItems = () => {
 
     return <>
         {list}
-        <a href="" class="nav-item">
-            <i class="fas fa-shopping-cart"></i>
+        <a href="" className="nav-item">
+            <i className="fas fa-shopping-cart"></i>
             <span>장바구니</span>
-            <span class="cart-count">0</span>
+            <span className="cart-count">0</span>
         </a>
-        <a href="" class="nav-item">
-            <i class="fas fa-bell"></i>
+        <a href="" className="nav-item">
+            <i className="fas fa-bell"></i>
             <span>알림</span>
-            <span class="notification-count">0</span>
+            <span className="notification-count">0</span>
         </a>
     </>
 }
@@ -101,23 +101,23 @@ const NavItems = () => {
  */
 const GameCard = (props) => {
     // TODO: 이미지 배율 + 자르기 적용
-    return <>
-        <div class="game-card">
-            <div class="game-image">
+    return(
+        <div className="game-card">
+            <div className="game-image">
                 {props.image ? (
                     <img src={props.image} className="game-img" />
-                ) : <svg viewBox="0 0 100 100" class="placeholder-img">
+                ) : <svg viewBox="0 0 100 100" className="placeholder-img">
                     <rect width="100" height="100" fill="#2a475e" />
                 </svg>
                 }
             </div>
-            <div class="game-info">
+            <div className="game-info">
                 <h3>{props.title}</h3>
-                <p class="price">₩{props.price}</p>
-                <button class="buy-btn">구매하기</button>
+                <p className="price">₩{props.price}</p>
+                <button className="buy-btn">구매하기</button>
             </div>
         </div>
-    </>
+    )
 }
 
 const PageDiv = (props) => {
@@ -130,8 +130,8 @@ const PageDiv = (props) => {
         }
     };
 
-    return <>
-        <div class="pagination">
+    return(
+        <div className="pagination">
             <Stack spacing={2}>
                 <Pagination
                     count={Math.ceil(props.count / props.length)}
@@ -140,7 +140,7 @@ const PageDiv = (props) => {
                     onChange={handlePageChange} />
             </Stack>
         </div>
-    </>
+    )
 }
 
 
@@ -154,24 +154,21 @@ const Games = () => {
     const [games, setGames] = useState({ list: [], count: 0 });
     const [error, setError] = useState(null);
     const [page, setPage] = useState(1);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchGames = async () => {
             try {
                 const token = localStorage.getItem('Authorization');
                 if (!token) {
-                    setError('Authorization token is missing.');
-                    return;
+                    console.log('Authorization token is missing.');
+                    navigate('/redirect')
                 }
 
-                const response = await axios.get('http://localhost:8080/games', {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
+                const response = await axiosInstance.get('/games', {
                     params: {
                         page: page - 1,
                     },
-                    withCredentials: true,
                 })
                 setGames(response.data)
             } catch (err) {
@@ -186,13 +183,13 @@ const Games = () => {
     }
 
     // TODO: 이미지 주석 해제
-    for (let i = 0; i < games.list.length; i++) {
+    for (const element of games.list) {
         list.push(
             <GameCard
-                key={games.list[i].gameId}
+                key={element.gameId}
                 // image={games.list.image}
-                title={games.list[i].title}
-                price={games.list[i].price}
+                title={element.title}
+                price={element.price}
             />
         );
     }
@@ -212,16 +209,16 @@ const Games = () => {
 const Main = () => {
 
     return <>
-        <nav class="top-nav">
-            <div class="nav-container">
-                <div class="logo">
+        <nav className="top-nav">
+            <div className="nav-container">
+                <div className="logo">
                     <h1>Playcation</h1>
                 </div>
-                <div class="nav-items"><NavItems></NavItems></div>
+                <div className="nav-items"><NavItems></NavItems></div>
             </div>
         </nav>
         <Header title="Playcation"></Header>
-        <div class="main-body">
+        <div className="main-body">
             <Games></Games>
         </div>
     </>

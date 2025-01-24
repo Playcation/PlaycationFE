@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./UserUpdate.css";
+import axiosInstance from "../../api/api";
+import "../css/UserUpdate.css";
 
 const Home = () => {
   const [oldPassword, setOldPassword] = useState("");
@@ -21,14 +22,14 @@ const Home = () => {
           return;
         }
 
-        const response = await axios.post(
-            "http://localhost:8080/check/token",
+        const response = await axiosInstance.post(
+            "/check/token",
             {},
             {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-              withCredentials: true,
+              // headers: {
+              //   Authorization: `Bearer ${token}`,
+              // },
+              // withCredentials: true,
             }
         );
 
@@ -64,18 +65,18 @@ const Home = () => {
     const token = localStorage.getItem("Authorization");
 
     try {
-      const response = await axios.patch(
-          "http://localhost:8080/users/password",
+      const response = await axiosInstance.patch(
+          "/users/password",
           {
             oldPassword,
             newPassword,
           },
           {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-            withCredentials: true,
+            // headers: {
+            //   Authorization: `Bearer ${token}`,
+            //   "Content-Type": "application/json",
+            // },
+            // withCredentials: true,
           }
       );
 
@@ -89,12 +90,12 @@ const Home = () => {
 
       if (!token) return;
       try {
-        await axios.post(
-            "http://localhost:8080/logout",
+        await axiosInstance.post(
+            "/logout",
             {},
             {
-              headers: { Authorization: `Bearer ${token}` },
-              withCredentials: true,
+              // headers: { Authorization: `Bearer ${token}` },
+              // withCredentials: true,
             }
         );
         localStorage.removeItem("Authorization");
