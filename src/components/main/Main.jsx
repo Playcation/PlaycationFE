@@ -10,7 +10,7 @@ import './styles.css'
  * 
  * @param {*} props 제목
  */
-function Banner(props) {
+const Banner = (props) => {
     return (
         <a href=''>
             <div class="banner active">
@@ -25,7 +25,7 @@ function Banner(props) {
  * 
  * @param {*} props 이벤트 목록?
  */
-function Header(props) {
+const Header = (props) => {
     const [searchContent, setSearchContent] = useState("");
 
     // TODO: 이벤트 목록 DB로 뽑을지 fix할지 상의
@@ -59,7 +59,7 @@ function Header(props) {
  * 
  * @returns 탭 목록, 장바구니/알림에는 개수 포함
  */
-function NavItems() {
+const NavItems = () => {
     // TODO: url 추가하기
     const itemList = [
         { url: "", class: "fas fa-user", name: "프로필" },
@@ -91,13 +91,15 @@ function NavItems() {
     </>
 }
 
+// TODO: 검색 기능
+
 /**
  * 게임 보드 생성
  * 
  * @param {*} props 이미지, 제목, 가격
  * @returns 단일 게임 보드
  */
-function GameCard(props) {
+const GameCard = (props) => {
     // TODO: 이미지 배율 + 자르기 적용
     return <>
         <div class="game-card">
@@ -118,7 +120,7 @@ function GameCard(props) {
     </>
 }
 
-function PageDiv(props) {
+const PageDiv = (props) => {
     const [page, setPage] = React.useState(1);
 
     const handlePageChange = (event, value) => {
@@ -147,7 +149,7 @@ function PageDiv(props) {
  * 
  * @returns 게임 보드 목록 + 페이징
  */
-function Games() {
+const Games = () => {
     const list = [];
     const [games, setGames] = useState({ list: [], count: 0 });
     const [error, setError] = useState(null);
@@ -207,7 +209,7 @@ function Games() {
     </>
 }
 
-export default function Main() {
+const Main = () => {
 
     return <>
         <nav class="top-nav">
@@ -225,3 +227,4 @@ export default function Main() {
     </>
 }
 
+export default Main;
