@@ -16,12 +16,12 @@ const Redirection = () => {
       console.log('Token saved:', token);
 
       // Redirect to home page
-      navigate('/home');
+      navigate('/main');
     } else {
       console.error('No token found in the URL.');
 
       // Redirect to login page
-      navigate('/login');
+      navigate('/');
     }
   }, [navigate, location]);
 

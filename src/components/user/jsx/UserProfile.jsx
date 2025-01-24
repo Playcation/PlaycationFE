@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './UserProfile.css';
+import axiosInstance from "../../api/api";
+import '../css/UserProfile.css';
 import {useNavigate} from "react-router-dom";
+import ErrorPage from '../../error/ErrorPage';
 
 const UserProfile = () => {
   const [user, setUser] = useState(null);
@@ -17,11 +19,12 @@ const UserProfile = () => {
       }
 
       try {
-        const response = await axios.get('http://localhost:8080/users', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          withCredentials: true,
+        const response = await axiosInstance.get('/users',
+            {
+          // headers: {
+          //   Authorization: `Bearer ${token}`,
+          // },
+          // withCredentials: true,
         });
 
         setUser({
@@ -44,6 +47,59 @@ const UserProfile = () => {
     // Add logic for changing profile here
     navigate('/user-update');
   };
+
+  const daliyCheck = async () => {
+    const token = localStorage.getItem('Authorization');
+    if (!token) {
+      setError('Authorization token is missing.');
+      return;
+    }
+    try {
+      const response = await axiosInstance.put('/users/attendance', null, {
+        // headers: {
+        //   Authorization: `Bearer ${token}`,
+        // },
+        // withCredentials: true,
+      });
+      console.log(response);
+    } catch (error) {
+      const errorData = error.response?.data || {};
+      const status = errorData.httpStatus || error.response?.status || 500;
+      const message = errorData.message || 'An unexpected error occurred.';
+
+      console.error(`Error ${status}: ${message}`);
+      setError({ status, message });
+    }
+  };
+
+  const handleLogout = async () => {
+    const token = localStorage.getItem("Authorization");
+    if (!token) return;
+
+    try {
+      await axiosInstance.post(
+          "/logout",
+          {},
+          {
+            // headers: { Authorization: `Bearer ${token}` },
+            // withCredentials: true,
+          }
+      );
+      localStorage.removeItem("Authorization");
+      navigate("/");
+    } catch (error) {
+      console.error("Logout failed:", error);
+      alert("Failed to log out. Please try again.");
+    }
+  };
+
+  const deleteUser = () =>{
+    navigate("/user-delete");
+  }
+
+  if (error) {
+    return <ErrorPage status={error.status} message={error.message} />;
+  }
 
   const formattedJoinDate = user?.updatedDate
       ? new Date(user.updatedDate).toISOString().split('T')[0]
@@ -80,6 +136,9 @@ const UserProfile = () => {
                     {user.description || '상태 메시지를 입력하세요'}
                   </span>
                       <button onClick={changeProfile}>프로필 변경</button>
+                      <button onClick={daliyCheck}>일일 출석체크</button>
+                      <button onClick={handleLogout}>로그 아웃</button>
+                      <button onClick={deleteUser}>회원 탈퇴</button>
                     </div>
                   </div>
                 </div>

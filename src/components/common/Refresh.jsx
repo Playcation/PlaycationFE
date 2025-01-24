@@ -32,7 +32,7 @@ const Refresh = () => {
         localStorage.setItem('Authorization', response.data.token);
 
         // Redirect to the home page
-        navigate('/home');
+        navigate('/main');
       } catch (error) {
         console.error('Failed to refresh token:', error);
 
