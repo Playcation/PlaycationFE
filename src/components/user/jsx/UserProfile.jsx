@@ -105,6 +105,10 @@ const UserProfile = () => {
       ? new Date(user.updatedDate).toISOString().split('T')[0]
       : 'N/A';
 
+  const payCheck = () => {
+    navigate("/sandbox");
+  }
+
   return (
       <div className="user-profile">
         {user ? (
@@ -135,11 +139,15 @@ const UserProfile = () => {
                       <span className="status-message">
                     {user.description || '상태 메시지를 입력하세요'}
                   </span>
+
+                    </div>
+                    <div>
                       <button onClick={changeProfile}>프로필 변경</button>
                       <button onClick={daliyCheck}>일일 출석체크</button>
                       <button onClick={handleLogout}>로그 아웃</button>
                       <button onClick={deleteUser}>회원 탈퇴</button>
                     </div>
+                    <button onClick={payCheck}>결제 확인 버튼</button>
                   </div>
                 </div>
               </div>
