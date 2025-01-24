@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './UserProfile.css';
+import '../css/UserProfile.css';
 import {useNavigate} from "react-router-dom";
-import ErrorPage from './ErrorPage';
+import ErrorPage from '../../ErrorPage';
 
 const UserProfile = () => {
   const [user, setUser] = useState(null);
@@ -70,6 +70,27 @@ const UserProfile = () => {
     }
   };
 
+  const handleLogout = async () => {
+    const token = localStorage.getItem("Authorization");
+    if (!token) return;
+
+    try {
+      await axios.post(
+          "http://localhost:8080/logout",
+          {},
+          {
+            headers: { Authorization: `Bearer ${token}` },
+            withCredentials: true,
+          }
+      );
+      localStorage.removeItem("Authorization");
+      navigate("/");
+    } catch (error) {
+      console.error("Logout failed:", error);
+      alert("Failed to log out. Please try again.");
+    }
+  };
+
   const deleteUser = () =>{
     navigate("/user-delete");
   }
@@ -114,6 +135,7 @@ const UserProfile = () => {
                   </span>
                       <button onClick={changeProfile}>프로필 변경</button>
                       <button onClick={daliyCheck}>일일 출석체크</button>
+                      <button onClick={handleLogout}>로그 아웃</button>
                       <button onClick={deleteUser}>회원 탈퇴</button>
                     </div>
                   </div>

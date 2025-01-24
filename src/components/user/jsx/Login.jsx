@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./Login.css";
+import "../css/Login.css";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [sseMessage, setSseMessage] = useState(""); // SSE 메시지 상태 추가
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -22,7 +23,7 @@ const Login = () => {
               withCredentials: true,
             }
         );
-        navigate("/home");
+        navigate("/main");
       } catch {
         console.error("Invalid token. Staying on login page.");
         try {
@@ -46,6 +47,26 @@ const Login = () => {
     checkToken();
   }, [navigate]);
 
+  // SSE 이벤트 리스너 추가
+  useEffect(() => {
+    const eventSource = new EventSource("http://localhost:8080/sse");
+
+    eventSource.onmessage = (event) => {
+      console.log("SSE Message Received:", event.data);
+      setSseMessage(event.data); // SSE 메시지를 상태로 저장
+    };
+
+    eventSource.onerror = () => {
+      console.error("SSE connection failed. Closing connection.");
+      eventSource.close(); // 오류 발생 시 SSE 연결 닫기
+    };
+
+    // 컴포넌트 언마운트 시 SSE 연결 종료
+    return () => {
+      eventSource.close();
+    };
+  }, []);
+
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
@@ -55,7 +76,7 @@ const Login = () => {
           { withCredentials: true }
       );
       localStorage.setItem("Authorization", response.data.token);
-      navigate("/home");
+      navigate("/main");
     } catch (error) {
       alert("Login failed! Please check your email and password.");
     }
@@ -76,8 +97,11 @@ const Login = () => {
         <div className="login-box">
           <div className="steam-logo">
             {/* 원형 로고 추가 */}
-            <svg className="steam-logo" viewBox="0 0 256 259"
-                 xmlns="http://www.w3.org/2000/svg">
+            <svg
+                className="steam-logo"
+                viewBox="0 0 256 259"
+                xmlns="http://www.w3.org/2000/svg"
+            >
               <path
                   fill="#ffffff"
                   d="M116.5 0C52.15 0 0 52.15 0 116.5c0 64.35 52.15 116.5 116.5 116.5 64.35 0 116.5-52.15 116.5-116.5C233 52.15 180.85 0 116.5 0zm0 215.175c-54.405 0-98.675-44.27-98.675-98.675 0-54.405 44.27-98.675 98.675-98.675 54.405 0 98.675 44.27 98.675 98.675 0 54.405-44.27 98.675-98.675 98.675z"
@@ -121,6 +145,8 @@ const Login = () => {
                 네이버로 로그인
               </button>
             </div>
+            {/* SSE 메시지 표시 */}
+            {sseMessage && <div className="sse-message">SSE: {sseMessage}</div>}
           </div>
         </div>
       </div>

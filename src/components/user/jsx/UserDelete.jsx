@@ -1,12 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./UserUpdate.css";
+import "../css/UserUpdate.css";
 
-const Home = () => {
-  const [oldPassword, setOldPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+const UserDelete = () => {
+  const [password, setPassword] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
@@ -49,13 +47,8 @@ const Home = () => {
   }, [navigate]);
 
   const changePassword = async () => {
-    if (!oldPassword || !newPassword || !confirmPassword) {
+    if (!password) {
       alert("모든 비밀번호 필드를 입력하세요.");
-      return;
-    }
-
-    if (newPassword !== confirmPassword) {
-      alert("새 비밀번호와 확인 비밀번호가 일치하지 않습니다.");
       return;
     }
 
@@ -64,28 +57,20 @@ const Home = () => {
     const token = localStorage.getItem("Authorization");
 
     try {
-      const response = await axios.patch(
-          "http://localhost:8080/users/password",
-          {
-            oldPassword,
-            newPassword,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-            withCredentials: true,
-          }
-      );
+      const response = await axios.delete("http://localhost:8080/users/delete", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        data: { password }, // RequestBody에 password를 추가
+        withCredentials: true,
+      });
 
-      alert("비밀번호가 성공적으로 변경되었습니다!");
+      alert("회원 탈퇴가 되었습니다.");
       console.log(response.data);
 
       // 비밀번호 입력 필드 초기화
-      setOldPassword("");
-      setNewPassword("");
-      setConfirmPassword("");
+      setPassword("");
 
       if (!token) return;
       try {
@@ -106,19 +91,16 @@ const Home = () => {
 
     } catch (error) {
       console.error("비밀번호 변경 실패:", error);
-      alert("비밀번호 변경에 실패했습니다. 다시 시도해 주세요.");
+      alert("비밀번호가 틀렸습니다. 다시 시도해 주세요.");
     }
   };
 
   const cancelChange = () => {
     if (window.confirm('정말 취소하시겠습니까?')) {
-      setOldPassword(oldPassword || '');
-      setNewPassword('');
-      setConfirmPassword('');
+      setPassword(password || '');
       navigate('/profile');
     }
   }
-
 
   return (
       <div className="profile-container">
@@ -149,35 +131,13 @@ const Home = () => {
             <h2>비밀번호 변경</h2>
 
             <div className="form-group">
-              <label>현재 비밀번호</label>
+              <label>비밀번호</label>
               <input
                   type="password"
-                  placeholder="현재 비밀번호를 입력하세요"
+                  placeholder="비밀번호를 입력하세요"
                   className="form-input"
-                  value={oldPassword}
-                  onChange={(e) => setOldPassword(e.target.value)}
-              />
-            </div>
-
-            <div className="form-group">
-              <label>새 비밀번호</label>
-              <input
-                  type="password"
-                  placeholder="새 비밀번호를 입력하세요"
-                  className="form-input"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-              />
-            </div>
-
-            <div className="form-group">
-              <label>비밀번호 확인</label>
-              <input
-                  type="password"
-                  placeholder="비밀번호를 다시 입력하세요"
-                  className="form-input"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
               />
             </div>
 
@@ -187,7 +147,7 @@ const Home = () => {
               </button>
               <button className="change-password-button"
                       onClick={changePassword}>
-                비밀번호 변경
+                회원 탈퇴
               </button>
             </div>
           </div>
@@ -196,4 +156,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default UserDelete;

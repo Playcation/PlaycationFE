@@ -15,7 +15,7 @@ const OAuth2RedirectHandler = () => {
         });
 
         // 성공적으로 로그인한 경우 홈으로 이동
-        navigate("/home");
+        navigate("/main");
       } catch (err) {
         if (err.response) {
           // 서버에서 반환된 오류 메시지를 상태에 저장
