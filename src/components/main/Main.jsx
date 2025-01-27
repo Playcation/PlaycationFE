@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axiosInstance from "../api/api";
 import { Pagination } from '@mui/material';
 import Stack from '@mui/material/Stack';
@@ -103,7 +103,7 @@ const GameCard = (props) => {
     // TODO: 이미지 배율 + 자르기 적용
     return (
         <div className="game-card">
-            <a href={`/games/${props.id}`}>
+            <Link to={`/games/${props.id}`}>
                 <div className="game-image">
                     {props.image ? (
                         <img src={props.image} className="game-img" />
@@ -117,7 +117,7 @@ const GameCard = (props) => {
                     <p className="price">₩{props.price}</p>
                     <button className="buy-btn">구매하기</button>
                 </div>
-            </a>
+            </Link>
         </div>
     )
 }
