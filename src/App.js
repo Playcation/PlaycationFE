@@ -15,6 +15,7 @@ import ErrorHandler from "./components/error/ErrorHandler";
 import SuccessPage from "./components/toss/jsx/Success";
 import CheckoutPage from "./components/toss/jsx/Checkout";
 import FailPage from "./components/toss/jsx/Fail";
+import GameDetailPage from './components/game/GameDetail';
 
 const App = () => {
   return (
@@ -37,6 +38,7 @@ const App = () => {
           <Route path="/sandbox/success" element={<SuccessPage />} />
           <Route path="/sandbox" element={<CheckoutPage />} />
           <Route path="/sandbox/fail" element={<FailPage />} />
+          <Route path="/games/:id" element={<GameDetailPage />} />
         </Routes>
       </Router>
   );
