@@ -10,7 +10,11 @@ const ErrorPage = ({ status, errorName, message }) => {
         <h1>오류 {status}</h1>
         <h2>{errorName}</h2>
         <p>{message}</p>
-        <button onClick={() => navigate("/main")}>홈으로 돌아가기</button>
+        {status === 403 ? (
+            <button onClick={() => navigate("/login")}>로그인 페이지로 이동</button>
+        ) : (
+            <button onClick={() => navigate("/main")}>홈으로 돌아가기</button>
+        )}
       </div>
   );
 };

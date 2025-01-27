@@ -17,11 +17,19 @@ const ErrorHandler = ({ apiEndpoint }) => {
         navigate("/main");
       } catch (err) {
         if (err.response) {
-          // 서버에서 반환된 오류를 상태에 저장
+          const status = err.response.status;
+          const errorName =
+              status === 403
+                  ? "권한 없음"
+                  : err.response.data.errorName || "알 수 없는 오류";
+          const message =
+              status === 403
+                  ? "이 페이지에 접근할 권한이 없습니다."
+                  : err.response.data.message || "서버 오류가 발생했습니다.";
           setError({
-            status: err.response.status,
-            errorName: err.response.data.errorName,
-            message: err.response.data.message,
+            status,
+            errorName,
+            message,
           });
         } else {
           // 네트워크 오류 처리
@@ -38,7 +46,13 @@ const ErrorHandler = ({ apiEndpoint }) => {
   }, [apiEndpoint, navigate]);
 
   if (error) {
-    return <ErrorPage status={error.status} errorName={error.errorName} message={error.message} />;
+    return (
+        <ErrorPage
+            status={error.status}
+            errorName={error.errorName}
+            message={error.message}
+        />
+    );
   }
 
   return <div>로딩 중...</div>;

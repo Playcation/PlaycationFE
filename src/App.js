@@ -37,7 +37,6 @@ const App = () => {
           <Route path="/change-password" element={<UserPasswordUpdate />} />
           <Route path="/user-delete" element={<UserDelete />} />
           <Route path="/oauth2/callback" element={<OAuth2RedirectHandler />} />
-          <Route path="/error" element={<ErrorPage />} />
           <Route path="/error" element={<ErrorHandler apiEndpoint="http://localhost:8080/error" />} />
           <Route path="/sandbox/success" element={<SuccessPage />} />
           <Route path="/sandbox" element={<CheckoutPage />} />
@@ -47,6 +46,7 @@ const App = () => {
           <Route path="/register/manager" element={<RegisterManager />} />
           <Route path="/search/regist/manager" element={<AcceptManagerPage />} />
           <Route path="/games/:id" element={<GameDetailPage />} />
+          <Route path="/forbidden" element={<ErrorPage status="403" errorName="Forbidden" message="권한이 없습니다." />} />
         </Routes>
       </Router>
   );

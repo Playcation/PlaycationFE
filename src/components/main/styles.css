@@ -277,7 +277,7 @@ main {
   .banner h2 {
     font-size: 1.5em;
   }
-  
+
   .game-grid {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   }
