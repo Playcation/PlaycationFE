@@ -19,6 +19,7 @@ import AdminMain from "./components/admin/jsx/AdminMain";
 import CreateGamePage from "./components/game/jsx/CreateGamePage";
 import RegisterManager from "./components/user/jsx/RegisterManager";
 import AcceptManagerPage from "./components/admin/jsx/AcceptManagerPage";
+import GameDetailPage from './components/game/GameDetail';
 
 const App = () => {
   return (
@@ -45,6 +46,7 @@ const App = () => {
           <Route path="/game" element={<CreateGamePage />} />
           <Route path="/register/manager" element={<RegisterManager />} />
           <Route path="/search/regist/manager" element={<AcceptManagerPage />} />
+          <Route path="/games/:id" element={<GameDetailPage />} />
         </Routes>
       </Router>
   );

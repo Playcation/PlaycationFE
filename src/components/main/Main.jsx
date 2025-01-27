@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axiosInstance from "../api/api";
 import { Pagination } from '@mui/material';
 import Stack from '@mui/material/Stack';
@@ -101,27 +101,29 @@ const NavItems = () => {
  */
 const GameCard = (props) => {
     // TODO: 이미지 배율 + 자르기 적용
-    return(
+    return (
         <div className="game-card">
-            <div className="game-image">
-                {props.image ? (
-                    <img src={props.image} className="game-img" />
-                ) : <svg viewBox="0 0 100 100" className="placeholder-img">
-                    <rect width="100" height="100" fill="#2a475e" />
-                </svg>
-                }
-            </div>
-            <div className="game-info">
-                <h3>{props.title}</h3>
-                <p className="price">₩{props.price}</p>
-                <button className="buy-btn">구매하기</button>
-            </div>
+            <Link to={`/games/${props.id}`}>
+                <div className="game-image">
+                    {props.image ? (
+                        <img src={props.image} className="game-img" />
+                    ) : <svg viewBox="0 0 100 100" className="placeholder-img">
+                        <rect width="100" height="100" fill="#2a475e" />
+                    </svg>
+                    }
+                </div>
+                <div className="game-info">
+                    <h3>{props.title}</h3>
+                    <p className="price">₩{props.price}</p>
+                    <button className="buy-btn">구매하기</button>
+                </div>
+            </Link>
         </div>
     )
 }
 
 const PageDiv = (props) => {
-    const [page, setPage] = React.useState(1);
+    const [page, setPage] = useState(1);
 
     const handlePageChange = (event, value) => {
         setPage(value);
@@ -130,7 +132,7 @@ const PageDiv = (props) => {
         }
     };
 
-    return(
+    return (
         <div className="pagination">
             <Stack spacing={2}>
                 <Pagination
@@ -187,6 +189,7 @@ const Games = () => {
         list.push(
             <GameCard
                 key={element.gameId}
+                id={element.gameId}
                 // image={games.list.image}
                 title={element.title}
                 price={element.price}
