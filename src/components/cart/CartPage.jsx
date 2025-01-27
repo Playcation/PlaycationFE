@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from "../api/api";
-import './styles.css'
+import './style.css'
 
 const CartItem = (props) => {
 
@@ -9,9 +9,7 @@ const CartItem = (props) => {
         <div class="cart-item">
             {props.image ? (
                 <img src={props.image} className="game-img" />
-            ) : <svg viewBox="0 0 100 100" className="placeholder-img">
-                <rect width="100" height="100" fill="#2a475e" />
-            </svg>
+            ) : <svg viewBox="0 0 100 100" className="placeholder-img" />
             }
             <div class="item-details">
                 <h3>{props.title}</h3>
@@ -41,7 +39,7 @@ const CartSummary = (props) => {
 const CartItemList = () => {
 
     const list = [];
-    const [carts, setCarts] = useState({ games: [], total: 0 });
+    const [carts, setCarts] = useState([]);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
 
@@ -54,8 +52,8 @@ const CartItemList = () => {
                     navigate('/redirect')
                 }
 
-                const response = axiosInstance.get("/carts")
-                setCarts(response);
+                const response = await axiosInstance.get('/carts');
+                setCarts(response.data);
             } catch (err) {
                 setError("Failed to fetch carts: " + err.message);
             }
@@ -67,10 +65,12 @@ const CartItemList = () => {
         return <div>Error: {error}</div>
     }
 
-    for (const element of carts.list) {
+    console.log(carts)
+
+    for (const element of carts) {
         list.push(
             <CartItem
-                key={i}
+                key={element.id}
                 image={element.imageUrl}
                 title={element.title}
                 price={element.price}
