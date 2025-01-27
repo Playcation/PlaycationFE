@@ -15,6 +15,10 @@ import ErrorHandler from "./components/error/ErrorHandler";
 import SuccessPage from "./components/toss/jsx/Success";
 import CheckoutPage from "./components/toss/jsx/Checkout";
 import FailPage from "./components/toss/jsx/Fail";
+import AdminMain from "./components/admin/jsx/AdminMain";
+import CreateGamePage from "./components/game/jsx/CreateGamePage";
+import RegisterManager from "./components/user/jsx/RegisterManager";
+import AcceptManagerPage from "./components/admin/jsx/AcceptManagerPage";
 
 const App = () => {
   return (
@@ -37,6 +41,10 @@ const App = () => {
           <Route path="/sandbox/success" element={<SuccessPage />} />
           <Route path="/sandbox" element={<CheckoutPage />} />
           <Route path="/sandbox/fail" element={<FailPage />} />
+          <Route path="/admin" element={<AdminMain />} />
+          <Route path="/game" element={<CreateGamePage />} />
+          <Route path="/register/manager" element={<RegisterManager />} />
+          <Route path="/search/regist/manager" element={<AcceptManagerPage />} />
         </Routes>
       </Router>
   );

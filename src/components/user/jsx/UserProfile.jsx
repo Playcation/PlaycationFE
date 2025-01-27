@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import axiosInstance from "../../api/api";
 import '../css/UserProfile.css';
 import {useNavigate} from "react-router-dom";
@@ -21,10 +20,6 @@ const UserProfile = () => {
       try {
         const response = await axiosInstance.get('/users',
             {
-          // headers: {
-          //   Authorization: `Bearer ${token}`,
-          // },
-          // withCredentials: true,
         });
 
         setUser({
@@ -56,10 +51,6 @@ const UserProfile = () => {
     }
     try {
       const response = await axiosInstance.put('/users/attendance', null, {
-        // headers: {
-        //   Authorization: `Bearer ${token}`,
-        // },
-        // withCredentials: true,
       });
       console.log(response);
     } catch (error) {
@@ -81,8 +72,6 @@ const UserProfile = () => {
           "/logout",
           {},
           {
-            // headers: { Authorization: `Bearer ${token}` },
-            // withCredentials: true,
           }
       );
       localStorage.removeItem("Authorization");
@@ -95,6 +84,10 @@ const UserProfile = () => {
 
   const deleteUser = () =>{
     navigate("/user-delete");
+  }
+
+  const registerManager = () => {
+    navigate("/register/manager");
   }
 
   if (error) {
@@ -146,6 +139,7 @@ const UserProfile = () => {
                       <button onClick={daliyCheck}>일일 출석체크</button>
                       <button onClick={handleLogout}>로그 아웃</button>
                       <button onClick={deleteUser}>회원 탈퇴</button>
+                      <button onClick={registerManager}>메니저 등록</button>
                     </div>
                     <button onClick={payCheck}>결제 확인 버튼</button>
                   </div>

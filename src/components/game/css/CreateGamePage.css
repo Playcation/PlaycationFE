@@ -1,0 +1,115 @@
+:root {
+  --steam-blue: #1b2838;
+  --steam-light-blue: #2a475e;
+  --steam-green: #4CAF50;
+  --steam-white: #c6d4df;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--steam-blue);
+  color: var(--steam-white);
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.steam-container {
+  background-color: var(--steam-light-blue);
+  border-radius: 8px;
+  width: 100%;
+  max-width: 600px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.steam-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.steam-logo {
+  max-width: 200px;
+}
+
+.game-registration-form h1 {
+  text-align: center;
+  color: var(--steam-white);
+}
+
+.form-section {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--steam-white);
+}
+
+input, textarea, select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #2a475e;
+  background-color: #2a475e;
+  color: var(--steam-white);
+  border-radius: 4px;
+}
+
+.checkbox-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.checkbox-section input {
+  width: auto;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.btn-submit, .btn-cancel {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-submit {
+  background-color: var(--steam-green);
+  color: white;
+}
+
+.btn-cancel {
+  background-color: #5f6062;
+  color: var(--steam-white);
+}
+
+.btn-submit:hover {
+  background-color: #45a049;
+}
+
+.btn-cancel:hover {
+  background-color: #4f5355;
+}
+
+.steam-footer {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.8em;
+  color: #8f98a0;
+}
