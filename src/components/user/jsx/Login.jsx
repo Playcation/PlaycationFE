@@ -75,6 +75,11 @@ const Login = () => {
         "http://localhost:8080/oauth2/authorization/naver?redirect_uri=http://localhost:3000/redirect";
   };
 
+  const kakaoLogin = () => {
+    window.location.href =
+        "http://localhost:8080/oauth2/authorization/kakao?redirect_uri=http://localhost:3000/redirect";
+  };
+
   return (
       <div className="login-container">
         <div className="login-box">
@@ -125,6 +130,9 @@ const Login = () => {
               </button>
               <button onClick={naverLogin} className="naver-btn">
                 네이버로 로그인
+              </button>
+              <button onClick={kakaoLogin} className="kakao-btn">
+                카카오톡으로 로그인
               </button>
             </div>
             {sseMessage && <div className="sse-message">SSE: {sseMessage}</div>}

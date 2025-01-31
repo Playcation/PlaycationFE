@@ -52,6 +52,7 @@ const UserProfile = () => {
     try {
       const response = await axiosInstance.put('/users/attendance', null, {
       });
+      alert("출석 체크 되었습니다");
       console.log(response);
     } catch (error) {
       const errorData = error.response?.data || {};

@@ -143,4 +143,17 @@ input[type="password"]:focus {
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
+  margin-bottom: 16px;
+}
+
+.kakao-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #FEE500;
+  color: white;
+  border: none;
+  border-radius: 2px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
 }

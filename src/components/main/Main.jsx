@@ -165,6 +165,7 @@ const Games = () => {
                 if (!token) {
                     console.log('Authorization token is missing.');
                     navigate('/redirect')
+                    return;
                 }
 
                 const response = await axiosInstance.get('/games', {
@@ -172,9 +173,14 @@ const Games = () => {
                         page: page - 1,
                     },
                 })
-                setGames(response.data)
+                setGames({
+                    list: response.data.list || [],
+                    count: response.data.count || 0,
+                });
             } catch (err) {
                 setError("Failed to fetch games: " + err.message);
+                navigate("/");
+                alert("다시 로그인 해 주식기 바랍니다.");
             }
         };
         fetchGames();
@@ -200,7 +206,7 @@ const Games = () => {
     // TODO: 페이지네이션 버튼 이벤트
     return <>
         <main>
-            <div class="game-grid">{list}</div>
+            <div className="game-grid">{list}</div>
         </main>
         <PageDiv
             count={games.count}
