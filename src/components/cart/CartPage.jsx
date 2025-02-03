@@ -9,20 +9,48 @@ const CartItem = (props) => {
         <div class="cart-item">
             {props.image ? (
                 <img src={props.image} className="game-img" />
-            ) : <svg viewBox="0 0 100 100" className="placeholder-img" />
+            ) : <svg viewBox="0 0 100 100" width="50" height="50" className="placeholder-img" />
             }
-            <div class="item-details">
+            <div className="item-details">
                 <h3>{props.title}</h3>
-                <div class="item-price">
+                <div className="item-price">
                     <span>₩{props.price}</span>
                 </div>
             </div>
-            <button class="remove-item">×</button>
+            <button className="remove-item" onClick={() => props.removeItem(props.id)}>×</button>
         </div>
     )
 }
 
 const CartSummary = (props) => {
+    const navigate = useNavigate();
+    const [error, setError] = useState(null);
+
+    const pay = async () => {
+        const token = localStorage.getItem('Authorization');
+        if (!token) {
+            console.log('Authorization token is missing.');
+            navigate('/redirect')
+            return;
+        }
+
+        try {
+            const response = await axiosInstance.get('/orders/proceed')
+            console.log(response.data);
+
+            navigate('/sandbox', {
+                state: {
+                    amount: {
+                        currency: "KRW",
+                        value: response.data.total
+                    },
+                    orderId: response.data.orderId
+                }
+            });
+        } catch (err) {
+            setError("Failed to fetch games: " + err.message);
+        }
+    }
 
     return (
         <section class="cart-summary">
@@ -31,14 +59,13 @@ const CartSummary = (props) => {
                 <span>총 결제 금액:</span>
                 <span>₩{props.total}</span>
             </div>
-            <button class="purchase-btn">결제하기</button>
+            {error && <div className="error">{error}</div>}
+            <button class="purchase-btn" onClick={pay}>결제하기</button>
         </section>
     )
 }
 
 const CartItemList = () => {
-
-    const list = [];
     const [carts, setCarts] = useState([]);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
@@ -65,18 +92,25 @@ const CartItemList = () => {
         return <div>Error: {error}</div>
     }
 
-    console.log(carts)
-
-    for (const element of carts) {
-        list.push(
-            <CartItem
-                key={element.id}
-                image={element.imageUrl}
-                title={element.title}
-                price={element.price}
-            />
-        )
+    const removeItem = (targetId) => {
+        axiosInstance.delete(`/carts/delete/${targetId}`)
+            .then(() => {
+                setCarts((prevCarts) => prevCarts.filter(cart => cart.id !== targetId))
+            })
     }
+
+    const totalPrice = carts.reduce((sum, item) => sum + item.price, 0);
+
+    const list = carts.map((element) => (
+        <CartItem
+            key={element.id}
+            id={element.id}
+            image={element.imageUrl}
+            title={element.title}
+            price={element.price}
+            removeItem={removeItem}
+        />
+    ))
 
     return (
         <main class="cart-page">
@@ -84,7 +118,7 @@ const CartItemList = () => {
                 <h1>장바구니</h1>
                 {list}
             </section>
-            <CartSummary />
+            <CartSummary total={totalPrice} />
         </main>
     )
 }

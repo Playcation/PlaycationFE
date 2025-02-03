@@ -1,7 +1,7 @@
 import { loadTossPayments, ANONYMOUS } from "@tosspayments/tosspayments-sdk";
 import { useEffect, useRef, useState } from "react";
 import axiosInstance from "../../api/api";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 
 const clientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
 const customerKey = "q4MjXjPHAG20v-iOzeqq2";
@@ -10,10 +10,12 @@ export default function CheckoutPage() {
   const [ready, setReady] = useState(false);
   const [widgets, setWidgets] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
   const [amount, setAmount] = useState({
     currency: "KRW",
     value: 50_000,
   });
+  const [orderId, setOrderId] = useState("ScoR6da5suvaGaef1Nr0D")
 
   useEffect(() => {
     async function fetchPaymentWidgets() {
@@ -24,6 +26,20 @@ export default function CheckoutPage() {
 
     fetchPaymentWidgets();
   }, [clientKey, customerKey]);
+
+  useEffect(() => {
+    if (location.state?.amount) {
+      setAmount(location.state.amount);
+    }
+    if(location.state?.orderId) {
+      setOrderId(location.state.orderId);
+    }
+  }, [location.state]);
+
+  console.log(location.state);
+
+  console.log("amount: ", amount)
+  console.log("id: ", orderId)
 
   useEffect(() => {
     async function renderPaymentWidgets() {
@@ -68,7 +84,7 @@ export default function CheckoutPage() {
   const requestPayment = async () => {
     try {
       const response = await axiosInstance.post("/api/v1/payments/toss", {
-        orderId: "ScoR6da5suvaGaef1Nr0D",
+        orderId: orderId,
         orderName: "토스 티셔츠 외 2건",
         customerName: "김토스",
         customerEmail: "customer123@gmail.com",
@@ -76,7 +92,7 @@ export default function CheckoutPage() {
             + window.location.search,
         yourFailUrl: window.location.origin + "/sandbox/fail"
             + window.location.search,
-        amount: 50000,
+        amount: amount.value,
         payType: "CARD", // 필요한 경우 추가
       }, {
         headers: {
