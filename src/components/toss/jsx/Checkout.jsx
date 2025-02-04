@@ -81,6 +81,7 @@ export default function CheckoutPage() {
     renderPaymentWidgets();
   }, [widgets]);
 
+  console.log("orderId: ", orderId)
   const requestPayment = async () => {
     try {
       const response = await axiosInstance.post("/api/v1/payments/toss", {
@@ -102,7 +103,8 @@ export default function CheckoutPage() {
 
       // Toss Payments 호출
       await widgets?.requestPayment({
-        orderId: response.data.body.orderId,
+        // orderId: response.data.body.orderId,
+        orderId: orderId,
         orderName: response.data.body.orderName,
         customerName: response.data.body.customerName,
         customerEmail: response.data.body.customerEmail,
