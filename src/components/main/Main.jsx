@@ -69,20 +69,20 @@ const NavItems = () => {
     const list = [];
     for (let i = 0; i < itemList.length; i++) {
         list.push(
-            <a key={i} href={itemList[i].url} className="nav-item">
+            <Link key={i} to={itemList[i].url} className="nav-item">
                 <i className={itemList[i].class}></i>
                 <span>{itemList[i].name}</span>
-            </a>
+            </Link>
         );
     }
 
     return <>
         {list}
-        <a href="" className="nav-item">
+        <Link to="/carts" className="nav-item">
             <i className="fas fa-shopping-cart"></i>
             <span>장바구니</span>
             <span className="cart-count">0</span>
-        </a>
+        </Link>
         <a href="" className="nav-item">
             <i className="fas fa-bell"></i>
             <span>알림</span>
@@ -92,6 +92,10 @@ const NavItems = () => {
 }
 
 // TODO: 검색 기능
+const Search = (props) => {
+
+    
+}
 
 /**
  * 게임 보드 생성

@@ -19,8 +19,8 @@ import AdminMain from "./components/admin/jsx/AdminMain";
 import CreateGamePage from "./components/game/jsx/CreateGamePage";
 import RegisterManager from "./components/user/jsx/RegisterManager";
 import AcceptManagerPage from "./components/admin/jsx/AcceptManagerPage";
-import GameDetail from './components/game/GameDetail';
 import GameDetailPage from './components/game/jsx/GameDetailPage';
+import CartPage from './components/cart/CartPage';
 
 const App = () => {
   return (
@@ -38,6 +38,7 @@ const App = () => {
           <Route path="/change-password" element={<UserPasswordUpdate />} />
           <Route path="/user-delete" element={<UserDelete />} />
           <Route path="/oauth2/callback" element={<OAuth2RedirectHandler />} />
+          <Route path="/error" element={<ErrorPage />} />
           <Route path="/error" element={<ErrorHandler apiEndpoint="http://localhost:8080/error" />} />
           <Route path="/sandbox/success" element={<SuccessPage />} />
           <Route path="/sandbox" element={<CheckoutPage />} />
@@ -46,9 +47,9 @@ const App = () => {
           <Route path="/game" element={<CreateGamePage />} />
           <Route path="/register/manager" element={<RegisterManager />} />
           <Route path="/search/regist/manager" element={<AcceptManagerPage />} />
+          <Route path="/carts" element={<CartPage />} />
           <Route path="/games/:gameId" element={<GameDetailPage />} />
-          <Route path="/forbidden" element={<ErrorPage status="403" errorName="Forbidden" message="권한이 없습니다." />} />
-        </Routes>
+          <Route path="/forbidden" element={<ErrorPage status="403" errorName="Forbidden" message="권한이 없습니다." />} />        </Routes>
       </Router>
   );
 };
