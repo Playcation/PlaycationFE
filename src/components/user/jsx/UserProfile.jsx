@@ -1,13 +1,45 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import axiosInstance from "../../api/api";
 import '../css/UserProfile.css';
 import {useNavigate} from "react-router-dom";
 import ErrorPage from '../../error/ErrorPage';
+import {GameCard, PageDiv} from "../../main/Main";
+
+const LibraryCards = (props) => {
+  // TODO: 이미지 배율 + 자르기 적용
+  const list = [];
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/games/${props.id}`);
+  };
+
+  var i = 0;
+  for (const element of props.games.list) {
+    list.push(
+        <GameCard
+            key={i}
+            id={element.gameId}
+            image={element.mainImagePath}
+            title={element.title}
+            price={element.price}
+        />
+    );
+    i = i + 1;
+  }
+
+  return (
+      <div>
+        <div className="game-grid">{list}</div>
+      </div>
+  )
+}
 
 const UserProfile = () => {
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
+  const [games, setGames] = useState({ list: [], count: 0 });
+  const [page, setPage] = useState(1);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,10 +53,6 @@ const UserProfile = () => {
       try {
         const response = await axiosInstance.get('/users',
             {
-          // headers: {
-          //   Authorization: `Bearer ${token}`,
-          // },
-          // withCredentials: true,
         });
 
         setUser({
@@ -34,6 +62,14 @@ const UserProfile = () => {
           description: response.data.description,
           updatedDate: response.data.updatedDate,
         });
+
+        const libraryResponse = await axiosInstance.get('/libraries/my-games');
+
+        setGames({
+          list: libraryResponse.data.list || [],
+          count: libraryResponse.data.count || 0,
+        });
+
       } catch (error) {
         console.error('Failed to fetch user profile:', error);
         setError('Failed to load user profile.');
@@ -56,19 +92,18 @@ const UserProfile = () => {
     }
     try {
       const response = await axiosInstance.put('/users/attendance', null, {
-        // headers: {
-        //   Authorization: `Bearer ${token}`,
-        // },
-        // withCredentials: true,
       });
+      alert("출석 체크 되었습니다");
       console.log(response);
     } catch (error) {
-      const errorData = error.response?.data || {};
-      const status = errorData.httpStatus || error.response?.status || 500;
-      const message = errorData.message || 'An unexpected error occurred.';
-
-      console.error(`Error ${status}: ${message}`);
-      setError({ status, message });
+      // const errorData = error.response?.data || {};
+      // const status = errorData.httpStatus || error.response?.status || 500;
+      // const message = errorData.message || 'An unexpected error occurred.';
+      //
+      // console.error(`Error ${status}: ${message}`);
+      // setError({ status, message });
+      const errorMessage = error.response?.data?.message || "알 수 없는 오류가 발생했습니다.";
+      alert(`${errorMessage}`);
     }
   };
 
@@ -81,8 +116,6 @@ const UserProfile = () => {
           "/logout",
           {},
           {
-            // headers: { Authorization: `Bearer ${token}` },
-            // withCredentials: true,
           }
       );
       localStorage.removeItem("Authorization");
@@ -97,6 +130,10 @@ const UserProfile = () => {
     navigate("/user-delete");
   }
 
+  const registerManager = () => {
+    navigate("/register/manager");
+  }
+
   if (error) {
     return <ErrorPage status={error.status} message={error.message} />;
   }
@@ -104,10 +141,6 @@ const UserProfile = () => {
   const formattedJoinDate = user?.updatedDate
       ? new Date(user.updatedDate).toISOString().split('T')[0]
       : 'N/A';
-
-  const payCheck = () => {
-    navigate("/sandbox");
-  }
 
   return (
       <div className="user-profile">
@@ -146,8 +179,8 @@ const UserProfile = () => {
                       <button onClick={daliyCheck}>일일 출석체크</button>
                       <button onClick={handleLogout}>로그 아웃</button>
                       <button onClick={deleteUser}>회원 탈퇴</button>
+                      <button onClick={registerManager}>메니저 등록</button>
                     </div>
-                    <button onClick={payCheck}>결제 확인 버튼</button>
                   </div>
                 </div>
               </div>
@@ -157,6 +190,14 @@ const UserProfile = () => {
         ) : (
             <div className="loading">Loading user profile...</div>
         )}
+        <div className="library">
+          <p>Library</p>
+          <LibraryCards games = {games}></LibraryCards>
+        </div>
+        <PageDiv
+            count={games.count}
+            length={games.list.length}
+            onPageChange={(value) => setPage(value)} />
       </div>
   );
 };

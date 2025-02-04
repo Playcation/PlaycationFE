@@ -3,8 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { useParams } from "react-router-dom";
 import axiosInstance from "../api/api";
 
-
-
 const GameDetailPage = () => {
     const { id } = useParams();
     const [details, setDetails] = useState();

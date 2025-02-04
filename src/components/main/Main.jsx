@@ -103,11 +103,17 @@ const Search = (props) => {
  * @param {*} props 이미지, 제목, 가격
  * @returns 단일 게임 보드
  */
-const GameCard = (props) => {
+export const GameCard = (props) => {
     // TODO: 이미지 배율 + 자르기 적용
+
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+        navigate(`/games/${props.id}`);
+    };
+
     return (
-        <div className="game-card">
-            <Link to={`/games/${props.id}`}>
+        <div className="game-card" onClick={handleClick} style={{ cursor: "pointer" }}>
                 <div className="game-image">
                     {props.image ? (
                         <img src={props.image} className="game-img" />
@@ -119,14 +125,13 @@ const GameCard = (props) => {
                 <div className="game-info">
                     <h3>{props.title}</h3>
                     <p className="price">₩{props.price}</p>
-                    <button className="buy-btn">구매하기</button>
+                    <button className="buy-btn">상세 페이지</button>
                 </div>
-            </Link>
         </div>
     )
 }
 
-const PageDiv = (props) => {
+export const PageDiv = (props) => {
     const [page, setPage] = useState(1);
 
     const handlePageChange = (event, value) => {
@@ -155,7 +160,7 @@ const PageDiv = (props) => {
  * 
  * @returns 게임 보드 목록 + 페이징
  */
-const Games = () => {
+export const Games = () => {
     const list = [];
     const [games, setGames] = useState({ list: [], count: 0 });
     const [error, setError] = useState(null);
@@ -169,6 +174,7 @@ const Games = () => {
                 if (!token) {
                     console.log('Authorization token is missing.');
                     navigate('/redirect')
+                    return;
                 }
 
                 const response = await axiosInstance.get('/games', {
@@ -176,9 +182,14 @@ const Games = () => {
                         page: page - 1,
                     },
                 })
-                setGames(response.data)
+                setGames({
+                    list: response.data.list || [],
+                    count: response.data.count || 0,
+                });
             } catch (err) {
                 setError("Failed to fetch games: " + err.message);
+                navigate("/");
+                alert("다시 로그인 해 주식기 바랍니다.");
             }
         };
         fetchGames();
@@ -188,13 +199,12 @@ const Games = () => {
         return <div>Error: {error}</div>
     }
 
-    // TODO: 이미지 주석 해제
     for (const element of games.list) {
         list.push(
             <GameCard
                 key={element.gameId}
                 id={element.gameId}
-                // image={games.list.image}
+                image={element.mainImagePath}
                 title={element.title}
                 price={element.price}
             />
@@ -204,7 +214,7 @@ const Games = () => {
     // TODO: 페이지네이션 버튼 이벤트
     return <>
         <main>
-            <div class="game-grid">{list}</div>
+            <div className="game-grid">{list}</div>
         </main>
         <PageDiv
             count={games.count}

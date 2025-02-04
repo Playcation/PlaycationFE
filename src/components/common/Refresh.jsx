@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import axios from 'axios';
+import axiosInstance from "../api/api";
 
 const Refresh = () => {
   const navigate = useNavigate();
@@ -15,15 +15,10 @@ const Refresh = () => {
           return;
         }
 
-        const response = await axios.post(
-            'http://localhost:8080/check/token',
+        const response = await axiosInstance.post(
+            '/check/token',
             {}, // POST request body
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-              withCredentials: true, // Allow cookies
-            }
+            {}
         );
 
         console.log('Token refreshed successfully:', response.data.token);

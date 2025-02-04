@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import "../css/Login.css";
+
 import axiosInstance from "../../api/api";
 
 const Login = () => {
@@ -16,26 +16,12 @@ const Login = () => {
       if (!token) return;
 
       try {
-        await axiosInstance.post(
-            "/check/token",
-            {},
-            // {
-            //   headers: { Authorization: `Bearer ${token}` },
-            //   withCredentials: true,
-            // }
-        );
+        await axiosInstance.post("/check/token", {});
         navigate("/main");
       } catch {
         console.error("Invalid token. Staying on login page.");
         try {
-          await axiosInstance.post(
-              "/logout",
-              {},
-              // {
-              //   headers: { Authorization: `Bearer ${token}` },
-              //   withCredentials: true,
-              // }
-          );
+          await axiosInstance.post("/logout", {});
           localStorage.removeItem("Authorization");
           navigate("/");
         } catch (error) {
@@ -71,11 +57,7 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axiosInstance.post(
-          "/login",
-          { email, password },
-          // { withCredentials: true }
-      );
+      const response = await axiosInstance.post("/login", { email, password });
       localStorage.setItem("Authorization", response.data.token);
       navigate("/main");
     } catch (error) {
@@ -93,11 +75,15 @@ const Login = () => {
         "http://localhost:8080/oauth2/authorization/naver?redirect_uri=http://localhost:3000/redirect";
   };
 
+  const kakaoLogin = () => {
+    window.location.href =
+        "http://localhost:8080/oauth2/authorization/kakao?redirect_uri=http://localhost:3000/redirect";
+  };
+
   return (
       <div className="login-container">
         <div className="login-box">
           <div className="steam-logo">
-            {/* 원형 로고 추가 */}
             <svg
                 className="steam-logo"
                 viewBox="0 0 256 259"
@@ -145,8 +131,10 @@ const Login = () => {
               <button onClick={naverLogin} className="naver-btn">
                 네이버로 로그인
               </button>
+              <button onClick={kakaoLogin} className="kakao-btn">
+                카카오톡으로 로그인
+              </button>
             </div>
-            {/* SSE 메시지 표시 */}
             {sseMessage && <div className="sse-message">SSE: {sseMessage}</div>}
           </div>
         </div>

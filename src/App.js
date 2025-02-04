@@ -15,34 +15,42 @@ import ErrorHandler from "./components/error/ErrorHandler";
 import SuccessPage from "./components/toss/jsx/Success";
 import CheckoutPage from "./components/toss/jsx/Checkout";
 import FailPage from "./components/toss/jsx/Fail";
-import GameDetailPage from './components/game/GameDetail';
+import AdminMain from "./components/admin/jsx/AdminMain";
+import CreateGamePage from "./components/game/jsx/CreateGamePage";
+import RegisterManager from "./components/user/jsx/RegisterManager";
+import AcceptManagerPage from "./components/admin/jsx/AcceptManagerPage";
+import GameDetailPage from './components/game/jsx/GameDetailPage';
 import CartPage from './components/cart/CartPage';
 
 const App = () => {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/redirect" element={<Redirection />} />
-        <Route path="/refresh" element={<Refresh />} />
-        <Route path="/sign-up" element={<Signup />} />
-        <Route path="/profile" element={<UserProfile />} />
-        <Route path="/user-update" element={<UserUpdate />} />
-        <Route path="/main" element={<Main />} />
-        <Route path="/error" element={<ErrorPage status={500} message="Something went wrong." />} />
-        <Route path="*" element={<ErrorPage status={404} message="Page not found." />} />
-        <Route path="/change-password" element={<UserPasswordUpdate />} />
-        <Route path="/user-delete" element={<UserDelete />} />
-        <Route path="/oauth2/callback" element={<OAuth2RedirectHandler />} />
-        <Route path="/error" element={<ErrorPage />} />
-        <Route path="/error" element={<ErrorHandler apiEndpoint="http://localhost:8080/error" />} />
-        <Route path="/sandbox/success" element={<SuccessPage />} />
-        <Route path="/sandbox" element={<CheckoutPage />} />
-        <Route path="/sandbox/fail" element={<FailPage />} />
-        <Route path="/carts" element={<CartPage />} />
-        <Route path="/games/:id" element={<GameDetailPage />} />
-      </Routes>
-    </Router>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/redirect" element={<Redirection />} />
+          <Route path="/refresh" element={<Refresh />} />
+          <Route path="/sign-up" element={<Signup />} />
+          <Route path="/profile" element={<UserProfile />} />
+          <Route path="/user-update" element={<UserUpdate />} />
+          <Route path="/main" element={<Main/>}/>
+          <Route path="/error" element={<ErrorPage status={500} message="Something went wrong." />} />
+          <Route path="*" element={<ErrorPage status={404} message="Page not found." />} />
+          <Route path="/change-password" element={<UserPasswordUpdate />} />
+          <Route path="/user-delete" element={<UserDelete />} />
+          <Route path="/oauth2/callback" element={<OAuth2RedirectHandler />} />
+          <Route path="/error" element={<ErrorPage />} />
+          <Route path="/error" element={<ErrorHandler apiEndpoint="http://localhost:8080/error" />} />
+          <Route path="/sandbox/success" element={<SuccessPage />} />
+          <Route path="/sandbox" element={<CheckoutPage />} />
+          <Route path="/sandbox/fail" element={<FailPage />} />
+          <Route path="/admin" element={<AdminMain />} />
+          <Route path="/game" element={<CreateGamePage />} />
+          <Route path="/register/manager" element={<RegisterManager />} />
+          <Route path="/search/regist/manager" element={<AcceptManagerPage />} />
+          <Route path="/carts" element={<CartPage />} />
+          <Route path="/games/:gameId" element={<GameDetailPage />} />
+          <Route path="/forbidden" element={<ErrorPage status="403" errorName="Forbidden" message="권한이 없습니다." />} />        </Routes>
+      </Router>
   );
 };
 
