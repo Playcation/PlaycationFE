@@ -189,23 +189,29 @@ main {
   transition: transform 0.3s;
 }
 
+.game-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
 .game-card:hover {
   transform: translateY(-5px);
 }
 
 .game-image {
   width: 100%;
-  padding-top: 56.25%;
   position: relative;
 }
 
-/* .placeholder-img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-} */
+/*.placeholder-img {*/
+/*  position: absolute;*/
+/*  top: 0;*/
+/*  left: 0;*/
+/*  width: 100%;*/
+/*  height: 100%;*/
+/*}*/
 
 .game-info {
   padding: 15px;

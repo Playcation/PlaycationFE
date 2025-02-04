@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom"; // useParams 추가
 import axiosInstance from "../../api/api";
 import "../css/GameDetailPage.css"; // CSS 파일 연결
 
-const SteamGameDetails = () => {
+const SteamGameDetails = (props) => {
   const navigate = useNavigate(); // 페이지 이동을 위한 네비게이션 훅
   const { gameId } = useParams(); // URL에서 게임 ID 가져오기
   const [game, setGame] = useState(null); // 게임 데이터 저장할 상태
@@ -21,7 +21,10 @@ const SteamGameDetails = () => {
 
         setGame(gameData); // 게임 정보 저장
         setMainImage(gameData.mainImagePath); // 대표 이미지 설정
-        setThumbnails(gameData.subImagePath || []); // 썸네일 목록 저장
+        setThumbnails([
+          gameData.mainImagePath,
+          ...(gameData.subImagePath || [])
+        ]);
         setLoading(false);
       } catch (err) {
         console.error("게임 정보를 불러오는 중 오류 발생:", err);
@@ -33,9 +36,25 @@ const SteamGameDetails = () => {
     fetchGameData();
   }, [gameId]); // gameId가 변경될 때마다 다시 불러오기
 
+  const createCarts = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axiosInstance.post(`/carts/add/${gameId}`);
+      alert("장바구니에 게임을 담았습니다.");
+    //   navigate("/main");
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || "알 수 없는 오류가 발생했습니다.";
+      alert(`${errorMessage}`);
+    }
+  };
+
   if (loading) return <p>로딩 중...</p>;
   if (error) return <p>오류 발생: {error}</p>;
   if (!game) return <p>게임 정보를 찾을 수 없습니다.</p>;
+
+  function showReview() {
+    navigate("/review");
+  }
 
   return (
       <div className="steam-page">
@@ -87,9 +106,10 @@ const SteamGameDetails = () => {
               <div className="game-price">₩{game.price.toLocaleString()}</div>
 
               {/* 페이지 이동 버튼 */}
-              <button className="install-btn" onClick={() => navigate("/purchase")}>
-                스토어에서 구매하기
+              <button className="install-btn" onClick={createCarts}>
+                장바구니에 담기
               </button>
+              <button className="review-btn" onClick={showReview}>리뷰 보기</button>
             </div>
           </section>
 
@@ -99,7 +119,6 @@ const SteamGameDetails = () => {
               <h2>게임 정보</h2>
               <p>{game.description}</p>
             </div>
-
           </section>
         </main>
       </div>
