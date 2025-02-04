@@ -19,7 +19,8 @@ import AdminMain from "./components/admin/jsx/AdminMain";
 import CreateGamePage from "./components/game/jsx/CreateGamePage";
 import RegisterManager from "./components/user/jsx/RegisterManager";
 import AcceptManagerPage from "./components/admin/jsx/AcceptManagerPage";
-import GameDetailPage from './components/game/GameDetail';
+import GameDetail from './components/game/GameDetail';
+import GameDetailPage from './components/game/jsx/GameDetailPage';
 
 const App = () => {
   return (
@@ -45,7 +46,7 @@ const App = () => {
           <Route path="/game" element={<CreateGamePage />} />
           <Route path="/register/manager" element={<RegisterManager />} />
           <Route path="/search/regist/manager" element={<AcceptManagerPage />} />
-          <Route path="/games/:id" element={<GameDetailPage />} />
+          <Route path="/games/:gameId" element={<GameDetailPage />} />
           <Route path="/forbidden" element={<ErrorPage status="403" errorName="Forbidden" message="권한이 없습니다." />} />
         </Routes>
       </Router>

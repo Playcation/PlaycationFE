@@ -101,9 +101,15 @@ const NavItems = () => {
  */
 const GameCard = (props) => {
     // TODO: 이미지 배율 + 자르기 적용
+
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+        navigate(`/games/${props.id}`);
+    };
+
     return (
-        <div className="game-card">
-            <Link to={`/games/${props.id}`}>
+        <div className="game-card" onClick={handleClick} style={{ cursor: "pointer" }}>
                 <div className="game-image">
                     {props.image ? (
                         <img src={props.image} className="game-img" />
@@ -117,7 +123,6 @@ const GameCard = (props) => {
                     <p className="price">₩{props.price}</p>
                     <button className="buy-btn">구매하기</button>
                 </div>
-            </Link>
         </div>
     )
 }

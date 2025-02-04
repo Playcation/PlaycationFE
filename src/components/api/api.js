@@ -6,7 +6,6 @@ const axiosInstance = axios.create({
   withCredentials: true, // 쿠키 전송을 허용
 });
 
-let isRefreshing = false;
 let refreshSubscribers = [];
 
 // 요청 재시도 로직
@@ -43,6 +42,7 @@ axiosInstance.interceptors.response.use(
       // 토큰 만료 처리
       if (error.response?.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true;
+        let isRefreshing = false;
 
         if (!isRefreshing) {
           isRefreshing = true;
