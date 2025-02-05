@@ -18,9 +18,6 @@ const UserCouponPage = () => {
 
         // API 요청
         const response = await axiosInstance.get('/user/coupons', {
-          headers: {
-            Authorization: token, // Bearer 토큰 추가
-          },
           params: {
             page: page, // 현재 페이지
             size: size, // 한 페이지에 보여줄 개수

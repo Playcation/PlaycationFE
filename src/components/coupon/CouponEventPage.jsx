@@ -55,7 +55,6 @@ const NavItems = () => {
   // TODO: url 추가하기
   const itemList = [
     {url: "/profile", class: "fas fa-user", name: "프로필"},
-    {url: "", class: "fas fa-gamepad", name: "라이브러리"},
   ];
 
   const list = [];
