@@ -10,7 +10,7 @@ import './CouponEventPage.css'
  *
  * @param {*} props 제목
  */
-const Banner = ({title, eventId}) => {
+const Banner = ({title, description}) => {
   const navigate = useNavigate();
 
   const couponDetail = () => {
@@ -21,6 +21,7 @@ const Banner = ({title, eventId}) => {
       <a href=''>
         <div className="banner active">
           <h2>{title}</h2>
+          <p>{description}</p>
         </div>
       </a>
   )
@@ -59,7 +60,7 @@ const Header = ({id}) => {
       <header>
         <div className="banner-container">
           {event && event.eventId && (
-              <Banner title={event.title} eventId={event.eventId}/>
+              <Banner title={event.title} description={event.description}/>
           )}
         </div>
       </header>

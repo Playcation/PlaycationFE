@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import {Link, useNavigate} from 'react-router-dom';
 import axiosInstance from "../api/api";
-import { Pagination } from '@mui/material';
+import {Pagination} from '@mui/material';
 import Stack from '@mui/material/Stack';
 import './styles.css'
 
 /**
  * 단일 배너
- * 
+ *
  * @param {*} props 제목
  */
-const Banner = ({title, eventId}) => {
+const Banner = ({title, description, eventId}) => {
   const navigate = useNavigate();
 
   const couponDetail = () => {
@@ -21,7 +21,8 @@ const Banner = ({title, eventId}) => {
       <a href=''>
         <div className="banner active">
           <h2>{title}</h2>
-          <button type="button" onClick={couponDetail}>바로가기</button>
+          <p>{description}</p>
+          <button type="button" onClick={couponDetail}>이벤트 확인하기</button>
         </div>
       </a>
   )
@@ -29,7 +30,7 @@ const Banner = ({title, eventId}) => {
 
 /**
  * header 태그 이벤트 배너 목록
- * 
+ *
  * @param {*} props 이벤트 목록?
  */
 const Header = ({id}) => {
@@ -60,7 +61,8 @@ const Header = ({id}) => {
       <header>
         <div className="banner-container">
           {event && event.eventId && (
-              <Banner title={event.title} eventId={event.eventId}/>
+              <Banner title={event.title} eventId={event.eventId}
+                      description={event.description}/>
           )}
         </div>
         <div className="search-container">
@@ -79,7 +81,7 @@ const Header = ({id}) => {
 
 /**
  * 상단 탭 목록들
- * 
+ *
  * @returns 탭 목록, 장바구니/알림에는 개수 포함
  */
 const NavItems = () => {
@@ -117,133 +119,132 @@ const NavItems = () => {
 // TODO: 검색 기능
 const Search = (props) => {
 
-    
 }
 
 /**
  * 게임 보드 생성
- * 
+ *
  * @param {*} props 이미지, 제목, 가격
  * @returns 단일 게임 보드
  */
 export const GameCard = (props) => {
-    // TODO: 이미지 배율 + 자르기 적용
+  // TODO: 이미지 배율 + 자르기 적용
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const handleClick = () => {
-        navigate(`/games/${props.id}`);
-    };
+  const handleClick = () => {
+    navigate(`/games/${props.id}`);
+  };
 
-    return (
-        <div className="game-card" onClick={handleClick} style={{ cursor: "pointer" }}>
-                <div className="game-image">
-                    {props.image ? (
-                        <img src={props.image} className="game-img" />
-                    ) : <svg viewBox="0 0 100 100" className="placeholder-img">
-                        <rect width="100" height="100" fill="#2a475e" />
-                    </svg>
-                    }
-                </div>
-                <div className="game-info">
-                    <h3>{props.title}</h3>
-                    <p className="price">₩{props.price}</p>
-                    <button className="buy-btn">상세 페이지</button>
-                </div>
+  return (
+      <div className="game-card" onClick={handleClick}
+           style={{cursor: "pointer"}}>
+        <div className="game-image">
+          {props.image ? (
+              <img src={props.image} className="game-img"/>
+          ) : <svg viewBox="0 0 100 100" className="placeholder-img">
+            <rect width="100" height="100" fill="#2a475e"/>
+          </svg>
+          }
         </div>
-    )
+        <div className="game-info">
+          <h3>{props.title}</h3>
+          <p className="price">₩{props.price}</p>
+          <button className="buy-btn">상세 페이지</button>
+        </div>
+      </div>
+  )
 }
 
 export const PageDiv = (props) => {
-    const [page, setPage] = useState(1);
+  const [page, setPage] = useState(1);
 
-    const handlePageChange = (event, value) => {
-        setPage(value);
-        if (props.onPageChange) {
-            props.onPageChange(value); // 부모 컴포넌트에 페이지 값 전달
-        }
-    };
+  const handlePageChange = (event, value) => {
+    setPage(value);
+    if (props.onPageChange) {
+      props.onPageChange(value); // 부모 컴포넌트에 페이지 값 전달
+    }
+  };
 
-    return (
-        <div className="pagination">
-            <Stack spacing={2}>
-                <Pagination
-                    count={Math.ceil(props.count / props.length)}
-                    color="primary"
-                    page={page}
-                    onChange={handlePageChange} />
-            </Stack>
-        </div>
-    )
+  return (
+      <div className="pagination">
+        <Stack spacing={2}>
+          <Pagination
+              count={Math.ceil(props.count / props.length)}
+              color="primary"
+              page={page}
+              onChange={handlePageChange}/>
+        </Stack>
+      </div>
+  )
 }
-
 
 /**
  * 게임 다건 조회api 호출해서 페이징된 게임 목록 생성
- * 
+ *
  * @returns 게임 보드 목록 + 페이징
  */
 export const Games = () => {
-    const list = [];
-    const [games, setGames] = useState({ list: [], count: 0 });
-    const [error, setError] = useState(null);
-    const [page, setPage] = useState(1);
-    const navigate = useNavigate();
+  const list = [];
+  const [games, setGames] = useState({list: [], count: 0});
+  const [error, setError] = useState(null);
+  const [page, setPage] = useState(1);
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        const fetchGames = async () => {
-            try {
-                const token = localStorage.getItem('Authorization');
-                if (!token) {
-                    console.log('Authorization token is missing.');
-                    navigate('/redirect')
-                    return;
-                }
+  useEffect(() => {
+    const fetchGames = async () => {
+      try {
+        const token = localStorage.getItem('Authorization');
+        if (!token) {
+          console.log('Authorization token is missing.');
+          navigate('/redirect')
+          return;
+        }
 
-                const response = await axiosInstance.get('/games', {
-                    params: {
-                        page: page - 1,
-                    },
-                })
-                setGames({
-                    list: response.data.list || [],
-                    count: response.data.count || 0,
-                });
-            } catch (err) {
-                setError("Failed to fetch games: " + err.message);
-                navigate("/");
-                alert("다시 로그인 해 주식기 바랍니다.");
-            }
-        };
-        fetchGames();
-    }, [page]);
+        const response = await axiosInstance.get('/games', {
+          params: {
+            page: page - 1,
+          },
+        })
+        setGames({
+          list: response.data.list || [],
+          count: response.data.count || 0,
+        });
+      } catch (err) {
+        setError("Failed to fetch games: " + err.message);
+        navigate("/");
+        alert("다시 로그인 해 주식기 바랍니다.");
+      }
+    };
+    fetchGames();
+  }, [page]);
 
-    if (error) {
-        return <div>Error: {error}</div>
-    }
+  if (error) {
+    return <div>Error: {error}</div>
+  }
 
-    for (const element of games.list) {
-        list.push(
-            <GameCard
-                key={element.gameId}
-                id={element.gameId}
-                image={element.mainImagePath}
-                title={element.title}
-                price={element.price}
-            />
-        );
-    }
+  for (const element of games.list) {
+    list.push(
+        <GameCard
+            key={element.gameId}
+            id={element.gameId}
+            image={element.mainImagePath}
+            title={element.title}
+            price={element.price}
+        />
+    );
+  }
 
-    // TODO: 페이지네이션 버튼 이벤트
-    return <>
-        <main>
-            <div className="game-grid">{list}</div>
-        </main>
-        <PageDiv
-            count={games.count}
-            length={games.list.length}
-            onPageChange={(value) => setPage(value)} />
-    </>
+  // TODO: 페이지네이션 버튼 이벤트
+  return <>
+    <main>
+      <div className="game-grid">{list}</div>
+    </main>
+    <PageDiv
+        count={games.count}
+        length={games.list.length}
+        onPageChange={(value) => setPage(value)}/>
+  </>
 }
 
 const Main = () => {
