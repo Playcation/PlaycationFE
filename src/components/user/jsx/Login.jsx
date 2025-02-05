@@ -1,8 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../css/Login.css";
-
+import logo from '../../../assets/images/playcationLogo.png'; // 이미지 파일 경로
 import axiosInstance from "../../api/api";
+
+export const Logo = () => {
+  return (
+      <div className="logo">
+        <img src={logo} alt="Playcation Logo" className="logo-img"/>
+      </div>
+  )
+};
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -84,16 +92,7 @@ const Login = () => {
       <div className="login-container">
         <div className="login-box">
           <div className="steam-logo">
-            <svg
-                className="steam-logo"
-                viewBox="0 0 256 259"
-                xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                  fill="#ffffff"
-                  d="M116.5 0C52.15 0 0 52.15 0 116.5c0 64.35 52.15 116.5 116.5 116.5 64.35 0 116.5-52.15 116.5-116.5C233 52.15 180.85 0 116.5 0zm0 215.175c-54.405 0-98.675-44.27-98.675-98.675 0-54.405 44.27-98.675 98.675-98.675 54.405 0 98.675 44.27 98.675 98.675 0 54.405-44.27 98.675-98.675 98.675z"
-              />
-            </svg>
+            <Logo></Logo>
           </div>
           <div className="login-form">
             <div className="form-header">Playcation에 로그인</div>

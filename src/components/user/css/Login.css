@@ -23,15 +23,11 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
-.steam-logo {
-  width: 100%;
-  max-width: 180px;
-  margin: 0 auto 32px;
-}
-
-.steam-logo svg {
-  width: 100%;
-  height: auto;
+.logo-img {
+  width: 150px; /* 원하는 크기로 조절 */
+  height: auto; /* 비율 유지 */
+  display: block;
+  margin: 0 auto;
 }
 
 .form-header {

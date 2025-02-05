@@ -48,10 +48,9 @@ axiosInstance.interceptors.response.use(
           isRefreshing = true;
 
           try {
-            const response = await axios.post(
-                'http://localhost:8080/refresh', // 토큰 재발급 엔드포인트
-                {}, // 요청 body (필요 없으면 빈 객체)
-                { withCredentials: true } // 쿠키 인증
+            const response = await axiosInstance.post(
+                '/refresh', // 토큰 재발급 엔드포인트
+                {} // 요청 body (필요 없으면 빈 객체)
             );
             const newToken = response.data.token;
             localStorage.setItem('Authorization', newToken);

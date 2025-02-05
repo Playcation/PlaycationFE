@@ -4,6 +4,7 @@ import axiosInstance from "../api/api";
 import { Pagination } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import './styles.css'
+import {Logo} from "../user/jsx/Login";
 
 /**
  * 단일 배너
@@ -25,7 +26,7 @@ const Banner = (props) => {
  * 
  * @param {*} props 이벤트 목록?
  */
-const Header = (props) => {
+const Header = ({ onSearch }) => {
     const [searchContent, setSearchContent] = useState("");
 
     // TODO: 이벤트 목록 DB로 뽑을지 fix할지 상의
@@ -41,14 +42,7 @@ const Header = (props) => {
                 <Banner key="0" title="쿠폰 발급 이벤트"></Banner>
             </div>
             <div className="search-container">
-                <input
-                    type="text"
-                    value={searchContent}
-                    placeholder="게임 검색..."
-                    id="searchInput"
-                    onChange={(e) => setSearchContent(e.target.value)}
-                />
-                <button type="button">검색</button>
+                <Search onSearch={onSearch}></Search>
             </div>
         </header>
     );
@@ -63,7 +57,6 @@ const NavItems = () => {
     // TODO: url 추가하기
     const itemList = [
         { url: "/profile", class: "fas fa-user", name: "프로필" },
-        { url: "", class: "fas fa-gamepad", name: "라이브러리" },
     ];
 
     const list = [];
@@ -91,11 +84,26 @@ const NavItems = () => {
     </>
 }
 
-// TODO: 검색 기능
-const Search = (props) => {
+const Search = ({ onSearch }) => {
+    const [searchTerm, setSearchTerm] = useState("");
 
-    
-}
+    const handleSearch = () => {
+        onSearch(searchTerm);
+    };
+
+    return (
+        <div className="search-container">
+            <input
+                type="text"
+                value={searchTerm}
+                placeholder="게임 검색..."
+                id="searchInput"
+                onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <button type="button" onClick={handleSearch}>검색</button>
+        </div>
+    );
+};
 
 /**
  * 게임 보드 생성
@@ -117,9 +125,7 @@ export const GameCard = (props) => {
                 <div className="game-image">
                     {props.image ? (
                         <img src={props.image} className="game-img" />
-                    ) : <svg viewBox="0 0 100 100" className="placeholder-img">
-                        <rect width="100" height="100" fill="#2a475e" />
-                    </svg>
+                    ) : <Logo></Logo>
                     }
                 </div>
                 <div className="game-info">
@@ -154,13 +160,12 @@ export const PageDiv = (props) => {
     )
 }
 
-
 /**
  * 게임 다건 조회api 호출해서 페이징된 게임 목록 생성
  * 
  * @returns 게임 보드 목록 + 페이징
  */
-export const Games = () => {
+export const Games = ({ searchTitle }) => {
     const list = [];
     const [games, setGames] = useState({ list: [], count: 0 });
     const [error, setError] = useState(null);
@@ -180,8 +185,9 @@ export const Games = () => {
                 const response = await axiosInstance.get('/games', {
                     params: {
                         page: page - 1,
+                        title: searchTitle || "", // 검색어가 없으면 기본 리스트
                     },
-                })
+                });
                 setGames({
                     list: response.data.list || [],
                     count: response.data.count || 0,
@@ -193,7 +199,7 @@ export const Games = () => {
             }
         };
         fetchGames();
-    }, [page]);
+    }, [page, searchTitle]);
 
     if (error) {
         return <div>Error: {error}</div>
@@ -211,7 +217,6 @@ export const Games = () => {
         );
     }
 
-    // TODO: 페이지네이션 버튼 이벤트
     return <>
         <main>
             <div className="game-grid">{list}</div>
@@ -224,19 +229,35 @@ export const Games = () => {
 }
 
 const Main = () => {
+    const [searchTitle, setSearchTitle] = useState(""); // 검색어 상태
+    const [error, setError] = useState(null);
+
+    // 🔍 검색 API 호출
+    const fetchSearchResults = async (query) => {
+        try {
+            const response = await axiosInstance.get("/games/search", {
+                params: { keyword: query }
+            });
+            setError(null);
+        } catch (err) {
+            setError("검색 결과를 가져오지 못했습니다.");
+        }
+    };
 
     return <>
         <nav className="top-nav">
             <div className="nav-container">
                 <div className="logo">
-                    <h1>Playcation</h1>
+                    <Logo></Logo>
+                    {/*<h1>Playcation</h1>*/}
                 </div>
                 <div className="nav-items"><NavItems></NavItems></div>
             </div>
         </nav>
-        <Header title="Playcation"></Header>
+        <Header title="Playcation" onSearch={setSearchTitle}></Header>
+
         <div className="main-body">
-            <Games></Games>
+            <Games searchTitle={searchTitle} />
         </div>
     </>
 }

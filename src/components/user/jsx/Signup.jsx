@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import '../css/Signup.css';
+import {Logo} from "./Login";
 
 const Signup = () => {
   const [form, setForm] = useState({
@@ -72,12 +73,7 @@ const Signup = () => {
   return (
       <div className="steam-signup">
         <div className="header">
-          <svg className="steam-logo" viewBox="0 0 256 259" xmlns="http://www.w3.org/2000/svg">
-            <path
-                fill="#ffffff"
-                d="M116.5 0C52.15 0 0 52.15 0 116.5c0 64.35 52.15 116.5 116.5 116.5 64.35 0 116.5-52.15 116.5-116.5C233 52.15 180.85 0 116.5 0zm0 215.175c-54.405 0-98.675-44.27-98.675-98.675 0-54.405 44.27-98.675 98.675-98.675 54.405 0 98.675 44.27 98.675 98.675 0 54.405-44.27 98.675-98.675 98.675z"
-            />
-          </svg>
+          <Logo></Logo>
         </div>
 
         <div className="content">
