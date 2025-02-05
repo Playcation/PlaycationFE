@@ -134,7 +134,7 @@ const CouponCard = (props) => {// 만료일 계산
           `/user/coupons/lockrequest/${props.name}`
       );
 
-      alert(response.data); // ✅ 성공 메시지 표시
+      alert(response.data); // 성공 메시지 표시
 
     } catch (error) {
       console.error("쿠폰 발급 실패:", error.response?.data || error.message);
@@ -148,8 +148,8 @@ const CouponCard = (props) => {// 만료일 계산
           <h3>{props.name}</h3>
           <p className="rate">
             {props.couponType === "PERCENT"
-                ? `${props.rate}% 할인`
-                : `${props.rate.toLocaleString()}원 할인`}
+                ? `${props.rate}% 할인 쿠폰`
+                : `${props.rate.toLocaleString()}원 할인 쿠폰`}
           </p>
           <p className="validDays">사용기간 : {props.validDays}일</p>
           <p className="expiredDate">만료일 : {formattedExpiredDate}</p>
