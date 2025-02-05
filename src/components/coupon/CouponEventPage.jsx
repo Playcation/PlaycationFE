@@ -1,21 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {useNavigate} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import axiosInstance from "../api/api";
 import {Pagination} from '@mui/material';
 import Stack from '@mui/material/Stack';
 import './CouponEventPage.css'
 
-/**
- * 단일 배너
- *
- * @param {*} props 제목
- */
 const Banner = ({title, description}) => {
-  const navigate = useNavigate();
-
-  const couponDetail = () => {
-    navigate('/events/${eventId}');
-  }
 
   return (
       <a href=''>
@@ -28,28 +18,21 @@ const Banner = ({title, description}) => {
 
 }
 
-/**
- * header 태그 이벤트 배너 목록
- *
- * @param {*} props 이벤트 목록?
- */
 const Header = ({id}) => {
+  const [searchContent, setSearchContent] = useState("");
   const [event, setEvent] = useState(null);
 
-  // TODO: 이벤트 목록 DB로 뽑을지 fix할지 상의
-
-  // const bannerList = [];
-  // for (let i = 0; i < props.topics.length; i++) {
-  //     bannerList.push(<Banner key={i} title={props.topics[i]}></Banner>)
-  // }
   useEffect(() => {
     const fetchEvent = async () => {
       try {
-        // Assuming you want to fetch a specific event, replace 1 with the actual event ID
         const response = await axiosInstance.get(`/events/${id}`);
-        setEvent(response.data);
+        if (response.data && response.data.eventId) {
+          setEvent(response.data);
+        } else {
+          setEvent(null); // 이벤트 없을 때
+        }
       } catch (err) {
-        setEvent("멋진 이벤트로 돌아오겠습니다!");
+        setEvent({title: "새로운 이벤트를 준비 중입니다!"});
       }
     };
 
@@ -59,19 +42,15 @@ const Header = ({id}) => {
   return (
       <header>
         <div className="banner-container">
-          {event && event.eventId && (
-              <Banner title={event.title} description={event.description}/>
+          {event && (
+              <Banner title={event.title} eventId={event.eventId}
+                      description={event.description || ""}/>
           )}
         </div>
       </header>
   );
 }
 
-/**
- * 상단 탭 목록들
- *
- * @returns 탭 목록, 장바구니/알림에는 개수 포함
- */
 const NavItems = () => {
   // TODO: url 추가하기
   const itemList = [
@@ -104,14 +83,6 @@ const NavItems = () => {
   </>
 }
 
-// TODO: 검색 기능
-
-/**
- * 게임 보드 생성
- *
- * @param {*} props 이미지, 제목, 가격
- * @returns 단일 게임 보드
- */
 const CouponCard = (props) => {// 만료일 계산
   const issuedDate = new Date(props.issuedDate);
   const expiredDate = new Date(issuedDate);
@@ -121,7 +92,7 @@ const CouponCard = (props) => {// 만료일 계산
   // YYYY-MM-DD 형식으로 변환
   const formattedExpiredDate = expiredDate.toISOString().split('T')[0];
 
-  // ✅ 쿠폰 발급 API 호출 함수
+  //  쿠폰 발급 API 호출 함수
   const handleCouponIssue = async () => {
     try {
       const token = localStorage.getItem('Authorization');
@@ -142,7 +113,6 @@ const CouponCard = (props) => {// 만료일 계산
       alert(`쿠폰 발급 실패: ${error.response?.data?.message || "서버 오류 발생"}`);
     }
   };
-  // TODO: 이미지 배율 + 자르기 적용
   return (
       <div className="coupon-card">
         <div className="coupon-info">
@@ -184,11 +154,6 @@ const PageDiv = (props) => {
   )
 }
 
-/**
- * 게임 다건 조회api 호출해서 페이징된 게임 목록 생성
- *
- * @returns 게임 보드 목록 + 페이징
- */
 const Coupons = ({eventId}) => {
   const list = [];
   const [coupons, setCoupons] = useState({list: [], count: 0});
@@ -221,8 +186,6 @@ const Coupons = ({eventId}) => {
   if (error) {
     return <div>Error: {error}</div>
   }
-
-  // TODO: 이미지 주석 해제
   for (const element of coupons.list) {
     list.push(
         <CouponCard
@@ -236,8 +199,6 @@ const Coupons = ({eventId}) => {
         />
     );
   }
-
-  // TODO: 페이지네이션 버튼 이벤트
   return <>
     <main>
       <div class="coupon-grid">{list}</div>
@@ -250,7 +211,8 @@ const Coupons = ({eventId}) => {
 }
 
 const Main = () => {
-  const eventId = 1;
+  const {eventId} = useParams(); // 현재 URL에서 eventId 가져오기
+
   return <>
     <nav className="top-nav">
       <div className="nav-container">

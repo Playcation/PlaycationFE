@@ -3,6 +3,7 @@ import {Link, useNavigate} from 'react-router-dom';
 import axiosInstance from "../api/api";
 import {Pagination} from '@mui/material';
 import Stack from '@mui/material/Stack';
+import {FaChevronLeft, FaChevronRight} from "react-icons/fa";
 import './styles.css'
 
 /**
@@ -22,7 +23,11 @@ const Banner = ({title, description, eventId}) => {
         <div className="banner active">
           <h2>{title}</h2>
           <p>{description}</p>
-          <button type="button" onClick={couponDetail}>이벤트 확인하기</button>
+          {eventId && (
+              <button type="button" onClick={couponDetail}>
+                이벤트 확인하기
+              </button>
+          )}
         </div>
       </a>
   )
@@ -33,9 +38,11 @@ const Banner = ({title, description, eventId}) => {
  *
  * @param {*} props 이벤트 목록?
  */
-const Header = ({id}) => {
+const Header = () => {
   const [searchContent, setSearchContent] = useState("");
-  const [event, setEvent] = useState(null);
+  const [events, setEvents] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const navigate = useNavigate();
 
   // TODO: 이벤트 목록 DB로 뽑을지 fix할지 상의
 
@@ -44,25 +51,56 @@ const Header = ({id}) => {
   //     bannerList.push(<Banner key={i} title={props.topics[i]}></Banner>)
   // }
   useEffect(() => {
-    const fetchEvent = async () => {
+    const fetchEvents = async () => {
       try {
-        // Assuming you want to fetch a specific event, replace 1 with the actual event ID
-        const response = await axiosInstance.get(`/events/${id}`);
-        setEvent(response.data);
+        const response = await axiosInstance.get('/events');
+        if (response.data && response.data.length > 0) {
+          setEvents(response.data);
+        } else {
+          setEvents([{title: "새로운 이벤트를 준비 중입니다!"}]); // 이벤트 없을 때
+        }
       } catch (err) {
-        setEvent("멋진 이벤트로 돌아오겠습니다!");
+        setEvents([{title: "새로운 이벤트를 준비 중입니다!"}]);
       }
     };
 
-    fetchEvent();
-  }, [id]);
+    fetchEvents();
+  }, []);
 
+  const goToEvent = () => {
+    if (events[currentIndex]?.eventId) {
+      navigate(`/events/${events[currentIndex].eventId}`);
+    }
+  };
+
+  const slideBanner = (direction) => {
+    if (direction === "next") {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % events.length);
+    } else {
+      setCurrentIndex(
+          (prevIndex) => (prevIndex - 1 + events.length) % events.length);
+    }
+  };
   return (
       <header>
         <div className="banner-container">
-          {event && event.eventId && (
-              <Banner title={event.title} eventId={event.eventId}
-                      description={event.description}/>
+          {events.length > 0 && (
+              <>
+                <button className="slider-btn slider-btn-prev"
+                        onClick={() => slideBanner("prev")}>
+                  <FaChevronLeft/>
+                </button>
+                <Banner
+                    title={events[currentIndex].title}
+                    description={events[currentIndex].description || ""}
+                    eventId={events[currentIndex].eventId}
+                    onClick={goToEvent}
+                />
+                <button className="slider-btn slider-btn-next"
+                        onClick={() => slideBanner("next")}>
+                  <FaChevronRight/>
+                </button>
+              </>
           )}
         </div>
         <div className="search-container">
@@ -76,7 +114,8 @@ const Header = ({id}) => {
           <button type="button">검색</button>
         </div>
       </header>
-  );
+  )
+      ;
 }
 
 /**
@@ -248,7 +287,7 @@ export const Games = () => {
 }
 
 const Main = () => {
-  const eventId = 1;
+
   return <>
     <nav className="top-nav">
       <div className="nav-container">
@@ -258,7 +297,7 @@ const Main = () => {
         <div className="nav-items"><NavItems></NavItems></div>
       </div>
     </nav>
-    <Header id={eventId}/>
+    <Header/>
     <div className="main-body">
       <Games></Games>
     </div>
