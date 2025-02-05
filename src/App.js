@@ -20,6 +20,7 @@ import CreateGamePage from "./components/game/jsx/CreateGamePage";
 import RegisterManager from "./components/user/jsx/RegisterManager";
 import AcceptManagerPage from "./components/admin/jsx/AcceptManagerPage";
 import GameDetailPage from './components/game/jsx/GameDetailPage';
+import CouponEventPage from './components/coupon/CouponEventPage';
 import CartPage from './components/cart/CartPage';
 
 const App = () => {
@@ -50,6 +51,7 @@ const App = () => {
           <Route path="/carts" element={<CartPage />} />
           <Route path="/games/:gameId" element={<GameDetailPage />} />
           <Route path="/forbidden" element={<ErrorPage status="403" errorName="Forbidden" message="권한이 없습니다." />} />        </Routes>
+          <Route path="/events/:eventId" element={<CouponEventPage/>}/>
       </Router>
   );
 };

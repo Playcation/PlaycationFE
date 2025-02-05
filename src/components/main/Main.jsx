@@ -10,14 +10,21 @@ import './styles.css'
  * 
  * @param {*} props 제목
  */
-const Banner = (props) => {
-    return (
-        <a href=''>
-            <div className="banner active">
-                <h2>{props.title}</h2>
-            </div>
-        </a>
-    )
+const Banner = ({title, eventId}) => {
+  const navigate = useNavigate();
+
+  const couponDetail = () => {
+    navigate(`/events/${eventId}`);
+  }
+
+  return (
+      <a href=''>
+        <div className="banner active">
+          <h2>{title}</h2>
+          <button type="button" onClick={couponDetail}>바로가기</button>
+        </div>
+      </a>
+  )
 }
 
 /**
@@ -25,33 +32,49 @@ const Banner = (props) => {
  * 
  * @param {*} props 이벤트 목록?
  */
-const Header = (props) => {
-    const [searchContent, setSearchContent] = useState("");
+const Header = ({id}) => {
+  const [searchContent, setSearchContent] = useState("");
+  const [event, setEvent] = useState(null);
 
-    // TODO: 이벤트 목록 DB로 뽑을지 fix할지 상의
+  // TODO: 이벤트 목록 DB로 뽑을지 fix할지 상의
 
-    // const bannerList = [];
-    // for (let i = 0; i < props.topics.length; i++) {
-    //     bannerList.push(<Banner key={i} title={props.topics[i]}></Banner>)
-    // }
+  // const bannerList = [];
+  // for (let i = 0; i < props.topics.length; i++) {
+  //     bannerList.push(<Banner key={i} title={props.topics[i]}></Banner>)
+  // }
+  useEffect(() => {
+    const fetchEvent = async () => {
+      try {
+        // Assuming you want to fetch a specific event, replace 1 with the actual event ID
+        const response = await axiosInstance.get(`/events/${id}`);
+        setEvent(response.data);
+      } catch (err) {
+        setEvent("멋진 이벤트로 돌아오겠습니다!");
+      }
+    };
 
-    return (
-        <header>
-            <div className="banner-container">
-                <Banner key="0" title="쿠폰 발급 이벤트"></Banner>
-            </div>
-            <div className="search-container">
-                <input
-                    type="text"
-                    value={searchContent}
-                    placeholder="게임 검색..."
-                    id="searchInput"
-                    onChange={(e) => setSearchContent(e.target.value)}
-                />
-                <button type="button">검색</button>
-            </div>
-        </header>
-    );
+    fetchEvent();
+  }, [id]);
+
+  return (
+      <header>
+        <div className="banner-container">
+          {event && event.eventId && (
+              <Banner title={event.title} eventId={event.eventId}/>
+          )}
+        </div>
+        <div className="search-container">
+          <input
+              type="text"
+              value={searchContent}
+              placeholder="게임 검색..."
+              id="searchInput"
+              onChange={(e) => setSearchContent(e.target.value)}
+          />
+          <button type="button">검색</button>
+        </div>
+      </header>
+  );
 }
 
 /**
@@ -60,35 +83,35 @@ const Header = (props) => {
  * @returns 탭 목록, 장바구니/알림에는 개수 포함
  */
 const NavItems = () => {
-    // TODO: url 추가하기
-    const itemList = [
-        { url: "/profile", class: "fas fa-user", name: "프로필" },
-        { url: "", class: "fas fa-gamepad", name: "라이브러리" },
-    ];
+  // TODO: url 추가하기
+  const itemList = [
+    {url: "/profile", class: "fas fa-user", name: "프로필"},
+    {url: "", class: "fas fa-gamepad", name: "라이브러리"},
+  ];
 
-    const list = [];
-    for (let i = 0; i < itemList.length; i++) {
-        list.push(
-            <Link key={i} to={itemList[i].url} className="nav-item">
-                <i className={itemList[i].class}></i>
-                <span>{itemList[i].name}</span>
-            </Link>
-        );
-    }
-
-    return <>
-        {list}
-        <Link to="/carts" className="nav-item">
-            <i className="fas fa-shopping-cart"></i>
-            <span>장바구니</span>
-            <span className="cart-count">0</span>
+  const list = [];
+  for (let i = 0; i < itemList.length; i++) {
+    list.push(
+        <Link key={i} to={itemList[i].url} className="nav-item">
+          <i className={itemList[i].class}></i>
+          <span>{itemList[i].name}</span>
         </Link>
-        <a href="" className="nav-item">
-            <i className="fas fa-bell"></i>
-            <span>알림</span>
-            <span className="notification-count">0</span>
-        </a>
-    </>
+    );
+  }
+
+  return <>
+    {list}
+    <Link to="/carts" className="nav-item">
+      <i className="fas fa-shopping-cart"></i>
+      <span>장바구니</span>
+      <span className="cart-count">0</span>
+    </Link>
+    <a href="" className="nav-item">
+      <i className="fas fa-bell"></i>
+      <span>알림</span>
+      <span className="notification-count">0</span>
+    </a>
+  </>
 }
 
 // TODO: 검색 기능
@@ -224,21 +247,21 @@ export const Games = () => {
 }
 
 const Main = () => {
-
-    return <>
-        <nav className="top-nav">
-            <div className="nav-container">
-                <div className="logo">
-                    <h1>Playcation</h1>
-                </div>
-                <div className="nav-items"><NavItems></NavItems></div>
-            </div>
-        </nav>
-        <Header title="Playcation"></Header>
-        <div className="main-body">
-            <Games></Games>
+  const eventId = 1;
+  return <>
+    <nav className="top-nav">
+      <div className="nav-container">
+        <div className="logo">
+          <h1>Playcation</h1>
         </div>
-    </>
+        <div className="nav-items"><NavItems></NavItems></div>
+      </div>
+    </nav>
+    <Header id={eventId}/>
+    <div className="main-body">
+      <Games></Games>
+    </div>
+  </>
 }
 
 export default Main;
