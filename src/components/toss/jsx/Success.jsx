@@ -13,7 +13,7 @@ export default function SuccessPage() {
     // TODO: API를 호출해서 서버에게 paymentKey, orderId, amount를 넘겨주세요. <- 해결?
     try {
       const response = await fetch(
-        "http://localhost:8080/api/v1/payments/toss/success", {
+        "http://playcation.store/api/v1/payments/toss/success", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
