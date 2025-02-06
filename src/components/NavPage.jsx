@@ -6,7 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
  * @returns 탭 목록, 장바구니/알림에는 개수 포함
  */
 export const NavItems = () => {
-    // const [cartCount, setCartCount] = useState(null);
+    const [cartCount, setCartCount] = useState(null);
     const itemList = [
         { url: "/profile", class: "fas fa-user", name: "프로필" },
     ];
@@ -20,24 +20,24 @@ export const NavItems = () => {
             </Link>
         );
     }
-    // useEffect(() => {
-    //   const fetchCartCount = async () => {
-    //     try {
-    //       const response = await axiosInstance.get("/carts/count"); // API 필요
-    //       setCartCount(response.data || 0);
-    //     } catch (error) {
-    //       console.error("장바구니 개수 불러오기 실패", error);
-    //     }
-    //   };
-    //   fetchCartCount();
-    // }, []);
+    useEffect(() => {
+      const fetchCartCount = async () => {
+        try {
+          const response = await axiosInstance.get("/carts/count"); // API 필요
+          setCartCount(response.data || 0);
+        } catch (error) {
+          console.error("장바구니 개수 불러오기 실패", error);
+        }
+      };
+      fetchCartCount();
+    }, []);
     return (
         <>
             {list}
             <Link to="/carts" className="nav-item">
                 <i className="fas fa-shopping-cart"></i>
                 <span>장바구니</span>
-                {/* <span className="cart-count">{cartCount}</span> */}
+                <span className="cart-count">{cartCount}</span>
             </Link>
             <a href="" className="nav-item">
                 <i className="fas fa-bell"></i>
