@@ -6,6 +6,7 @@ import Stack from '@mui/material/Stack';
 import {FaChevronLeft, FaChevronRight} from "react-icons/fa";
 import './styles.css'
 import {Logo} from "../user/jsx/Login";
+import NavPage from '../NavPage';
 
 /**
  * 단일 배너
@@ -316,22 +317,14 @@ const Main = () => {
         }
     };
 
-    return <>
-        <nav className="top-nav">
-            <div className="nav-container">
-                <div className="logo">
-                    <Logo></Logo>
-                    {/*<h1>Playcation</h1>*/}
-                </div>
-                <div className="nav-items"><NavItems></NavItems></div>
-            </div>
-        </nav>
-        <Header title="Playcation" onSearch={setSearchTitle}></Header>
+  return <>
+    <NavPage />
+    <Header title="Playcation" onSearch={setSearchTitle}></Header>
 
-        <div className="main-body">
-            <Games searchTitle={searchTitle} />
-        </div>
-    </>
+    <div className="main-body">
+      <Games searchTitle={searchTitle} />
+    </div>
+  </>
 }
 
 export default Main;

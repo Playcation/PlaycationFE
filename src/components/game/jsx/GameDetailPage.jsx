@@ -57,6 +57,7 @@ const CartButton = (props) => {
 };
 
 const SteamGameDetails = (props) => {
+const SteamGameDetails = ({setCartCount}) => {
   const navigate = useNavigate(); // 페이지 이동을 위한 네비게이션 훅
   const {gameId} = useParams(); // URL에서 게임 ID 가져오기
   const [game, setGame] = useState(null); // 게임 데이터 저장할 상태
@@ -96,6 +97,22 @@ const SteamGameDetails = (props) => {
 
     fetchGameData();
   }, [gameId]); // gameId가 변경될 때마다 다시 불러오기
+
+  const createCarts = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axiosInstance.post(`/carts/add/${gameId}`);
+      alert("장바구니에 게임을 담았습니다.");
+      if (setCartCount) {
+        setCartCount((prevCount) => prevCount + 1);
+      }
+      //   navigate("/main");
+    } catch (error) {
+      const errorMessage = error.response?.data?.message
+          || "알 수 없는 오류가 발생했습니다.";
+      alert(`${errorMessage}`);
+    }
+  };
 
   if (loading) {
     return <p>로딩 중...</p>;

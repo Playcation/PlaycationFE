@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../api/api";
 import "../css/UserUpdate.css";
 import {Logo} from "./Login";
+import NavPage from "../../NavPage";
 
 const UserDelete = () => {
   const [password, setPassword] = useState("");
@@ -52,7 +53,7 @@ const UserDelete = () => {
 
     try {
       const response = await axiosInstance.delete(
-          "/users/delete", {
+        "/users/delete", {
         // headers: {
         //   Authorization: `Bearer ${token}`,
         //   "Content-Type": "application/json",
@@ -70,12 +71,12 @@ const UserDelete = () => {
       if (!token) return;
       try {
         await axiosInstance.post(
-            "/logout",
-            {},
-            {
-              // headers: { Authorization: `Bearer ${token}` },
-              // withCredentials: true,
-            }
+          "/logout",
+          {},
+          {
+            // headers: { Authorization: `Bearer ${token}` },
+            // withCredentials: true,
+          }
         );
         localStorage.removeItem("Authorization");
         navigate("/");
@@ -98,13 +99,15 @@ const UserDelete = () => {
   }
 
   return (
+    <>
+      <NavPage />
       <div className="profile-container">
         <div className="profile-header">
           <div className="profile-background"></div>
           <div className="profile-summary">
             <div className="avatar">
               {selectedFile ? (
-                  <img src={URL.createObjectURL(selectedFile)} alt="프로필 아바타" />
+                <img src={URL.createObjectURL(selectedFile)} alt="프로필 아바타" />
               ) : (
                   <Logo></Logo>
               )}
@@ -119,11 +122,11 @@ const UserDelete = () => {
             <div className="form-group">
               <label>비밀번호</label>
               <input
-                  type="password"
-                  placeholder="비밀번호를 입력하세요"
-                  className="form-input"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                type="password"
+                placeholder="비밀번호를 입력하세요"
+                className="form-input"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
 
@@ -132,7 +135,7 @@ const UserDelete = () => {
                 취소
               </button>
               <button className="change-password-button"
-                      onClick={changePassword}>
+                onClick={changePassword}>
                 회원 탈퇴
               </button>
             </div>

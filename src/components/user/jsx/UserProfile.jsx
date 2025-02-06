@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axiosInstance from "../../api/api";
 import '../css/UserProfile.css';
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ErrorPage from '../../error/ErrorPage';
 import {GameCard, PageDiv} from "../../main/Main";
 import {Logo} from "./Login";
+import { GameCard, PageDiv } from "../../main/Main";
+import NavPage from '../../NavPage';
 
 const LibraryCards = (props) => {
   // TODO: 이미지 배율 + 자르기 적용
@@ -18,21 +20,21 @@ const LibraryCards = (props) => {
   var i = 0;
   for (const element of props.games.list) {
     list.push(
-        <GameCard
-            key={i}
-            id={element.gameId}
-            image={element.mainImagePath}
-            title={element.title}
-            price={element.price}
-        />
+      <GameCard
+        key={i}
+        id={element.gameId}
+        image={element.mainImagePath}
+        title={element.title}
+        price={element.price}
+      />
     );
     i = i + 1;
   }
 
   return (
-      <div>
-        <div className="game-grid">{list}</div>
-      </div>
+    <div>
+      <div className="game-grid">{list}</div>
+    </div>
   )
 }
 
@@ -53,8 +55,8 @@ const UserProfile = () => {
 
       try {
         const response = await axiosInstance.get('/users',
-            {
-        });
+          {
+          });
 
         setUser({
           username: response.data.username,
@@ -108,10 +110,10 @@ const UserProfile = () => {
 
     try {
       await axiosInstance.post(
-          "/logout",
-          {},
-          {
-          }
+        "/logout",
+        {},
+        {
+        }
       );
       localStorage.removeItem("Authorization");
       navigate("/");
@@ -121,7 +123,7 @@ const UserProfile = () => {
     }
   };
 
-  const deleteUser = () =>{
+  const deleteUser = () => {
     navigate("/user-delete");
   }
 
@@ -129,15 +131,21 @@ const UserProfile = () => {
     navigate("/register/manager");
   }
 
+  const myCoupon = () => {
+    navigate("/my-coupon")
+  }
+
   if (error) {
     return <ErrorPage status={error.status} message={error.message} />;
   }
 
   const formattedJoinDate = user?.updatedDate
-      ? new Date(user.updatedDate).toISOString().split('T')[0]
-      : 'N/A';
+    ? new Date(user.updatedDate).toISOString().split('T')[0]
+    : 'N/A';
 
   return (
+    <>
+      <NavPage />
       <div className="user-profile">
         {user ? (
             <div className="profile-container">
@@ -159,32 +167,34 @@ const UserProfile = () => {
                     {user.description || '상태 메시지를 입력하세요'}
                   </span>
 
-                    </div>
-                    <div>
-                      <button onClick={changeProfile}>프로필 변경</button>
-                      <button onClick={daliyCheck}>일일 출석체크</button>
-                      <button onClick={handleLogout}>로그 아웃</button>
-                      <button onClick={deleteUser}>회원 탈퇴</button>
-                      <button onClick={registerManager}>메니저 등록</button>
-                    </div>
+                  </div>
+                  <div>
+                    <button onClick={changeProfile}>프로필 변경</button>
+                    <button onClick={daliyCheck}>일일 출석체크</button>
+                    <button onClick={handleLogout}>로그 아웃</button>
+                    <button onClick={deleteUser}>회원 탈퇴</button>
+                    <button onClick={registerManager}>메니저 등록</button>
+                    <button onClick={myCoupon}>쿠폰함</button>
                   </div>
                 </div>
               </div>
             </div>
+          </div>
         ) : error ? (
-            <div className="error">{error}</div>
+          <div className="error">{error}</div>
         ) : (
-            <div className="loading">Loading user profile...</div>
+          <div className="loading">Loading user profile...</div>
         )}
         <div className="library">
           <p>Library</p>
-          <LibraryCards games = {games}></LibraryCards>
+          <LibraryCards games={games}></LibraryCards>
         </div>
         <PageDiv
-            count={games.count}
-            length={games.list.length}
-            onPageChange={(value) => setPage(value)} />
+          count={games.count}
+          length={games.list.length}
+          onPageChange={(value) => setPage(value)} />
       </div>
+    </>
   );
 };
 

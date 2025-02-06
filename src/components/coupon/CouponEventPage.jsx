@@ -1,24 +1,25 @@
-import React, {useEffect, useState} from 'react';
-import {useNavigate, useParams} from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import axiosInstance from "../api/api";
-import {Pagination} from '@mui/material';
+import { Pagination } from '@mui/material';
 import Stack from '@mui/material/Stack';
+import NavPage from '../NavPage';
 import './CouponEventPage.css'
 
-const Banner = ({title, description}) => {
+const Banner = ({ title, description }) => {
 
   return (
-      <a href=''>
-        <div className="banner active">
-          <h2>{title}</h2>
-          <p>{description}</p>
-        </div>
-      </a>
+    <a href=''>
+      <div className="banner active">
+        <h2>{title}</h2>
+        <p>{description}</p>
+      </div>
+    </a>
   )
 
 }
 
-const Header = ({id}) => {
+const Header = ({ id }) => {
   const [searchContent, setSearchContent] = useState("");
   const [event, setEvent] = useState(null);
 
@@ -32,7 +33,7 @@ const Header = ({id}) => {
           setEvent(null); // 이벤트 없을 때
         }
       } catch (err) {
-        setEvent({title: "새로운 이벤트를 준비 중입니다!"});
+        setEvent({ title: "새로운 이벤트를 준비 중입니다!" });
       }
     };
 
@@ -40,30 +41,30 @@ const Header = ({id}) => {
   }, [id]);
 
   return (
-      <header>
-        <div className="banner-container">
-          {event && (
-              <Banner title={event.title} eventId={event.eventId}
-                      description={event.description || ""}/>
-          )}
-        </div>
-      </header>
+    <header>
+      <div className="banner-container">
+        {event && (
+          <Banner title={event.title} eventId={event.eventId}
+            description={event.description || ""} />
+        )}
+      </div>
+    </header>
   );
 }
 
 const NavItems = () => {
   // TODO: url 추가하기
   const itemList = [
-    {url: "/profile", class: "fas fa-user", name: "프로필"},
+    { url: "/profile", class: "fas fa-user", name: "프로필" },
   ];
 
   const list = [];
   for (let i = 0; i < itemList.length; i++) {
     list.push(
-        <a key={i} href={itemList[i].url} className="nav-item">
-          <i className={itemList[i].class}></i>
-          <span>{itemList[i].name}</span>
-        </a>
+      <a key={i} href={itemList[i].url} className="nav-item">
+        <i className={itemList[i].class}></i>
+        <span>{itemList[i].name}</span>
+      </a>
     );
   }
 
@@ -102,7 +103,7 @@ const CouponCard = (props) => {// 만료일 계산
       }
 
       const response = await axiosInstance.post(
-          `/user/coupons/lockrequest/${props.name}`
+        `/user/coupons/lockrequest/${props.name}`
       );
 
       alert(response.data); // 성공 메시지 표시
@@ -113,20 +114,20 @@ const CouponCard = (props) => {// 만료일 계산
     }
   };
   return (
-      <div className="coupon-card">
-        <div className="coupon-info">
-          <h3>{props.name}</h3>
-          <p className="rate">
-            {props.couponType === "PERCENT"
-                ? `${props.rate}% 할인 쿠폰`
-                : `${props.rate.toLocaleString()}원 할인 쿠폰`}
-          </p>
-          <p className="validDays">사용기간 : {props.validDays}일</p>
-          <p className="expiredDate">만료일 : {formattedExpiredDate}</p>
-          <button className="issue-btn" onClick={handleCouponIssue}>쿠폰 발급
-          </button>
-        </div>
+    <div className="coupon-card">
+      <div className="coupon-info">
+        <h3>{props.name}</h3>
+        <p className="rate">
+          {props.couponType === "PERCENT"
+            ? `${props.rate}% 할인 쿠폰`
+            : `${props.rate.toLocaleString()}원 할인 쿠폰`}
+        </p>
+        <p className="validDays">사용기간 : {props.validDays}일</p>
+        <p className="expiredDate">만료일 : {formattedExpiredDate}</p>
+        <button className="issue-btn" onClick={handleCouponIssue}>쿠폰 발급
+        </button>
       </div>
+    </div>
   )
 }
 
@@ -141,21 +142,21 @@ const PageDiv = (props) => {
   };
 
   return (
-      <div className="pagination">
-        <Stack spacing={2}>
-          <Pagination
-              count={Math.ceil(props.count / props.length)}
-              color="primary"
-              page={page}
-              onChange={handlePageChange}/>
-        </Stack>
-      </div>
+    <div className="pagination">
+      <Stack spacing={2}>
+        <Pagination
+          count={Math.ceil(props.count / props.length)}
+          color="primary"
+          page={page}
+          onChange={handlePageChange} />
+      </Stack>
+    </div>
   )
 }
 
-const Coupons = ({eventId}) => {
+const Coupons = ({ eventId }) => {
   const list = [];
-  const [coupons, setCoupons] = useState({list: [], count: 0});
+  const [coupons, setCoupons] = useState({ list: [], count: 0 });
   const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
   const navigate = useNavigate();
@@ -187,15 +188,15 @@ const Coupons = ({eventId}) => {
   }
   for (const element of coupons.list) {
     list.push(
-        <CouponCard
-            key={element.name}
-            id={element.name}
-            name={element.name}
-            rate={element.rate}
-            couponType={element.couponType}
-            issuedDate={element.issuedDate}
-            validDays={element.validDays}
-        />
+      <CouponCard
+        key={element.name}
+        id={element.name}
+        name={element.name}
+        rate={element.rate}
+        couponType={element.couponType}
+        issuedDate={element.issuedDate}
+        validDays={element.validDays}
+      />
     );
   }
   return <>
@@ -203,29 +204,23 @@ const Coupons = ({eventId}) => {
       <div class="coupon-grid">{list}</div>
     </main>
     <PageDiv
-        count={coupons.count}
-        length={coupons.list.length}
-        onPageChange={(value) => setPage(value)}/>
+      count={coupons.count}
+      length={coupons.list.length}
+      onPageChange={(value) => setPage(value)} />
   </>
 }
 
 const Main = () => {
-  const {eventId} = useParams(); // 현재 URL에서 eventId 가져오기
+  const { eventId } = useParams(); // 현재 URL에서 eventId 가져오기
 
-  return <>
-    <nav className="top-nav">
-      <div className="nav-container">
-        <div className="logo">
-          <h1>Playcation</h1>
-        </div>
-        <div className="nav-items"><NavItems></NavItems></div>
-      </div>
-    </nav>
-    <Header id={eventId}/>
+  return (<>
+    <NavPage />
+    <Header id={eventId} />
     <div className="main-body">
-      <Coupons eventId={eventId}/>
+      <Coupons eventId={eventId} />
     </div>
   </>
+  )
 }
 
 export default Main;

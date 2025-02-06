@@ -44,7 +44,7 @@ const Login = () => {
 
   // SSE 이벤트 리스너 추가
   useEffect(() => {
-    const eventSource = new EventSource("http://localhost:8080/sse");
+    const eventSource = new EventSource("http://api.playcation.store:8080/sse");
 
     eventSource.onmessage = (event) => {
       console.log("SSE Message Received:", event.data);
@@ -75,17 +75,17 @@ const Login = () => {
 
   const googleLogin = () => {
     window.location.href =
-        "http://api.playcation.store:8080/login/oauth2/code/google:8080/oauth2/authorization/google?redirect_uri=http://playcation.store:3000/redirect";
+        "http://api.playcation.store:8080/oauth2/authorization/google?redirect_uri=http://playcation.store/redirect";
   };
 
   const naverLogin = () => {
     window.location.href =
-        "http://localhost:8080/oauth2/authorization/naver?redirect_uri=http://localhost:3000/redirect";
+        "http://api.playcation.store:8080/oauth2/authorization/naver?redirect_uri=http://playcation.store/redirect";
   };
 
   const kakaoLogin = () => {
     window.location.href =
-        "http://localhost:8080/oauth2/authorization/kakao?redirect_uri=http://localhost:3000/redirect";
+        "http://api.playcation.store:8080/oauth2/authorization/kakao?redirect_uri=http://playcation.store/redirect";
   };
 
   return (
@@ -120,8 +120,7 @@ const Login = () => {
               </button>
             </form>
             <div className="help-links">
-              <a href="https://help.steampowered.com/ko/">비밀번호를 잊으셨나요?</a>
-              <a href="http://localhost:3000/sign-up">Playcation이 처음이신가요?</a>
+              <a href="http://playcation.store:3000/sign-up">Playcation이 처음이신가요?</a>
             </div>
             <div className="social-login">
               <button onClick={googleLogin} className="google-btn">

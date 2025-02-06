@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:8080', // 백엔드 엔드포인트 기본 URL
+  baseURL: 'http://api.playcation.store:8080', // 백엔드 엔드포인트 기본 URL
   withCredentials: true, // 쿠키 전송을 허용
 });
 
@@ -48,9 +48,10 @@ axiosInstance.interceptors.response.use(
           isRefreshing = true;
 
           try {
-            const response = await axiosInstance.post(
-                '/refresh', // 토큰 재발급 엔드포인트
-                {} // 요청 body (필요 없으면 빈 객체)
+            const response = await axios.post(
+                'http://api.playcation.store:8080/refresh', // 토큰 재발급 엔드포인트
+                {}, // 요청 body (필요 없으면 빈 객체)
+                { withCredentials: true } // 쿠키 인증
             );
             const newToken = response.data.token;
             localStorage.setItem('Authorization', newToken);

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import '../css/Signup.css';
 import {Logo} from "./Login";
+import axiosInstance from '../../api/api';
 
 const Signup = () => {
   const [form, setForm] = useState({
@@ -50,7 +51,7 @@ const Signup = () => {
     if (file) formData.append('file', file);
 
     try {
-      const response = await axios.post('http://localhost:8080/users/sign-in', formData, {
+      const response = await axios.post('http://api.playcation.store:8080/users/sign-in', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
