@@ -1,0 +1,137 @@
+:root {
+  --steam-background: #1b2838;
+  --steam-lighter-bg: #2a475e;
+  --steam-text: #c7d5e0;
+  --steam-accent: #66c0f4;
+  --steam-hover: #4d7485;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: var(--steam-background);
+  color: var(--steam-text);
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+}
+
+.steam-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.steam-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--steam-lighter-bg);
+  padding: 15px 20px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.steam-logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--steam-accent);
+}
+
+.steam-nav {
+  display: flex;
+  gap: 15px;
+}
+
+.nav-btn {
+  background: none;
+  border: none;
+  color: var(--steam-text);
+  cursor: pointer;
+  padding: 8px 15px;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.nav-btn.active, .nav-btn:hover {
+  background-color: var(--steam-hover);
+}
+
+.coupon-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.coupon-card {
+  background-color: var(--steam-lighter-bg);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.3s;
+}
+
+.coupon-card:hover {
+  transform: scale(1.05);
+}
+
+.coupon-header {
+  background-color: var(--steam-accent);
+  color: var(--steam-background);
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.coupon-tag {
+  font-size: 12px;
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 3px 8px;
+  border-radius: 12px;
+}
+
+.coupon-body {
+  padding: 15px;
+}
+
+.coupon-body p {
+  margin-bottom: 15px;
+  color: var(--steam-text);
+}
+
+.coupon-body .gameName {
+  font-size: 1.4em; /* 기존보다 크게 */
+  font-weight: bold; /* 글씨를 굵게 */
+  margin-bottom: 5px; /* 아래 요소와 간격 */
+  color: white; /* 강조 */
+}
+
+.coupon-details {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  font-size: 13px;
+  color: rgba(199, 213, 224, 0.7);
+}
+
+.coupon-action {
+  width: 100%;
+  background-color: var(--steam-accent);
+  color: var(--steam-background);
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.coupon-action:hover {
+  background-color: #4fa7d4;
+}
+
+.steam-footer {
+  margin-top: 30px;
+  text-align: center;
+  background-color: var(--steam-lighter-bg);
+  padding: 15px;
+  color: rgba(199, 213, 224, 0.6);
+}
