@@ -1,7 +1,60 @@
-import React, {useEffect, useState} from "react";
+import React, {useState, useEffect} from "react";
 import {useNavigate, useParams} from "react-router-dom"; // useParams 추가
 import axiosInstance from "../../api/api";
 import "../css/GameDetailPage.css"; // CSS 파일 연결
+
+const CartButton = (props) => {
+
+  const createCarts = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axiosInstance.post(`/carts/add/${props.game.id}`);
+      alert("장바구니에 게임을 담았습니다.");
+      //   navigate("/main");
+    } catch (error) {
+      const errorMessage = error.response?.data?.message
+          || "알 수 없는 오류가 발생했습니다.";
+      alert(`${errorMessage}`);
+    }
+  };
+
+  const installGame = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axiosInstance.get(`/upload/download/zip?filePath=${props.game.gameFilePath}`,
+          { responseType : 'arraybuffer'});
+      const blob = new Blob([response.data], {type :"application/zip"});
+      const url = URL.createObjectURL(blob);
+
+      // 다운로드 링크 생성
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${props.game.title}.zip`; // 다운로드될 파일명 지정
+      document.body.appendChild(a);
+      a.click(); // 자동 다운로드 실행
+      document.body.removeChild(a); // 다운로드 후 링크 제거
+      URL.revokeObjectURL(url); // 메모리 해제
+      alert("게임을 다운합니다.");
+      //   navigate("/main");
+    } catch (error) {
+      const errorMessage = error.response?.data?.message
+          || "알 수 없는 오류가 발생했습니다.";
+      alert(`${errorMessage}`);
+    }
+  };
+
+  return (
+       props.isOwned ? (
+           <button className="install-btn" onClick={installGame}>
+             게임 설치하기
+           </button>
+            ) : (
+           <button className="install-btn" onClick={createCarts}>
+             장바구니에 담기
+           </button>
+  )
+  );
+};
 
 const SteamGameDetails = ({setCartCount}) => {
   const navigate = useNavigate(); // 페이지 이동을 위한 네비게이션 훅
@@ -11,6 +64,7 @@ const SteamGameDetails = ({setCartCount}) => {
   const [error, setError] = useState(null); // 에러 상태
   const [mainImage, setMainImage] = useState(""); // 대표 이미지
   const [thumbnails, setThumbnails] = useState([]); // 썸네일 이미지 리스트
+  const [isOwned, setIsOwned] = useState(false); // 라이브러리 소유 여부
 
   // 🎯 API 요청: 게임 데이터를 백엔드에서 가져오기
   useEffect(() => {
@@ -26,6 +80,13 @@ const SteamGameDetails = ({setCartCount}) => {
           ...(gameData.subImagePath || [])
         ]);
         setLoading(false);
+
+        const ownGameResponse = await axiosInstance.get("/libraries/my-games");
+        const ownedGames = ownGameResponse.data.list || [];
+
+        const intGameId = parseInt(gameId, 10);
+        const gameExists = ownedGames.some(game => Number(game.gameId) === intGameId);
+        setIsOwned(gameExists);
       } catch (err) {
         console.error("게임 정보를 불러오는 중 오류 발생:", err);
         setError(err.message);
@@ -117,9 +178,7 @@ const SteamGameDetails = ({setCartCount}) => {
               <div className="game-price">₩{game.price.toLocaleString()}</div>
 
               {/* 페이지 이동 버튼 */}
-              <button className="install-btn" onClick={createCarts}>
-                장바구니에 담기
-              </button>
+              <CartButton game={game} isOwned = {isOwned}></CartButton>
               <button className="review-btn" onClick={showReview}>리뷰 보기</button>
             </div>
           </section>

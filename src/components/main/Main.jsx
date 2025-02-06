@@ -5,6 +5,7 @@ import {Pagination} from '@mui/material';
 import Stack from '@mui/material/Stack';
 import {FaChevronLeft, FaChevronRight} from "react-icons/fa";
 import './styles.css'
+import {Logo} from "../user/jsx/Login";
 import NavPage from '../NavPage';
 
 /**
@@ -119,10 +120,63 @@ const Header = () => {
       ;
 }
 
-// TODO: 검색 기능
-const Search = (props) => {
+/**
+ * 상단 탭 목록들
+ *
+ * @returns 탭 목록, 장바구니/알림에는 개수 포함
+ */
+const NavItems = () => {
+  // TODO: url 추가하기
+  const itemList = [
+    {url: "/profile", class: "fas fa-user", name: "프로필"},
+    {url: "", class: "fas fa-gamepad", name: "라이브러리"},
+  ];
 
+  const list = [];
+  for (let i = 0; i < itemList.length; i++) {
+    list.push(
+        <Link key={i} to={itemList[i].url} className="nav-item">
+          <i className={itemList[i].class}></i>
+          <span>{itemList[i].name}</span>
+        </Link>
+    );
+  }
+
+  return <>
+    {list}
+    <Link to="/carts" className="nav-item">
+      <i className="fas fa-shopping-cart"></i>
+      <span>장바구니</span>
+      <span className="cart-count">0</span>
+    </Link>
+    <a href="" className="nav-item">
+      <i className="fas fa-bell"></i>
+      <span>알림</span>
+      <span className="notification-count">0</span>
+    </a>
+  </>
 }
+
+const Search = ({ onSearch }) => {
+    const [searchTerm, setSearchTerm] = useState("");
+
+    const handleSearch = () => {
+        onSearch(searchTerm);
+    };
+
+    return (
+        <div className="search-container">
+            <input
+                type="text"
+                value={searchTerm}
+                placeholder="게임 검색..."
+                id="searchInput"
+                onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <button type="button" onClick={handleSearch}>검색</button>
+        </div>
+    );
+};
 
 /**
  * 게임 보드 생성
@@ -133,30 +187,27 @@ const Search = (props) => {
 export const GameCard = (props) => {
   // TODO: 이미지 배율 + 자르기 적용
 
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
   const handleClick = () => {
     navigate(`/games/${props.id}`);
   };
 
-  return (
-      <div className="game-card" onClick={handleClick}
-           style={{cursor: "pointer"}}>
-        <div className="game-image">
-          {props.image ? (
-              <img src={props.image} className="game-img"/>
-          ) : <svg viewBox="0 0 100 100" className="placeholder-img">
-            <rect width="100" height="100" fill="#2a475e"/>
-          </svg>
-          }
+    return (
+        <div className="game-card" onClick={handleClick} style={{ cursor: "pointer" }}>
+                <div className="game-image">
+                    {props.image ? (
+                        <img src={props.image} className="game-img" />
+                    ) : <Logo></Logo>
+                    }
+                </div>
+                <div className="game-info">
+                    <h3>{props.title}</h3>
+                    <p className="price">₩{props.price}</p>
+                    <button className="buy-btn">상세 페이지</button>
+                </div>
         </div>
-        <div className="game-info">
-          <h3>{props.title}</h3>
-          <p className="price">₩{props.price}</p>
-          <button className="buy-btn">상세 페이지</button>
-        </div>
-      </div>
-  )
+    )
 }
 
 export const PageDiv = (props) => {
@@ -187,12 +238,12 @@ export const PageDiv = (props) => {
  *
  * @returns 게임 보드 목록 + 페이징
  */
-export const Games = () => {
-  const list = [];
-  const [games, setGames] = useState({list: [], count: 0});
-  const [error, setError] = useState(null);
-  const [page, setPage] = useState(1);
-  const navigate = useNavigate();
+export const Games = ({ searchTitle }) => {
+    const list = [];
+    const [games, setGames] = useState({ list: [], count: 0 });
+    const [error, setError] = useState(null);
+    const [page, setPage] = useState(1);
+    const navigate = useNavigate();
 
   useEffect(() => {
     const fetchGames = async () => {
@@ -204,59 +255,74 @@ export const Games = () => {
           return;
         }
 
-        const response = await axiosInstance.get('/games', {
-          params: {
-            page: page - 1,
-          },
-        })
-        setGames({
-          list: response.data.list || [],
-          count: response.data.count || 0,
-        });
-      } catch (err) {
-        setError("Failed to fetch games: " + err.message);
-        navigate("/");
-        alert("다시 로그인 해 주식기 바랍니다.");
-      }
-    };
-    fetchGames();
-  }, [page]);
+                const response = await axiosInstance.get('/games', {
+                    params: {
+                        page: page - 1,
+                        title: searchTitle || "", // 검색어가 없으면 기본 리스트
+                    },
+                });
+                setGames({
+                    list: response.data.list || [],
+                    count: response.data.count || 0,
+                });
+            } catch (err) {
+                setError("Failed to fetch games: " + err.message);
+                navigate("/");
+                alert("다시 로그인 해 주시기 바랍니다.");
+            }
+        };
+        fetchGames();
+    }, [page, searchTitle]);
 
   if (error) {
     return <div>Error: {error}</div>
   }
 
-  for (const element of games.list) {
-    list.push(
-        <GameCard
-            key={element.gameId}
-            id={element.gameId}
-            image={element.mainImagePath}
-            title={element.title}
-            price={element.price}
-        />
-    );
-  }
+    for (const element of games.list) {
+        list.push(
+            <GameCard
+                key={element.gameId}
+                id={element.gameId}
+                image={element.mainImagePath}
+                title={element.title}
+                price={element.price}
+            />
+        );
+    }
 
-  // TODO: 페이지네이션 버튼 이벤트
-  return <>
-    <main>
-      <div className="game-grid">{list}</div>
-    </main>
-    <PageDiv
-        count={games.count}
-        length={games.list.length}
-        onPageChange={(value) => setPage(value)}/>
-  </>
+    return <>
+        <main>
+            <div className="game-grid">{list}</div>
+        </main>
+        <PageDiv
+            count={games.count}
+            length={games.list.length}
+            onPageChange={(value) => setPage(value)} />
+    </>
 }
 
 const Main = () => {
+    const [searchTitle, setSearchTitle] = useState(""); // 검색어 상태
+    const [error, setError] = useState(null);
+
+    // 🔍 검색 API 호출
+    const fetchSearchResults = async (query) => {
+        try {
+            const response = await axiosInstance.get("/games/search", {
+                params: { keyword: query }
+            });
+            setError(null);
+        } catch (err) {
+            setError("검색 결과를 가져오지 못했습니다.");
+        }
+    };
 
   return <>
     <NavPage />
-    <Header/>
+    <Header title="Playcation" onSearch={setSearchTitle}></Header>
+
     <div className="main-body">
-      <Games></Games>
+      <Games searchTitle={searchTitle} />
     </div>
   </>
 }
