@@ -125,9 +125,9 @@ const Header = () => {
  */
 const NavItems = () => {
   // TODO: url 추가하기
+  const [cartCount, setCartCount] = useState(null);
   const itemList = [
     {url: "/profile", class: "fas fa-user", name: "프로필"},
-    {url: "", class: "fas fa-gamepad", name: "라이브러리"},
   ];
 
   const list = [];
@@ -139,13 +139,23 @@ const NavItems = () => {
         </Link>
     );
   }
-
+  useEffect(() => {
+    const fetchCartCount = async () => {
+      try {
+        const response = await axiosInstance.get("/carts/count"); // API 필요
+        setCartCount(response.data || 0);
+      } catch (error) {
+        console.error("장바구니 개수 불러오기 실패", error);
+      }
+    };
+    fetchCartCount();
+  }, []);
   return <>
     {list}
     <Link to="/carts" className="nav-item">
       <i className="fas fa-shopping-cart"></i>
       <span>장바구니</span>
-      <span className="cart-count">0</span>
+      <span className="cart-count">{cartCount}</span>
     </Link>
     <a href="" className="nav-item">
       <i className="fas fa-bell"></i>
@@ -294,7 +304,8 @@ const Main = () => {
         <div className="logo">
           <h1>Playcation</h1>
         </div>
-        <div className="nav-items"><NavItems></NavItems></div>
+        <div className="nav-items"><NavItems/>
+        </div>
       </div>
     </nav>
     <Header/>

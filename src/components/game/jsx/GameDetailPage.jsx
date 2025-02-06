@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom"; // useParams 추가
+import React, {useEffect, useState} from "react";
+import {useNavigate, useParams} from "react-router-dom"; // useParams 추가
 import axiosInstance from "../../api/api";
 import "../css/GameDetailPage.css"; // CSS 파일 연결
 
-const SteamGameDetails = (props) => {
+const SteamGameDetails = ({setCartCount}) => {
   const navigate = useNavigate(); // 페이지 이동을 위한 네비게이션 훅
-  const { gameId } = useParams(); // URL에서 게임 ID 가져오기
+  const {gameId} = useParams(); // URL에서 게임 ID 가져오기
   const [game, setGame] = useState(null); // 게임 데이터 저장할 상태
   const [loading, setLoading] = useState(true); // 로딩 상태
   const [error, setError] = useState(null); // 에러 상태
@@ -41,16 +41,26 @@ const SteamGameDetails = (props) => {
     try {
       const response = await axiosInstance.post(`/carts/add/${gameId}`);
       alert("장바구니에 게임을 담았습니다.");
-    //   navigate("/main");
+      if (setCartCount) {
+        setCartCount((prevCount) => prevCount + 1);
+      }
+      //   navigate("/main");
     } catch (error) {
-      const errorMessage = error.response?.data?.message || "알 수 없는 오류가 발생했습니다.";
+      const errorMessage = error.response?.data?.message
+          || "알 수 없는 오류가 발생했습니다.";
       alert(`${errorMessage}`);
     }
   };
 
-  if (loading) return <p>로딩 중...</p>;
-  if (error) return <p>오류 발생: {error}</p>;
-  if (!game) return <p>게임 정보를 찾을 수 없습니다.</p>;
+  if (loading) {
+    return <p>로딩 중...</p>;
+  }
+  if (error) {
+    return <p>오류 발생: {error}</p>;
+  }
+  if (!game) {
+    return <p>게임 정보를 찾을 수 없습니다.</p>;
+  }
 
   function showReview() {
     navigate("/review");
@@ -62,7 +72,7 @@ const SteamGameDetails = (props) => {
         <header className="header">
           <nav className="nav">
             <div className="steam-logo">
-              <img alt="Steam Logo" className="logo-img" />
+              <img alt="Steam Logo" className="logo-img"/>
             </div>
             <div className="nav-menu">
               <button onClick={() => navigate("/main")}>스토어</button>
@@ -79,16 +89,17 @@ const SteamGameDetails = (props) => {
             <div className="game-gallery">
               <div className="gallery-container">
                 <div className="main-image">
-                  <img src={mainImage} alt={game.title} />
+                  <img src={mainImage} alt={game.title}/>
                 </div>
                 <div className="thumbnail-gallery">
                   {thumbnails.map((thumb, index) => (
                       <div
                           key={index}
-                          className={`thumbnail ${mainImage === thumb ? "active" : ""}`}
+                          className={`thumbnail ${mainImage === thumb ? "active"
+                              : ""}`}
                           onClick={() => setMainImage(thumb)}
                       >
-                        <img src={thumb} alt={`Thumbnail ${index + 1}`} />
+                        <img src={thumb} alt={`Thumbnail ${index + 1}`}/>
                       </div>
                   ))}
                 </div>

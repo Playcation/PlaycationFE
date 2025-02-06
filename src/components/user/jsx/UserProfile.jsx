@@ -134,6 +134,10 @@ const UserProfile = () => {
     navigate("/register/manager");
   }
 
+  const myCoupon = () => {
+    navigate("/my-coupon")
+  }
+
   if (error) {
     return <ErrorPage status={error.status} message={error.message} />;
   }
@@ -180,6 +184,7 @@ const UserProfile = () => {
                       <button onClick={handleLogout}>로그 아웃</button>
                       <button onClick={deleteUser}>회원 탈퇴</button>
                       <button onClick={registerManager}>메니저 등록</button>
+                      <button onClick={myCoupon}>쿠폰함</button>
                     </div>
                   </div>
                 </div>
@@ -192,7 +197,7 @@ const UserProfile = () => {
         )}
         <div className="library">
           <p>Library</p>
-          <LibraryCards games = {games}></LibraryCards>
+          <LibraryCards games={games}></LibraryCards>
         </div>
         <PageDiv
             count={games.count}
