@@ -121,7 +121,6 @@ const Login = () => {
               </button>
             </form>
             <div className="help-links">
-              <a href="https://help.steampowered.com/ko/">비밀번호를 잊으셨나요?</a>
               <a href="http://playcation.store:3000/sign-up">Playcation이 처음이신가요?</a>
             </div>
             <div className="social-login">
