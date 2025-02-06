@@ -9,6 +9,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Build React App
+        run: CI=false npm run build
+  
       - name: Checkout Repository
         uses: actions/checkout@v3
 
