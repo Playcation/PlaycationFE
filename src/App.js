@@ -51,9 +51,10 @@ const App = () => {
           <Route path="/search/regist/manager" element={<AcceptManagerPage />} />
           <Route path="/carts" element={<CartPage />} />
           <Route path="/games/:gameId" element={<GameDetailPage />} />
-          <Route path="/forbidden" element={<ErrorPage status="403" errorName="Forbidden" message="권한이 없습니다." />} />        </Routes>
+          <Route path="/forbidden" element={<ErrorPage status="403" errorName="Forbidden" message="권한이 없습니다." />} />
           <Route path="/events/:eventId" element={<CouponEventPage/>}/>
           <Route path="/my-coupon" element={<UserCouponPage/>}/>
+        </Routes>
       </Router>
   );
 };

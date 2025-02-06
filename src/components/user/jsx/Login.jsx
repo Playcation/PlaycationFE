@@ -75,7 +75,7 @@ const Login = () => {
 
   const googleLogin = () => {
     window.location.href =
-        "http://localhost:8080/oauth2/authorization/google?redirect_uri=http://localhost:3000/redirect";
+        "http://api.playcation.store:8080/login/oauth2/code/google:8080/oauth2/authorization/google?redirect_uri=http://playcation.store:3000/redirect";
   };
 
   const naverLogin = () => {
