@@ -10,7 +10,7 @@ const OAuth2RedirectHandler = () => {
   useEffect(() => {
     const fetchOAuth2Callback = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/oauth2/callback", {
+        const response = await axios.get("http://playcation.store/oauth2/callback", {
           withCredentials: true,
         });
 
