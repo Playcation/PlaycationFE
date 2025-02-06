@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import '../css/Signup.css';
+import axiosInstance from '../../api/api';
 
 const Signup = () => {
   const [form, setForm] = useState({
