@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from "../api/api";
 import './style.css'
+import { NavItems } from '../main/Main';
+import NavPage from '../NavPage';
 
 const CartItem = (props) => {
 
@@ -126,11 +128,14 @@ const CartItemList = () => {
 const CartPage = () => {
 
     return (
-        <div class="steam-container">
-            <CartItemList />
-            <footer>
-                <p>© 2025 Playcation. All rights reserved.</p>
-            </footer>
+        <div>
+            <NavPage />
+            <div class="steam-container">
+                <CartItemList />
+                <footer>
+                    <p>© 2025 Playcation. All rights reserved.</p>
+                </footer>
+            </div>
         </div>
     )
 }

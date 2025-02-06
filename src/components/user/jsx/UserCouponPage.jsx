@@ -1,6 +1,7 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import axiosInstance from "../../api/api";
 import '../css/UserCouponPage.css';
+import NavPage from '../../NavPage';
 
 const UserCouponPage = () => {
   const [couponUsers, setCouponUsers] = useState([]); // 쿠폰 목록 상태
@@ -38,6 +39,8 @@ const UserCouponPage = () => {
   }
 
   return (
+    <>
+      <NavPage />
       <div className="steam-container">
         <header className="steam-header">
           <div className="steam-logo">쿠폰함</div>
@@ -45,30 +48,31 @@ const UserCouponPage = () => {
 
         <main className="coupon-grid">
           {couponUsers.length > 0 ? (
-              couponUsers.map((couponUser, index) => (
-                  <div className="coupon-card" key={index}>
-                    <div className="coupon-header">
-                      <h3>{couponUser.eventTitle}</h3>
-                    </div>
-                    <div className="coupon-body">
-                      <p className="gameName">{couponUser.name}</p>
-                      <p className="rate">
-                        {couponUser.couponType === "PERCENT"
-                            ? `${couponUser.rate}% 할인 쿠폰`
-                            : `${couponUser.rate.toLocaleString()}원 할인 쿠폰`}
-                      </p>
-                      <div className="coupon-details">
-                        <span>발급일: {couponUser.issuedDate}</span>
-                        <span>만료일: {couponUser.expiredDate}</span>
-                      </div>
-                    </div>
+            couponUsers.map((couponUser, index) => (
+              <div className="coupon-card" key={index}>
+                <div className="coupon-header">
+                  <h3>{couponUser.eventTitle}</h3>
+                </div>
+                <div className="coupon-body">
+                  <p className="gameName">{couponUser.name}</p>
+                  <p className="rate">
+                    {couponUser.couponType === "PERCENT"
+                      ? `${couponUser.rate}% 할인 쿠폰`
+                      : `${couponUser.rate.toLocaleString()}원 할인 쿠폰`}
+                  </p>
+                  <div className="coupon-details">
+                    <span>발급일: {couponUser.issuedDate}</span>
+                    <span>만료일: {couponUser.expiredDate}</span>
                   </div>
-              ))
+                </div>
+              </div>
+            ))
           ) : (
-              <p className="no-coupons">사용 가능한 쿠폰이 없습니다.</p>
+            <p className="no-coupons">사용 가능한 쿠폰이 없습니다.</p>
           )}
         </main>
       </div>
+    </>
   );
 };
 

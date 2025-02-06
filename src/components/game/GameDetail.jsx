@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from "react-router-dom";
 import axiosInstance from "../api/api";
+import { NavItems } from '../main/Main';
+import NavPage from '../NavPage';
 
 const GameDetailPage = () => {
     const { id } = useParams();
@@ -32,7 +34,10 @@ const GameDetailPage = () => {
     }
 
     return (
-        <div>Game Id: {id}</div>
+        <div>
+            <NavPage />
+            <div>Game Id: {id}</div>
+        </div>
     )
 }
 

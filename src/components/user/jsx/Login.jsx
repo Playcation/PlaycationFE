@@ -67,17 +67,17 @@ const Login = () => {
 
   const googleLogin = () => {
     window.location.href =
-        "http://api.playcation.store:8080/oauth2/authorization/google?redirect_uri=http://localhost:3000/redirect";
+        "http://api.playcation.store:8080/oauth2/authorization/google?redirect_uri=http://playcation.store:3000/redirect";
   };
 
   const naverLogin = () => {
     window.location.href =
-        "http://api.playcation.store:8080/oauth2/authorization/naver?redirect_uri=http://localhost:3000/redirect";
+        "http://api.playcation.store:8080/oauth2/authorization/naver?redirect_uri=http://playcation.store:3000/redirect";
   };
 
   const kakaoLogin = () => {
     window.location.href =
-        "http://api.playcation.store:8080/oauth2/authorization/kakao?redirect_uri=http://localhost:3000/redirect";
+        "http://api.playcation.store:8080/oauth2/authorization/kakao?redirect_uri=http://playcation.store:3000/redirect";
   };
 
   return (
@@ -121,8 +121,7 @@ const Login = () => {
               </button>
             </form>
             <div className="help-links">
-              <a href="https://help.steampowered.com/ko/">비밀번호를 잊으셨나요?</a>
-              <a href="http://playcation.store/sign-up">Playcation이 처음이신가요?</a>
+              <a href="http://playcation.store:3000/sign-up">Playcation이 처음이신가요?</a>
             </div>
             <div className="social-login">
               <button onClick={googleLogin} className="google-btn">

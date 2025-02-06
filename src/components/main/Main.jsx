@@ -5,6 +5,7 @@ import {Pagination} from '@mui/material';
 import Stack from '@mui/material/Stack';
 import {FaChevronLeft, FaChevronRight} from "react-icons/fa";
 import './styles.css'
+import NavPage from '../NavPage';
 
 /**
  * 단일 배너
@@ -116,43 +117,6 @@ const Header = () => {
       </header>
   )
       ;
-}
-
-/**
- * 상단 탭 목록들
- *
- * @returns 탭 목록, 장바구니/알림에는 개수 포함
- */
-const NavItems = () => {
-  // TODO: url 추가하기
-  const itemList = [
-    {url: "/profile", class: "fas fa-user", name: "프로필"},
-    {url: "", class: "fas fa-gamepad", name: "라이브러리"},
-  ];
-
-  const list = [];
-  for (let i = 0; i < itemList.length; i++) {
-    list.push(
-        <Link key={i} to={itemList[i].url} className="nav-item">
-          <i className={itemList[i].class}></i>
-          <span>{itemList[i].name}</span>
-        </Link>
-    );
-  }
-
-  return <>
-    {list}
-    <Link to="/carts" className="nav-item">
-      <i className="fas fa-shopping-cart"></i>
-      <span>장바구니</span>
-      <span className="cart-count">0</span>
-    </Link>
-    <a href="" className="nav-item">
-      <i className="fas fa-bell"></i>
-      <span>알림</span>
-      <span className="notification-count">0</span>
-    </a>
-  </>
 }
 
 // TODO: 검색 기능
@@ -289,14 +253,7 @@ export const Games = () => {
 const Main = () => {
 
   return <>
-    <nav className="top-nav">
-      <div className="nav-container">
-        <div className="logo">
-          <h1>Playcation</h1>
-        </div>
-        <div className="nav-items"><NavItems></NavItems></div>
-      </div>
-    </nav>
+    <NavPage />
     <Header/>
     <div className="main-body">
       <Games></Games>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from './components/user/jsx/Login';
 import Redirection from "./components/common/Redirection";
 import Refresh from "./components/common/Refresh";
@@ -35,13 +35,16 @@ const App = () => {
         <Route path="/profile" element={<UserProfile />} />
         <Route path="/user-update" element={<UserUpdate />} />
         <Route path="/main" element={<Main />} />
-        <Route path="/error" element={<ErrorPage status={500} message="Something went wrong." />} />
-        <Route path="*" element={<ErrorPage status={404} message="Page not found." />} />
+        <Route path="/error" element={<ErrorPage status={500}
+          message="Something went wrong." />} />
+        <Route path="*"
+          element={<ErrorPage status={404} message="Page not found." />} />
         <Route path="/change-password" element={<UserPasswordUpdate />} />
         <Route path="/user-delete" element={<UserDelete />} />
         <Route path="/oauth2/callback" element={<OAuth2RedirectHandler />} />
         <Route path="/error" element={<ErrorPage />} />
-        <Route path="/error" element={<ErrorHandler apiEndpoint="http://playcation.store/error" />} />
+        <Route path="/error" element={<ErrorHandler
+          apiEndpoint="http://api.playcation.store:8080/error" />} />
         <Route path="/sandbox/success" element={<SuccessPage />} />
         <Route path="/sandbox" element={<CheckoutPage />} />
         <Route path="/sandbox/fail" element={<FailPage />} />
@@ -51,7 +54,9 @@ const App = () => {
         <Route path="/search/regist/manager" element={<AcceptManagerPage />} />
         <Route path="/carts" element={<CartPage />} />
         <Route path="/games/:gameId" element={<GameDetailPage />} />
-        <Route path="/forbidden" element={<ErrorPage status="403" errorName="Forbidden" message="권한이 없습니다." />} />
+        <Route path="/forbidden"
+          element={<ErrorPage status="403" errorName="Forbidden"
+            message="권한이 없습니다." />} />
         <Route path="/events/:eventId" element={<CouponEventPage />} />
         <Route path="/my-coupon" element={<UserCouponPage />} />
       </Routes>

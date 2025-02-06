@@ -13,7 +13,7 @@ export default function SuccessPage() {
     // TODO: API를 호출해서 서버에게 paymentKey, orderId, amount를 넘겨주세요. <- 해결?
     try {
       const response = await fetch(
-        "http://playcation.store/api/v1/payments/toss/success", {
+        "http://api.playcation.store:8080/api/v1/payments/toss/success", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -92,13 +92,13 @@ export default function SuccessPage() {
             <div className="flex" style={{ gap: "16px" }}>
               <a
                 className="btn w-100"
-                href="http://localhost:3000/sandbox"
+                href="http://playcation.store:3000/sandbox"
               >
                 다시 테스트하기
               </a>
               <a
                 className="btn w-100"
-                href="http://localhost:3000"
+                href="http://playcation.store:3000"
                 target="_blank"
                 rel="noopner noreferer"
               >
