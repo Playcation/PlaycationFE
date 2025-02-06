@@ -8,7 +8,7 @@ const CartButton = (props) => {
   const createCarts = async (e) => {
     e.preventDefault();
     try {
-      const response = await axiosInstance.post(`/carts/add/${props.game.id}`);
+      const response = await axiosInstance.post(`/carts/add/${props.game.gameId}`);
       alert("장바구니에 게임을 담았습니다.");
       //   navigate("/main");
     } catch (error) {
