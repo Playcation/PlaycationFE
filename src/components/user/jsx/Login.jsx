@@ -67,17 +67,17 @@ const Login = () => {
 
   const googleLogin = () => {
     window.location.href =
-        "http://api.playcation.store:8080/oauth2/authorization/google?redirect_uri=http://playcation.store:3000/redirect";
+        "http://api.playcation.store:8080/oauth2/authorization/google?redirect_uri=http://playcation.store/redirect";
   };
 
   const naverLogin = () => {
     window.location.href =
-        "http://api.playcation.store:8080/oauth2/authorization/naver?redirect_uri=http://playcation.store:3000/redirect";
+        "http://api.playcation.store:8080/oauth2/authorization/naver?redirect_uri=http://playcation.store/redirect";
   };
 
   const kakaoLogin = () => {
     window.location.href =
-        "http://api.playcation.store:8080/oauth2/authorization/kakao?redirect_uri=http://playcation.store:3000/redirect";
+        "http://api.playcation.store:8080/oauth2/authorization/kakao?redirect_uri=http://playcation.store/redirect";
   };
 
   return (
