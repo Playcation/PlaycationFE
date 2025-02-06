@@ -142,6 +142,7 @@ const UserDelete = () => {
           </div>
         </div>
       </div>
+    </>
   );
 };
 

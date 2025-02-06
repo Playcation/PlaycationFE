@@ -56,7 +56,6 @@ const CartButton = (props) => {
   );
 };
 
-const SteamGameDetails = (props) => {
 const SteamGameDetails = ({setCartCount}) => {
   const navigate = useNavigate(); // 페이지 이동을 위한 네비게이션 훅
   const {gameId} = useParams(); // URL에서 게임 ID 가져오기

@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import ErrorPage from '../../error/ErrorPage';
 import {GameCard, PageDiv} from "../../main/Main";
 import {Logo} from "./Login";
-import { GameCard, PageDiv } from "../../main/Main";
 import NavPage from '../../NavPage';
 
 const LibraryCards = (props) => {
