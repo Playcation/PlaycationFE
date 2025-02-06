@@ -3,7 +3,8 @@ import axiosInstance from "../../api/api";
 import '../css/UserProfile.css';
 import { useNavigate } from "react-router-dom";
 import ErrorPage from '../../error/ErrorPage';
-import { GameCard, PageDiv } from "../../main/Main";
+import {GameCard, PageDiv} from "../../main/Main";
+import {Logo} from "./Login";
 import NavPage from '../../NavPage';
 
 const LibraryCards = (props) => {
@@ -97,12 +98,6 @@ const UserProfile = () => {
       alert("출석 체크 되었습니다");
       console.log(response);
     } catch (error) {
-      // const errorData = error.response?.data || {};
-      // const status = errorData.httpStatus || error.response?.status || 500;
-      // const message = errorData.message || 'An unexpected error occurred.';
-      //
-      // console.error(`Error ${status}: ${message}`);
-      // setError({ status, message });
       const errorMessage = error.response?.data?.message || "알 수 없는 오류가 발생했습니다.";
       alert(`${errorMessage}`);
     }
@@ -152,33 +147,24 @@ const UserProfile = () => {
       <NavPage />
       <div className="user-profile">
         {user ? (
-          <div className="profile-container">
-            <div className="profile-header">
-              <div className="profile-background"></div>
-              <div className="profile-summary">
-                <div className="avatar">
-                  {user.filePath ? (
-                    <img src={user.filePath} alt="프로필 아바타" />
-                  ) : (
-                    <svg
-                      className="steam-logo"
-                      viewBox="0 0 256 259"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        fill="#ffffff"
-                        d="M116.5 0C52.15 0 0 52.15 0 116.5c0 64.35 52.15 116.5 116.5 116.5 64.35 0 116.5-52.15 116.5-116.5C233 52.15 180.85 0 116.5 0zm0 215.175c-54.405 0-98.675-44.27-98.675-98.675 0-54.405 44.27-98.675 98.675-98.675 54.405 0 98.675 44.27 98.675 98.675 0 54.405-44.27 98.675-98.675 98.675z"
-                      />
-                    </svg>
-                  )}
-                </div>
-                <div className="profile-details">
-                  <h1 className="profile-name">{user.username}</h1>
-                  <div className="profile-info">
-                    <span className="nickname">이메일: {user.email}</span>
-                    <span className="status-message">
-                      {user.description || '상태 메시지를 입력하세요'}
-                    </span>
+            <div className="profile-container">
+              <div className="profile-header">
+                <div className="profile-background"></div>
+                <div className="profile-summary">
+                  <div className="avatar">
+                    {user.filePath ? (
+                        <img src={user.filePath} alt="프로필 아바타" />
+                    ) : (
+                        <Logo></Logo>
+                    )}
+                  </div>
+                  <div className="profile-details">
+                    <h1 className="profile-name">{user.username}</h1>
+                    <div className="profile-info">
+                      <span className="nickname">이메일: {user.email}</span>
+                      <span className="status-message">
+                    {user.description || '상태 메시지를 입력하세요'}
+                  </span>
 
                   </div>
                   <div>

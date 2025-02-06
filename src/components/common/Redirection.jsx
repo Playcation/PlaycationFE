@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-// import './Redirection.css';
 
 const Redirection = () => {
   const navigate = useNavigate();
