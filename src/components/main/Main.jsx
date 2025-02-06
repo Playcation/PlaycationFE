@@ -267,7 +267,7 @@ export const Games = ({ searchTitle }) => {
             } catch (err) {
                 setError("Failed to fetch games: " + err.message);
                 navigate("/");
-                alert("다시 로그인 해 주식기 바랍니다.");
+                alert("다시 로그인 해 주시기 바랍니다.");
             }
         };
         fetchGames();
