@@ -6,7 +6,6 @@ const RegisterManagerPage = () => {
     gameDescription: "",
     gameGenre: "",
     gamePrice: "",
-    systemRequirements: "",
     termsAgreement: false,
     gameImage: null,
   });
@@ -23,7 +22,7 @@ const RegisterManagerPage = () => {
     e.preventDefault();
 
     if (!formData.termsAgreement) {
-      alert("Steam 개발자 이용약관에 동의해야 합니다.");
+      alert("Playcation 개발자 이용약관에 동의해야 합니다.");
       return;
     }
 

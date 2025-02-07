@@ -92,13 +92,13 @@ export default function SuccessPage() {
             <div className="flex" style={{ gap: "16px" }}>
               <a
                 className="btn w-100"
-                href="http://playcation.store:3000/sandbox"
+                href="http://playcation.store/sandbox"
               >
                 다시 테스트하기
               </a>
               <a
                 className="btn w-100"
-                href="http://playcation.store:3000"
+                href="http://playcation.store"
                 target="_blank"
                 rel="noopner noreferer"
               >
