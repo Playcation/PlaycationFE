@@ -1,0 +1,354 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #1b2838;
+    color: #c7d5e0;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #2a475e;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+header h1 {
+    color: #66c0f4;
+    margin: 0;
+}
+
+nav input {
+    padding: 8px;
+    margin-right: 10px;
+    background-color: #3e576f;
+    border: none;
+    color: white;
+}
+
+nav button {
+    background-color: #66c0f4;
+    border: none;
+    color: white;
+    padding: 8px 15px;
+    cursor: pointer;
+}
+
+.game-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.game-card {
+    background-color: #2a475e;
+    border-radius: 5px;
+    overflow: hidden;
+    transition: transform 0.3s;
+}
+
+.game-card:hover {
+    transform: scale(1.05);
+}
+
+.game-card img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+}
+
+.game-info {
+    padding: 15px;
+}
+
+.rating {
+    display: flex;
+    justify-content: space-between;
+    color: #66c0f4;
+}
+
+.review-card {
+    background-color: #3e576f;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 15px;
+}
+
+.review-card img {
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+footer {
+    text-align: center;
+    background-color: #2a475e;
+    padding: 15px;
+    margin-top: 20px;
+}
+
+.game-review-page {
+    background-color: #2a475e;
+    border-radius: 5px;
+    padding: 20px;
+}
+
+.game-banner {
+    width: 1117px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 5px;
+    border: 1px solid rgba(255,255,255,0.42);
+}
+
+.game-overview {
+    display: flex;
+    margin-top: -50px;
+    align-items: flex-end;
+    padding: 0 20px;
+}
+
+.game-thumbnail {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 7px;
+    border: 1px solid rgba(255, 255, 255, 0.42);
+}
+
+.game-details {
+    margin-left: 20px;
+    color: #c7d5e0;
+}
+
+.game-details h2 {
+    margin: 0;
+    color: #66c0f4;
+}
+
+.game-meta {
+    margin: 10px 0;
+    color: #8899a6;
+}
+
+.game-meta span {
+    margin-right: 10px;
+}
+
+.game-rating {
+    display: flex;
+    align-items: center;
+}
+
+.overall-rating {
+    background-color: #66c0f4;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 3px;
+    margin-right: 10px;
+}
+
+.review-controls {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+#write-review-btn, #review-filter {
+    background-color: #66c0f4;
+    color: white;
+    border: none;
+    padding: 10px 13px;
+    margin-top: 15px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+#review-filter {
+    width: 120px;
+}
+
+.review-input-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #2a475e;
+    padding: 20px;
+    border-radius: 10px;
+    width: 500px;
+    border: 1px solid rgba(255, 255, 255, 0.17);
+    margin-bottom: 20px;
+}
+
+.review-recommendation {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+/* ************************* */
+
+.recommend-btn, .not-recommend-btn {
+    width: 45%;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* 기본 상태에서 약간 밝은 색상 사용 */
+.recommend-btn {
+    background-color: #106012; /* 밝은 초록색 */
+    color: #ffffff;
+}
+
+.not-recommend-btn {
+    background-color: #851111; /* 밝은 빨간색 */
+    color: #ffffff;
+}
+
+/* active 상태에서는 진한 색상으로 변경 */
+.recommend-btn.active {
+    background-color: #388e3c; /* 진한 초록색 */
+    box-shadow: #388e3c 2px 2px 5px;
+    border: 2px solid rgb(56, 142, 60);
+    color: #ffffff;
+}
+
+.not-recommend-btn.active {
+    background-color: #d32f2f; /* 진한 빨간색 */
+    box-shadow: #d32f2f 1px 1px 5px;
+    border: 2px solid rgb(211, 47, 47);
+    color: #ffffff;
+}
+
+/* disabled 상태 스타일 */
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* ********************************* */
+
+#review-text {
+    width: 100%;
+    height: 150px;
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: #3e576f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+.review-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.review-header img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.recommendation {
+    color: #4CAF50;
+    font-weight: bold;
+}
+
+/*.review-actions {*/
+/*    display: flex;*/
+/*    justify-content: flex-end;*/
+/*    margin-top: 15px;*/
+/*}*/
+
+/*.review-actions button {*/
+/*    background-color: #2a475e;*/
+/*    color: #66c0f4;*/
+/*    border: none;*/
+/*    padding: 5px 10px;*/
+/*    margin-left: 10px;*/
+/*    border-radius: 3px;*/
+/*    cursor: pointer;*/
+/*}*/
+
+.helpful-btn {
+    background-color: #e0e0e0; /* 기본 배경색 */
+    color: #333;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 12px;
+    transition: background-color 0.3s, color 0.3s;
+    cursor: pointer;
+}
+
+/* 활성화된 상태 (예: 좋아요를 누른 경우) */
+.helpful-btn.liked {
+    background-color: #447cbc; /* 좋아요를 누른 경우의 배경색 */
+    border: 1px solid rgb(68, 124, 188);
+    color: #fff;
+}
+
+/* 수정/삭제 버튼 등 다른 버튼도 필요하다면 비슷하게 정의 */
+.helpful-btn.active {
+    background-color: #388e3c; /* 예시: 수정 버튼을 누른 상태 */
+    color: white;
+}
+
+.helpful-btn {
+    transition: box-shadow 300ms ease-in-out, color 300ms ease-in-out;
+    &:hover {
+        box-shadow: 0 0 40px 40px #258cda inset;
+        color: white;
+    }
+}
+
+/* ***************************** */
+
+#delete-update {
+    background-color: #3e576f;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    margin-left: 10px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+#submit-review{
+    margin: 5px;
+}
+
+.close-modal{
+    margin-bottom: 15px;
+}
+
+#review-writer-h2{
+    margin-bottom: 10px;
+}
+
+.user-id {
+    font-size: 0.9em;
+    color: #777;
+    margin-left: 5px;
+}

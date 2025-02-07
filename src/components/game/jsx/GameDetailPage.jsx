@@ -124,7 +124,7 @@ const SteamGameDetails = ({setCartCount}) => {
   }
 
   function showReview() {
-    navigate("/review");
+    navigate(`/games/${gameId}/review`);
   }
 
   return (
@@ -191,6 +191,7 @@ const SteamGameDetails = ({setCartCount}) => {
             </div>
           </section>
         </main>
+
       </div>
   );
 };

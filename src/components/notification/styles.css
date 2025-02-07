@@ -1,0 +1,378 @@
+
+/* ---------- 기본 및 공통 스타일 -------- */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #1b2838;
+  color: #c7d5e0;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* ----------   Header 및 Navigation ---------- */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #2a475e;
+  padding: 15px;
+  border-radius: 5px;
+}
+
+header h1 {
+  color: #66c0f4;
+  margin: 0;
+}
+
+nav input {
+  padding: 8px;
+  margin-right: 10px;
+  background-color: #3e576f;
+  border: none;
+  color: white;
+}
+
+nav button {
+  background-color: #66c0f4;
+  border: none;
+  color: white;
+  padding: 8px 15px;
+  cursor: pointer;
+}
+
+/* ---- 게임 관련 스타일 --------- */
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.game-card {
+  background-color: #2a475e;
+  border-radius: 5px;
+  overflow: hidden;
+  transition: transform 0.3s;
+}
+
+.game-card:hover {
+  transform: scale(1.05);
+}
+
+.game-card img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+}
+
+.game-info {
+  padding: 15px;
+}
+
+.rating {
+  display: flex;
+  justify-content: space-between;
+  color: #66c0f4;
+}
+
+/* ------- 리뷰 관련 스타일 -------- */
+.review-card {
+  background-color: #3e576f;
+  border-radius: 5px;
+  padding: 20px;
+  margin-bottom: 15px;
+}
+
+.review-card img {
+  border-radius: 50%;
+  margin-right: 15px;
+}
+
+.game-review-page {
+  background-color: #2a475e;
+  border-radius: 5px;
+  padding: 20px;
+}
+
+.game-banner img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.game-overview {
+  display: flex;
+  margin-top: -50px;
+  align-items: flex-end;
+  padding: 0 20px;
+}
+
+.game-thumbnail img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 4px solid #2a475e;
+}
+
+.game-details {
+  margin-left: 20px;
+  color: #c7d5e0;
+}
+
+.game-details h2 {
+  margin: 0;
+  color: #66c0f4;
+}
+
+.game-meta {
+  margin: 10px 0;
+  color: #8899a6;
+}
+
+.game-meta span {
+  margin-right: 10px;
+}
+
+.game-rating {
+  display: flex;
+  align-items: center;
+}
+
+.overall-rating {
+  background-color: #66c0f4;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 3px;
+  margin-right: 10px;
+}
+
+/* 리뷰 컨트롤 버튼 */
+.review-controls {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+#write-review-btn,
+#review-filter {
+  background-color: #66c0f4;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+/* 리뷰 입력 모달 */
+.review-input-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: #2a475e;
+  padding: 30px;
+  border-radius: 10px;
+  width: 500px;
+}
+
+/* 리뷰 추천/비추천 버튼 */
+.review-recommendation {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.recommend-btn,
+.not-recommend-btn {
+  width: 48%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.recommend-btn {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.not-recommend-btn {
+  background-color: #F44336;
+  color: white;
+}
+
+#review-text {
+  width: 100%;
+  height: 150px;
+  margin-bottom: 15px;
+  padding: 10px;
+  background-color: #3e576f;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+/* 리뷰 헤더 */
+.review-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.review-header img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 15px;
+}
+
+.recommendation {
+  color: #4CAF50;
+  font-weight: bold;
+}
+
+/* 리뷰 액션 버튼 */
+.review-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 15px;
+}
+
+.review-actions button {
+  background-color: #2a475e;
+  color: #66c0f4;
+  border: none;
+  padding: 5px 10px;
+  margin-left: 10px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+/* -------- 알림 관련 스타일 ----- */
+.notifications-page {
+  background-color: #2a475e;
+  border-radius: 5px;
+  padding: 20px;
+}
+
+.notifications-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.notifications-header h2 {
+  color: #66c0f4;
+  margin: 0;
+}
+
+.mark-all-read {
+  background-color: #3e576f;
+  color: #66c0f4;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.notifications-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.notification-card {
+  background-color: #3e576f;
+  border-radius: 5px;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  position: relative;
+}
+
+/* 알림 읽지 않음 표시 */
+.notification-card.unread {
+  border-left: 4px solid #ffffff;
+}
+
+/* 알림 카드 내 아이콘 (알림 내용 표시용) */
+.notification-card .notification-icon {
+  font-size: 24px;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #2a475e;
+  border-radius: 50%;
+}
+
+/* 알림 내용 */
+.notification-content {
+  flex-grow: 1;
+}
+
+.notification-content p {
+  margin: 0 0 5px 0;
+}
+
+.notification-action {
+  background-color: #66c0f4;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+/* 알림 버튼(전역/헤더 등)용 아이콘 스타일 */
+/* 이 부분은 알림 카드 내 아이콘과 구분하기 위해 별도 지정 */
+.notification-icon.button-icon {
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.notification-count {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: #F44336;
+  color: white;
+  font-size: 0.7em;
+  padding: 2px 6px;
+  border-radius: 50%;
+}
+
+/* ------ 사용자 액션 관련 스타일 ------- */
+.user-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* ------ Footeㄱ ------ */
+footer {
+  text-align: center;
+  background-color: #2a475e;
+  padding: 15px;
+  margin-top: 20px;
+}
