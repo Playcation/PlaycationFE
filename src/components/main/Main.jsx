@@ -187,7 +187,7 @@ const Search = ({ onSearch }) => {
 export const GameCard = (props) => {
   // TODO: 이미지 배율 + 자르기 적용
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleClick = () => {
     navigate(`/games/${props.id}`);

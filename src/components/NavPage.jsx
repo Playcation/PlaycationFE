@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
-import axiosInstance from './api/api';
+import axiosInstance from "../components/api/api";
 
 /**
  * 상단 탭 목록들
@@ -41,11 +41,11 @@ export const NavItems = () => {
                 <span>장바구니</span>
                 <span className="cart-count">{cartCount}</span>
             </Link>
-            <a href="" className="nav-item">
-                <i className="fas fa-bell"></i>
-                <span>알림</span>
-                {/* <span className="notification-count">0</span> */}
-            </a>
+            <Link to="/notification" className="nav-item">
+              <i className="fas fa-bell"></i>
+              <span>알림</span>
+              <span className="notification-count">0</span>
+            </Link>
         </>
     )
 }
