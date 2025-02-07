@@ -82,12 +82,7 @@ const Review = () => {
       fetchReviews();
     } catch (error) {
       console.error("리뷰 생성 오류:", error.response || error);
-
-      if (error.response) {
-        const errorCode = error.response.data?.errorCode;
-      } else {
-        alert("서버와 연결하는 중 오류가 발생했습니다.");
-      }
+      alert("리뷰 생성에 실패하였습니다.");
     }
   };
 
