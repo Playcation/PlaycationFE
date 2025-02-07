@@ -18,7 +18,7 @@ const Notifications = () => {
     }
 
     console.log("SSE 연결 시작...");
-    const eventSource = new EventSource(`http://api.playcation.store/sse?token=${token}`, {
+    const eventSource = new EventSource(`http://api.playcation.store:8080/sse?token=${token}`, {
       withCredentials: true,
     });
 
@@ -62,7 +62,7 @@ const Notifications = () => {
       console.error("SSE 연결 오류, 3초 후 재연결...", error);
       eventSource.close();
       setTimeout(() => {
-        window.sse = new EventSource(`http://api.playcation.store/sse?token=${token}`, {
+        window.sse = new EventSource(`http://api.playcation.store:8080/sse?token=${token}`, {
           withCredentials: true,
         });
       }, 3000);
