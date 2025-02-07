@@ -23,6 +23,8 @@ import GameDetailPage from './components/game/jsx/GameDetailPage';
 import CouponEventPage from './components/coupon/CouponEventPage';
 import CartPage from './components/cart/CartPage';
 import UserCouponPage from "./components/user/jsx/UserCouponPage";
+import Notification from "./components/notification/Notification";
+import Review from "./components/review/Review";
 
 const App = () => {
   return (
@@ -59,6 +61,8 @@ const App = () => {
             message="권한이 없습니다." />} />
         <Route path="/events/:eventId" element={<CouponEventPage />} />
         <Route path="/my-coupon" element={<UserCouponPage />} />
+        <Route path="/notification" element={<Notification />} />
+        <Route path="/games/:gameId/review" element={<Review />} />
       </Routes>
     </Router>
   );
