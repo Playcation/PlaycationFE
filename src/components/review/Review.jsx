@@ -82,41 +82,7 @@ const Review = () => {
       fetchReviews();
     } catch (error) {
       console.error("리뷰 생성 오류:", error.response || error);
-
-      if (error.response) {
-        const errorCode = error.response.data?.errorCode;
-
-        switch (errorCode) {
-          case "NOT_AUTHENTICATED":
-            alert("🔑 로그인 후 리뷰를 작성할 수 있습니다.");
-            break;
-          case "REVIEW_SELF_GAME_FORBIDDEN":
-            alert("❌ 본인이 등록한 게임에는 리뷰를 작성할 수 없습니다.");
-            break;
-          case "NOT_AUTHOR_OF_REVIEW":
-            alert("⚠️ 본인이 작성한 리뷰만 수정 또는 삭제할 수 있습니다.");
-            break;
-          case "GAME_NOT_IN_LIBRARY":
-            alert("🎮 해당 게임을 구매해야 리뷰를 작성할 수 있습니다.");
-            break;
-          case "NOT_FOUND_REVIEW":
-            alert("🚫 해당 리뷰를 찾을 수 없습니다.");
-            break;
-          case "LIKE_NOT_FOUND":
-            alert("👍 좋아요 기록이 존재하지 않습니다.");
-            break;
-          case "ALREADY_REVIEW_LIKE":
-            alert("⚠️ 이미 좋아요를 누른 리뷰입니다.");
-            break;
-          case "NO_LIKE_TO_REMOVE":
-            alert("❌ 좋아요가 0일 때는 더 이상 제거할 수 없습니다.");
-            break;
-          default:
-            alert("리뷰 작성 중 알 수 없는 오류가 발생했습니다.");
-        }
-      } else {
-        alert("서버와 연결하는 중 오류가 발생했습니다.");
-      }
+      alert("리뷰 생성에 실패하였습니다.");
     }
   };
 
