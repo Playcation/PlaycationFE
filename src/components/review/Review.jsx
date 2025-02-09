@@ -42,8 +42,8 @@ const Review = () => {
       const response = await axiosInstance.get(`/games/${gameId}`);
       setGameInfo({
         title: response.data.title,
-        mainImage: response.data.mainImagePath || "default-thumbnail.jpg",
-        subImages: response.data.subImagesPath || "default-banner.jpg",
+        mainImage: response.data.mainImagePath || playcationLogo,
+        subImages: response.data.subImagesPath || playcationLogo,
       });
     } catch (error) {
       console.error("게임 상세 정보 불러오기 실패:", error);
@@ -106,6 +106,33 @@ const Review = () => {
     }
   };
 
+  // 리뷰 수정 모달
+  const openEditModal = (review) => {
+    setEditingReview(review);
+    setEditReviewText(review.content);
+    setEditIsRecommended(review.rating === "POSITIVE");
+  };
+
+  const handleEditReviewTextChange = (e) => {
+    setEditReviewText(e.target.value);
+  };
+
+  const handleEditRecommendClick = () => {
+    if (editIsRecommended === true) {
+      setEditIsRecommended(null);
+    } else if (editIsRecommended === null) {
+      setEditIsRecommended(true);
+    }
+  };
+
+  const handleEditNotRecommendClick = () => {
+    if (editIsRecommended === false) {
+      setEditIsRecommended(null);
+    } else if (editIsRecommended === null) {
+      setEditIsRecommended(false);
+    }
+  };
+
   // 리뷰 생성
   const handleSubmitReview = async () => {
     if (newReviewText.trim().length < 10) {
@@ -137,33 +164,6 @@ const Review = () => {
     } catch (error) {
       console.error("리뷰 생성 오류:", error.response || error);
       alert("리뷰 생성에 실패하였습니다.");
-    }
-  };
-
-  // 리뷰 수정 모달
-  const openEditModal = (review) => {
-    setEditingReview(review);
-    setEditReviewText(review.content);
-    setEditIsRecommended(review.rating === "POSITIVE");
-  };
-
-  const handleEditReviewTextChange = (e) => {
-    setEditReviewText(e.target.value);
-  };
-
-  const handleEditRecommendClick = () => {
-    if (editIsRecommended === true) {
-      setEditIsRecommended(null);
-    } else if (editIsRecommended === null) {
-      setEditIsRecommended(true);
-    }
-  };
-
-  const handleEditNotRecommendClick = () => {
-    if (editIsRecommended === false) {
-      setEditIsRecommended(null);
-    } else if (editIsRecommended === null) {
-      setEditIsRecommended(false);
     }
   };
 
@@ -424,12 +424,12 @@ const Review = () => {
                       {/* 원형 대신 네모로 하고 싶으면 .review-header-img 에 radius 제거 */}
                       <img
                           className="review-header-img"
-                          src={review.avatar || "default-avatar.jpg"}
+                          src={review.userImage || playcationLogo}
                           alt="유저 아바타"
                       />
                       <div className="user-info">
                         <h4 className="user-nickname">
-                          {review.nickname || "작성자 정보 없음"}
+                          {review.userName || "작성자 정보 없음"}
                         </h4>
                         <span className="recommendation">
                       {review.rating === "POSITIVE" ? "긍정적" : "부정적"}
