@@ -282,6 +282,10 @@ button:disabled {
     margin-top: 10px;
 }
 
+.review-content p {
+    white-space: pre-line;
+}
+
 .user-info {
     display: flex;
     flex-direction: column;
