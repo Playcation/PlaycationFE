@@ -3,7 +3,9 @@ import { useParams, useLocation } from "react-router-dom";
 import axiosInstance from "../api/api";  // axiosInstance 경로에 맞게 수정
 import NavPage from "../NavPage";
 import { PageDiv } from "../main/Main"; // PageDiv 경로에 맞게 수정
-import "./styles.css"; // 위에서 보여주신 CSS 파일
+import "./styles.css";
+import playcationLogo from "../../assets/images/playcationLogo.png";
+
 
 const Review = () => {
   const { gameId } = useParams();
