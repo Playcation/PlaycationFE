@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import '../notification/styles.css';
+import NavPage from "../NavPage";
 import {Navigate} from "react-router-dom";
 
 const Notifications = () => {
@@ -85,9 +86,10 @@ const Notifications = () => {
   };
 
   return (
+      <>
+        <NavPage/>
       <div className="container">
         <header>
-          <h1>🎮 알림</h1>
           <nav>
             <div>
               {/* 알림 버튼 */}
@@ -130,6 +132,7 @@ const Notifications = () => {
           <p>© 2025 게임 리뷰 플랫폼</p>
         </footer>
       </div>
+        </>
   );
 };
 
