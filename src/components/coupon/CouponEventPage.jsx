@@ -173,6 +173,7 @@ const Coupons = ({ eventId }) => {
         const response = await axiosInstance.get(`/coupons/${eventId}`, {
           params: {
             page: page - 1,
+            size: 8,
           },
         })
         setCoupons(response.data)
