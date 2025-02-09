@@ -1,0 +1,114 @@
+:root {
+  --primary-bg: #1b2838;
+  --secondary-bg: #2a475e;
+  --accent-color: #66c0f4;
+  --text-color: #c7d5e0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: var(--primary-bg);
+  color: var(--text-color);
+}
+
+.admin-container {
+  display: flex;
+  height: 100vh;
+}
+
+.admin-nav {
+  width: 250px;
+  background-color: var(--secondary-bg);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  color: var(--accent-color);
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.nav-menu {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column; /* ✅ 세로 정렬 */
+  width: 100%; /* 버튼들이 네비게이션 바의 전체 너비 차지 */
+}
+
+.nav-btn {
+  width: 100%;
+  text-align: left;
+  padding: 10px;
+  background: none;
+  border: none;
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.nav-btn.active {
+  background-color: var(--accent-color);
+  color: var(--primary-bg);
+}
+
+.admin-main {
+  flex-grow: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.admin-tab {
+  display: none;
+}
+
+.admin-tab.active {
+  display: block;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--accent-color);
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 10px;
+  background-color: var(--secondary-bg);
+  border: 1px solid var(--accent-color);
+  color: var(--text-color);
+  border-radius: 4px;
+}
+
+
+.submit-btn {
+  gap: 10px;
+  justify-content: flex-start;
+  width: auto;
+  min-width: 120px;
+  padding: 8px 15px;
+  font-size: 14px;
+}
+

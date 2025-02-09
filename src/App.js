@@ -25,6 +25,7 @@ import CartPage from './components/cart/CartPage';
 import UserCouponPage from "./components/user/jsx/UserCouponPage";
 import Notification from "./components/notification/Notification";
 import Review from "./components/review/Review";
+import EventAdminPage from "./components/coupon/EventAdminPage";
 
 const App = () => {
   return (
@@ -65,6 +66,7 @@ const App = () => {
         <Route path="/games/:gameId/review" element={<Review />} />
       </Routes>
     </Router>
+          <Route path="/events/admin" element={<EventAdminPage/>}/>
   );
 };
 

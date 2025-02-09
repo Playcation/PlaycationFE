@@ -177,6 +177,26 @@ header {
   right: 10px;
 }
 
+/* 배너 좌측 하단 버튼 */
+.admin-btn {
+  position: absolute;
+  top: 320px; /* 배너 하단에서 20px 위 */
+  left: 20px; /* 배너 왼쪽에서 20px 오른쪽 */
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.admin-btn:hover {
+  background-color: #367c39;
+}
+
 .search-container {
   max-width: 800px;
   margin: 0 auto;
