@@ -44,6 +44,7 @@ const Header = () => {
   const [searchContent, setSearchContent] = useState("");
   const [events, setEvents] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [userRole, setUserRole] = useState(null);
   const navigate = useNavigate();
 
   // TODO: 이벤트 목록 DB로 뽑을지 fix할지 상의
@@ -68,11 +69,32 @@ const Header = () => {
 
     fetchEvents();
   }, []);
+  useEffect(() => {
+    const role = getUserRole();
+    setUserRole(role);
+  }, [])
+  const getUserRole = () => {
+    const token = localStorage.getItem("Authorization"); // JWT 토큰 가져오기
+    if (!token) {
+      return null;
+    } // 토큰이 없으면 역할 없음
 
+    try {
+      const payload = JSON.parse(atob(token.split(".")[1])); // 토큰의 Payload 부분 디코딩
+      return payload.role || null; // 역할 정보 반환
+    } catch (error) {
+      console.error("토큰 디코딩 오류:", error);
+      return null;
+    }
+  };
   const goToEvent = () => {
     if (events[currentIndex]?.eventId) {
       navigate(`/events/${events[currentIndex].eventId}`);
     }
+  };
+
+  const goToAdmin = () => {
+    navigate('/events/admin'); // 클릭 시 /admin 페이지로 이동
   };
 
   const slideBanner = (direction) => {
@@ -105,6 +127,11 @@ const Header = () => {
               </>
           )}
         </div>
+        {userRole === "ADMIN" && (
+            <button type="button" className="admin-btn" onClick={goToAdmin}>
+              EVENT ADMIN
+            </button>
+        )}
         <div className="search-container">
           <input
               type="text"
