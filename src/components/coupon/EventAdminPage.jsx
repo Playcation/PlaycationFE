@@ -68,7 +68,7 @@ const EventAdminPage = () => {
         rate: "",
         couponType: "PERCENT",
         validDays: "",
-        eventTitle: "",
+        eventId: "",
       });
       console.log("🔄 초기화된 쿠폰 데이터:", couponData);
     } catch (error) {
