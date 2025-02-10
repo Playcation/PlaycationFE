@@ -21,18 +21,16 @@ const Banner = ({title, description, eventId}) => {
   }
 
   return (
-      <a href=''>
-        <div className="banner active">
-          <h2>{title}</h2>
-          <p>{description}</p>
-          {eventId && (
-              <button type="button" onClick={couponDetail}>
-                이벤트 확인하기
-              </button>
-          )}
-        </div>
-      </a>
-  )
+      <div className="banner active" onClick={couponDetail} style={{ cursor: 'pointer' }}>
+        <h2>{title}</h2>
+        <p>{description}</p>
+        {eventId && (
+            <button type="button" onClick={couponDetail}>
+              이벤트 확인하기
+            </button>
+        )}
+      </div>
+  );
 }
 
 /**
@@ -40,19 +38,13 @@ const Banner = ({title, description, eventId}) => {
  *
  * @param {*} props 이벤트 목록?
  */
-const Header = () => {
-  const [searchContent, setSearchContent] = useState("");
+const Header = ({ onSearch }) => {
+  const [searchTerm, setSearchTerm] = useState("");
   const [events, setEvents] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [userRole, setUserRole] = useState(null);
   const navigate = useNavigate();
 
-  // TODO: 이벤트 목록 DB로 뽑을지 fix할지 상의
-
-  // const bannerList = [];
-  // for (let i = 0; i < props.topics.length; i++) {
-  //     bannerList.push(<Banner key={i} title={props.topics[i]}></Banner>)
-  // }
   useEffect(() => {
     const fetchEvents = async () => {
       try {
@@ -60,148 +52,129 @@ const Header = () => {
         if (response.data && response.data.length > 0) {
           setEvents(response.data);
         } else {
-          setEvents([{title: "새로운 이벤트를 준비 중입니다!"}]); // 이벤트 없을 때
+          setEvents([{ title: "새로운 이벤트를 준비 중입니다!" }]);
         }
       } catch (err) {
-        setEvents([{title: "새로운 이벤트를 준비 중입니다!"}]);
+        setEvents([{ title: "새로운 이벤트를 준비 중입니다!" }]);
       }
     };
 
     fetchEvents();
   }, []);
-  useEffect(() => {
-    const role = getUserRole();
-    setUserRole(role);
-  }, [])
-  const getUserRole = () => {
-    const token = localStorage.getItem("Authorization"); // JWT 토큰 가져오기
-    if (!token) {
-      return null;
-    } // 토큰이 없으면 역할 없음
 
-    try {
-      const payload = JSON.parse(atob(token.split(".")[1])); // 토큰의 Payload 부분 디코딩
-      return payload.role || null; // 역할 정보 반환
-    } catch (error) {
-      console.error("토큰 디코딩 오류:", error);
-      return null;
+  useEffect(() => {
+    const token = localStorage.getItem("Authorization");
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split(".")[1])); // 토큰 디코딩
+        setUserRole(payload.role || null);
+      } catch (error) {
+        console.error("토큰 디코딩 오류:", error);
+      }
     }
-  };
+  }, []);
+
   const goToEvent = () => {
     if (events[currentIndex]?.eventId) {
       navigate(`/events/${events[currentIndex].eventId}`);
     }
   };
 
-  const goToAdmin = () => {
-    navigate('/events/admin'); // 클릭 시 /admin 페이지로 이동
-  };
-
-  const handleSearch = () => {
-    onSearch(searchTerm);
-  };
-
   const slideBanner = (direction) => {
     if (direction === "next") {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % events.length);
     } else {
-      setCurrentIndex(
-          (prevIndex) => (prevIndex - 1 + events.length) % events.length);
+      setCurrentIndex((prevIndex) => (prevIndex - 1 + events.length) % events.length);
     }
   };
+
+  const handleSearch = () => {
+    if (onSearch) {
+      onSearch(searchTerm);
+    }
+  };
+
   return (
       <header>
         <div className="banner-container">
-          {events.length > 0 && (
-              <>
-                <button className="slider-btn slider-btn-prev"
-                        onClick={() => slideBanner("prev")}>
-                  <FaChevronLeft/>
-                </button>
-                <Banner
-                    title={events[currentIndex].title}
-                    description={events[currentIndex].description || ""}
-                    eventId={events[currentIndex].eventId}
-                    onClick={goToEvent}
-                />
-                <button className="slider-btn slider-btn-next"
-                        onClick={() => slideBanner("next")}>
-                  <FaChevronRight/>
-                </button>
-              </>
-          )}
+          <button className="slider-btn slider-btn-prev" onClick={() => slideBanner("prev")}>
+            <FaChevronLeft />
+          </button>
+          <Banner {...events[currentIndex]} />
+          <button className="slider-btn slider-btn-next" onClick={() => slideBanner("next")}>
+            <FaChevronRight />
+          </button>
         </div>
-        {userRole === "ADMIN" && (
-            <button type="button" className="admin-btn" onClick={goToAdmin}>
-              EVENT ADMIN
-            </button>
-        )}
+        {userRole === "ADMIN" && <button onClick={() => navigate('/events/admin')} className="admin-btn">EVENT ADMIN</button>}
         <div className="search-container">
-          <input type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} placeholder="게임 검색..." />
+          <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="게임 검색..."
+          />
           <button onClick={handleSearch}>검색</button>
         </div>
       </header>
-  )
-      ;
-}
-
+  );
+};
 /**
  * 상단 탭 목록들
  *
  * @returns 탭 목록, 장바구니/알림에는 개수 포함
  */
-const NavItems = () => {
-  // TODO: url 추가하기
-  const itemList = [
-    {url: "/profile", class: "fas fa-user", name: "프로필"},
-    {url: "", class: "fas fa-gamepad", name: "라이브러리"},
-  ];
-
-  const list = [];
-  for (let i = 0; i < itemList.length; i++) {
-    list.push(
-        <Link key={i} to={itemList[i].url} className="nav-item">
-          <i className={itemList[i].class}></i>
-          <span>{itemList[i].name}</span>
-        </Link>
-    );
-  }
-
-  return <>
-    {list}
-    <Link to="/carts" className="nav-item">
-      <i className="fas fa-shopping-cart"></i>
-      <span>장바구니</span>
-      <span className="cart-count">0</span>
-    </Link>
-    <a href="" className="nav-item">
-      <i className="fas fa-bell"></i>
-      <span>알림</span>
-      <span className="notification-count">0</span>
-    </a>
-  </>
-}
-
-const Search = ({ onSearch }) => {
-    const [searchTerm, setSearchTerm] = useState("");
-
-    const handleSearch = () => {
-        onSearch(searchTerm);
-    };
-
-    return (
-        <div className="search-container">
-            <input
-                type="text"
-                value={searchTerm}
-                placeholder="게임 검색..."
-                id="searchInput"
-                onChange={(e) => setSearchTerm(e.target.value)}
-            />
-            <button type="button" onClick={handleSearch}>검색</button>
-        </div>
-    );
-};
+// const NavItems = () => {
+//   // TODO: url 추가하기
+//   const itemList = [
+//     {url: "/profile", class: "fas fa-user", name: "프로필"},
+//     {url: "", class: "fas fa-gamepad", name: "라이브러리"},
+//   ];
+//
+//   const list = [];
+//   for (let i = 0; i < itemList.length; i++) {
+//     list.push(
+//         <Link key={i} to={itemList[i].url} className="nav-item">
+//           <i className={itemList[i].class}></i>
+//           <span>{itemList[i].name}</span>
+//         </Link>
+//     );
+//   }
+//
+//   return <>
+//     {list}
+//     <Link to="/carts" className="nav-item">
+//       <i className="fas fa-shopping-cart"></i>
+//       <span>장바구니</span>
+//       <span className="cart-count">0</span>
+//     </Link>
+//     <a href="" className="nav-item">
+//       <i className="fas fa-bell"></i>
+//       <span>알림</span>
+//       <span className="notification-count">0</span>
+//     </a>
+//   </>
+// }
+//
+// const Search = ({ onSearch }) => {
+//     const [searchTerm, setSearchTerm] = useState("");
+//
+//     const handleSearch = () => {
+//         onSearch(searchTerm);
+//     };
+//
+//     return (
+//         <div className="search-container">
+//             <input
+//                 type="text"
+//                 value={searchTerm}
+//                 placeholder="게임 검색..."
+//                 id="searchInput"
+//                 onChange={(e) => setSearchTerm(e.target.value)}
+//             />
+//             <button type="button" onClick={handleSearch}>검색</button>
+//         </div>
+//     );
+// };
 
 /**
  * 게임 보드 생성
