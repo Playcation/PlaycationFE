@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from './components/user/jsx/Login';
 import Redirection from "./components/common/Redirection";
 import Refresh from "./components/common/Refresh";
