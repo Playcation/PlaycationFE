@@ -51,7 +51,7 @@ const App = () => {
         <Route path="/sandbox" element={<CheckoutPage />} />
         <Route path="/sandbox/fail" element={<FailPage />} />
         <Route path="/admin" element={<AdminMain />} />
-        <Route path="/game" element={<CreateGamePage />} />
+        <Route path="/manager/game" element={<CreateGamePage />} />
         <Route path="/register/manager" element={<RegisterManager />} />
         <Route path="/search/regist/manager" element={<AcceptManagerPage />} />
         <Route path="/carts" element={<CartPage />} />

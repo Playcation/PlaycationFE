@@ -1,19 +1,14 @@
-import React, {useEffect, useState} from 'react';
-import {Link, useNavigate} from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import axiosInstance from "../api/api";
-import {Pagination} from '@mui/material';
+import { Pagination } from '@mui/material';
 import Stack from '@mui/material/Stack';
-import {FaChevronLeft, FaChevronRight} from "react-icons/fa";
-import './styles.css'
-import {Logo} from "../user/jsx/Login";
-import NavPage from '../NavPage';
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import './styles.css';
+import { Logo } from "../user/jsx/Login";
+import NavPage from "../NavPage";
 
-/**
- * 단일 배너
- *
- * @param {*} props 제목
- */
-const Banner = ({title, description, eventId}) => {
+const Banner = ({ title, description, eventId }) => {
   const navigate = useNavigate();
 
   const couponDetail = () => {
@@ -21,37 +16,24 @@ const Banner = ({title, description, eventId}) => {
   }
 
   return (
-      <a href=''>
-        <div className="banner active">
-          <h2>{title}</h2>
-          <p>{description}</p>
-          {eventId && (
-              <button type="button" onClick={couponDetail}>
-                이벤트 확인하기
-              </button>
-          )}
-        </div>
-      </a>
-  )
+      <div className="banner active" onClick={couponDetail} style={{ cursor: 'pointer' }}>
+        <h2>{title}</h2>
+        <p>{description}</p>
+        {eventId && (
+            <button type="button" onClick={couponDetail}>
+              이벤트 확인하기
+            </button>
+        )}
+      </div>
+  );
 }
 
-/**
- * header 태그 이벤트 배너 목록
- *
- * @param {*} props 이벤트 목록?
- */
-const Header = () => {
-  const [searchContent, setSearchContent] = useState("");
+const Header = ({ onSearch }) => {
+  const [searchTerm, setSearchTerm] = useState("");
   const [events, setEvents] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const navigate = useNavigate();
 
-  // TODO: 이벤트 목록 DB로 뽑을지 fix할지 상의
-
-  // const bannerList = [];
-  // for (let i = 0; i < props.topics.length; i++) {
-  //     bannerList.push(<Banner key={i} title={props.topics[i]}></Banner>)
-  // }
   useEffect(() => {
     const fetchEvents = async () => {
       try {
@@ -73,6 +55,10 @@ const Header = () => {
     if (events[currentIndex]?.eventId) {
       navigate(`/events/${events[currentIndex].eventId}`);
     }
+  };
+
+  const handleSearch = () => {
+    onSearch(searchTerm);
   };
 
   const slideBanner = (direction) => {
@@ -106,14 +92,8 @@ const Header = () => {
           )}
         </div>
         <div className="search-container">
-          <input
-              type="text"
-              value={searchContent}
-              placeholder="게임 검색..."
-              id="searchInput"
-              onChange={(e) => setSearchContent(e.target.value)}
-          />
-          <button type="button">검색</button>
+          <input type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} placeholder="게임 검색..." />
+          <button onClick={handleSearch}>검색</button>
         </div>
       </header>
   )
@@ -187,7 +167,7 @@ const Search = ({ onSearch }) => {
 export const GameCard = (props) => {
   // TODO: 이미지 배율 + 자르기 적용
 
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
   const handleClick = () => {
     navigate(`/games/${props.id}`);
@@ -300,6 +280,40 @@ export const Games = ({ searchTitle }) => {
             onPageChange={(value) => setPage(value)} />
     </>
 }
+
+// export const GameCard = ({ id, image, title, price }) => {
+//   const navigate = useNavigate();
+//
+//   return (
+//       <div className="game-card" onClick={() => navigate(`/games/${id}`)}>
+//         <div className="game-image">
+//           {image ? <img src={image} className="game-img" alt={title} /> : <Logo />}
+//         </div>
+//         <div className="game-info">
+//           <h3>{title}</h3>
+//           <p className="price">₩{price}</p>
+//           <button className="buy-btn">상세 페이지</button>
+//         </div>
+//       </div>
+//   );
+// };
+//
+// export const PageDiv = ({ count, length, onPageChange }) => {
+//   const [page, setPage] = useState(1);
+//
+//   const handlePageChange = (event, value) => {
+//     setPage(value);
+//     onPageChange(value);
+//   };
+//
+//   return (
+//       <div className="pagination">
+//         <Stack spacing={2}>
+//           <Pagination count={Math.ceil(count / length)} color="primary" page={page} onChange={handlePageChange} />
+//         </Stack>
+//       </div>
+//   );
+// };
 
 const Main = () => {
     const [searchTitle, setSearchTitle] = useState(""); // 검색어 상태
