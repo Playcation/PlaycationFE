@@ -1,14 +1,29 @@
 import React, { useState } from "react";
+import axiosInstance from "../../api/api";
+import {useNavigate} from "react-router-dom";
 
-const RegisterManagerPage = () => {
+
+const CreateGamePage = () => {
   const [formData, setFormData] = useState({
     gameTitle: "",
     gameDescription: "",
-    gameGenre: "",
+    gameGenre: 1,
     gamePrice: "",
-    termsAgreement: false,
-    gameImage: null,
   });
+
+  const [gameImage, setGameImage] = useState(null);
+  const [subImage, setSubImage] = useState(null);
+  const [gameFile, setGameFile] = useState(null);
+
+  const navigate = useNavigate();
+
+  const genres = [
+    { value: 1, label: "액션" },
+    { value: 2, label: "어드벤처" },
+    { value: 3, label: "RPG" },
+    { value: 4, label: "전략" },
+    { value: 5, label: "시뮬레이션" }
+  ];
 
   const handleInputChange = (e) => {
     const { name, value, type, checked, files } = e.target;
@@ -16,6 +31,33 @@ const RegisterManagerPage = () => {
       ...prevData,
       [name]: type === "checkbox" ? checked : files ? files[0] : value,
     }));
+  };
+
+  const onGameImageChange = (e) => {
+    const selectedFile = e.target.files[0];
+    if (selectedFile) {
+      setGameImage(selectedFile);
+    } else {
+      setGameImage(null);
+    }
+  };
+
+  const onSubImageChange = (e) => {
+    const selectedFile = e.target.files[0];
+    if (selectedFile) {
+      setSubImage(selectedFile);
+    } else {
+      setSubImage(null);
+    }
+  };
+
+  const onGameFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    if (selectedFile) {
+      setGameFile(selectedFile);
+    } else {
+      setGameFile(null);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -27,27 +69,34 @@ const RegisterManagerPage = () => {
     }
 
     const submissionData = new FormData();
-    Object.keys(formData).forEach((key) => {
-      if (key === "termsAgreement") return;
-      submissionData.append(key, formData[key]);
-    });
+    submissionData.append(
+        'createGameRequestDto',
+        new Blob([JSON.stringify(formData)], {type: 'application/json'})
+    );
+    if (gameImage) submissionData.append('gameImage', gameImage);
+    if (subImage) submissionData.append('subImage', subImage);
+    if (gameFile) submissionData.append('gameFile', gameFile);
 
     try {
-      const response = await fetch("/manager", {
-        method: "POST",
+      const response = await axiosInstance.post("/games",
+        submissionData, {
         headers: {
-          Authorization: "Bearer YOUR_ACCESS_TOKEN", // Replace with actual token
-        },
-        body: submissionData,
+          "Content-Type": "multipart/form-data",
+        }
       });
 
-      if (response.ok) {
-        const result = await response.text();
-        alert("게임 등록 성공: " + result);
+      if (response.status >= 200 && response.status < 300) {
+        // 데이터 처리
+        alert("게임 등록 성공: " + response.data);
       } else {
-        const error = await response.text();
-        alert("게임 등록 실패: " + error);
+        // 에러 메시지 처리
+        alert("게임 등록 실패: " + response.data);
       }
+      // formData.title = '';
+      // formData.price = '';
+      // formData.description = '';
+      // formData.termsAgreement = false;
+      navigate('/profile');
     } catch (error) {
       console.error("Error:", error);
       alert("서버에 문제가 발생했습니다.");
@@ -95,11 +144,11 @@ const RegisterManagerPage = () => {
                   required
               >
                 <option value="">장르 선택</option>
-                <option value="action">액션</option>
-                <option value="adventure">어드벤처</option>
-                <option value="rpg">RPG</option>
-                <option value="strategy">전략</option>
-                <option value="simulation">시뮬레이션</option>
+                {genres.map((genre) => (
+                    <option key={genre.value} value={genre.value}>
+                      {genre.label}
+                    </option>
+                ))}
               </select>
             </div>
 
@@ -130,15 +179,26 @@ const RegisterManagerPage = () => {
             </div>
 
             <div className="form-section">
-              <label htmlFor="systemRequirements">시스템 요구 사항</label>
-              <textarea
-                  id="systemRequirements"
-                  name="systemRequirements"
-                  value={formData.systemRequirements}
-                  onChange={handleInputChange}
-                  rows="4"
+              <label htmlFor="gameImage">서브 이미지</label>
+              <input
+                  type="file"
+                  id="subImage"
+                  name="subImage"
+                  onChange={onSubImageChange}
+                  accept="image/*"
+              />
+            </div>
+
+            <div className="form-section">
+              <label htmlFor="gameImage">게임 파일</label>
+              <input
+                  type="file"
+                  id="gameFile"
+                  name="gameFile"
+                  onChange={onGameFileChange}
+                  accept="application/zip"
                   required
-              ></textarea>
+              />
             </div>
 
             <div className="checkbox-section">
@@ -150,7 +210,7 @@ const RegisterManagerPage = () => {
                   onChange={handleInputChange}
                   required
               />
-              <label htmlFor="termsAgreement">Steam 개발자 이용약관에 동의합니다</label>
+              <label htmlFor="termsAgreement">Playcation 개발자 이용약관에 동의합니다</label>
             </div>
 
             <div className="form-actions">
@@ -182,4 +242,4 @@ const RegisterManagerPage = () => {
   );
 };
 
-export default RegisterManagerPage;
+export default CreateGamePage;

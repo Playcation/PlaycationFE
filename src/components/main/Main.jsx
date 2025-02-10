@@ -6,6 +6,7 @@ import Stack from '@mui/material/Stack';
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import './styles.css';
 import { Logo } from "../user/jsx/Login";
+import NavPage from "../NavPage";
 
 const Banner = ({ title, description, eventId }) => {
   const navigate = useNavigate();
@@ -280,39 +281,39 @@ export const Games = ({ searchTitle }) => {
     </>
 }
 
-export const GameCard = ({ id, image, title, price }) => {
-  const navigate = useNavigate();
-
-  return (
-      <div className="game-card" onClick={() => navigate(`/games/${id}`)}>
-        <div className="game-image">
-          {image ? <img src={image} className="game-img" alt={title} /> : <Logo />}
-        </div>
-        <div className="game-info">
-          <h3>{title}</h3>
-          <p className="price">₩{price}</p>
-          <button className="buy-btn">상세 페이지</button>
-        </div>
-      </div>
-  );
-};
-
-export const PageDiv = ({ count, length, onPageChange }) => {
-  const [page, setPage] = useState(1);
-
-  const handlePageChange = (event, value) => {
-    setPage(value);
-    onPageChange(value);
-  };
-
-  return (
-      <div className="pagination">
-        <Stack spacing={2}>
-          <Pagination count={Math.ceil(count / length)} color="primary" page={page} onChange={handlePageChange} />
-        </Stack>
-      </div>
-  );
-};
+// export const GameCard = ({ id, image, title, price }) => {
+//   const navigate = useNavigate();
+//
+//   return (
+//       <div className="game-card" onClick={() => navigate(`/games/${id}`)}>
+//         <div className="game-image">
+//           {image ? <img src={image} className="game-img" alt={title} /> : <Logo />}
+//         </div>
+//         <div className="game-info">
+//           <h3>{title}</h3>
+//           <p className="price">₩{price}</p>
+//           <button className="buy-btn">상세 페이지</button>
+//         </div>
+//       </div>
+//   );
+// };
+//
+// export const PageDiv = ({ count, length, onPageChange }) => {
+//   const [page, setPage] = useState(1);
+//
+//   const handlePageChange = (event, value) => {
+//     setPage(value);
+//     onPageChange(value);
+//   };
+//
+//   return (
+//       <div className="pagination">
+//         <Stack spacing={2}>
+//           <Pagination count={Math.ceil(count / length)} color="primary" page={page} onChange={handlePageChange} />
+//         </Stack>
+//       </div>
+//   );
+// };
 
 const Main = () => {
     const [searchTitle, setSearchTitle] = useState(""); // 검색어 상태

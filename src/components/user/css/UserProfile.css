@@ -200,3 +200,7 @@ textarea {
   text-align: center;
   color: #666;
 }
+
+.library {
+  margin: 0 auto;
+}
