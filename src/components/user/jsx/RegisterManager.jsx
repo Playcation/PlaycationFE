@@ -152,7 +152,7 @@ const RegisterManagerPage = () => {
             </div>
 
             <div className="form-actions">
-              <button type="submit" className="btn-submit">게임 등록</button>
+              <button type="submit" className="btn-submit">메니저 신청</button>
               <button
                   type="button"
                   onClick={() => {

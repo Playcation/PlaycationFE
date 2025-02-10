@@ -97,6 +97,10 @@ const Header = () => {
     navigate('/events/admin'); // 클릭 시 /admin 페이지로 이동
   };
 
+  const handleSearch = () => {
+    onSearch(searchTerm);
+  };
+
   const slideBanner = (direction) => {
     if (direction === "next") {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % events.length);
@@ -133,14 +137,8 @@ const Header = () => {
             </button>
         )}
         <div className="search-container">
-          <input
-              type="text"
-              value={searchContent}
-              placeholder="게임 검색..."
-              id="searchInput"
-              onChange={(e) => setSearchContent(e.target.value)}
-          />
-          <button type="button">검색</button>
+          <input type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} placeholder="게임 검색..." />
+          <button onClick={handleSearch}>검색</button>
         </div>
       </header>
   )
@@ -214,7 +212,7 @@ const Search = ({ onSearch }) => {
 export const GameCard = (props) => {
   // TODO: 이미지 배율 + 자르기 적용
 
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
   const handleClick = () => {
     navigate(`/games/${props.id}`);

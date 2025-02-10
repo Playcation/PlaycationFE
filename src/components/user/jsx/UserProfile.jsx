@@ -3,46 +3,101 @@ import axiosInstance from "../../api/api";
 import '../css/UserProfile.css';
 import { useNavigate } from "react-router-dom";
 import ErrorPage from '../../error/ErrorPage';
-import {GameCard, PageDiv} from "../../main/Main";
+import {GameCard, Games, PageDiv} from "../../main/Main";
 import {Logo} from "./Login";
 import NavPage from '../../NavPage';
 
-const LibraryCards = (props) => {
+const ManagerBtn = (props) => {
+  const navigate = useNavigate();
+
+  const managementManager = () =>{
+    navigate("/search/regist/manager")
+  }
+
+  const registerManager = () => {
+    navigate("/register/manager");
+  }
+
+  const registerGame = () => {
+    navigate("/manager/game");
+  }
+
+      if(props.role == "ADMIN"){
+        return(
+            <button onClick={managementManager}>메니저 관리</button>
+        )
+      }else if(props.role == "MANAGER"){
+        return(
+        <button onClick={registerGame}>게임 등록</button>
+        );
+      }else{
+        return(
+        <button onClick={registerManager}>메니저 등록</button>
+        );
+      }
+};
+
+const LibraryCards = () => {
   // TODO: 이미지 배율 + 자르기 적용
   const list = [];
   const navigate = useNavigate();
+  const [games, setGames] = useState({list: [], count: 0});
+  const [page, setPage] = useState(1);
 
-  const handleClick = () => {
-    navigate(`/games/${props.id}`);
-  };
+  useEffect( () => {
+    const fetchGames = async () => {
+      try {
+        const libraryResponse = await axiosInstance.get('/libraries/my-games', {
+          params: { page: page - 1 },
+        });
+
+        setGames({
+          list: libraryResponse.data.list || [],
+          count: libraryResponse.data.count || 0,
+        });
+      } catch (error) {
+        console.error("게임 목록을 불러오는 중 오류 발생:", error);
+      }
+    };
+
+    fetchGames();
+  }, [page]);
 
   var i = 0;
-  for (const element of props.games.list) {
+  for (const element of games.list) {
     list.push(
-      <GameCard
-        key={i}
-        id={element.gameId}
-        image={element.mainImagePath}
-        title={element.title}
-        price={element.price}
-      />
+        <GameCard
+            key={i}
+            id={element.gameId}
+            image={element.mainImagePath}
+            title={element.title}
+            price={element.price}
+        />
     );
     i = i + 1;
   }
 
-  return (
-    <div>
-      <div className="game-grid">{list}</div>
-    </div>
+  return (<>
+        <div>
+          <p>Library</p>
+          <div className="game-grid">{list}</div>
+        </div>
+        <PageDiv
+            count={games.count}
+            length={games.list.length}
+            onPageChange={(value) => setPage(value)}/>
+      </>
   )
 }
 
 const UserProfile = () => {
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
-  const [games, setGames] = useState({ list: [], count: 0 });
+  const [games, setGames] = useState({list: [], count: 0});
   const [page, setPage] = useState(1);
   const navigate = useNavigate();
+  const [role, setRole] = useState("");
+  // const list = [];
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -54,8 +109,7 @@ const UserProfile = () => {
 
       try {
         const response = await axiosInstance.get('/users',
-          {
-          });
+            {});
 
         setUser({
           username: response.data.username,
@@ -64,13 +118,13 @@ const UserProfile = () => {
           description: response.data.description,
           updatedDate: response.data.updatedDate,
         });
+        setRole(response.data.role);
 
-        const libraryResponse = await axiosInstance.get('/libraries/my-games');
-
-        setGames({
-          list: libraryResponse.data.list || [],
-          count: libraryResponse.data.count || 0,
-        });
+        // const libraryResponse = await axiosInstance.get('/libraries/my-games', {
+        //   params: {
+        //     page: page - 1,
+        //   },
+        // });
 
       } catch (error) {
         console.error('Failed to fetch user profile:', error);
@@ -79,7 +133,37 @@ const UserProfile = () => {
     };
 
     fetchUserProfile();
-  }, []);
+  }, [page]);
+
+  if (error) {
+    return <div>Error: {error}</div>
+  }
+
+  // var i = 0;
+  // for (const element of games.list) {
+  //   list.push(
+  //       <GameCard
+  //           key={i}
+  //           id={element.gameId}
+  //           image={element.mainImagePath}
+  //           title={element.title}
+  //           price={element.price}
+  //       />
+  //   );
+  //   i = i + 1;
+  // }
+
+  // return (<>
+  //       <div>
+  //         <p>Library</p>
+  //         <div className="game-grid">{list}</div>
+  //       </div>
+  //       <PageDiv
+  //           count={games.count}
+  //           length={games.list.length}
+  //           onPageChange={(value) => setPage(value)}/>
+  //     </>
+  // )
 
   const changeProfile = () => {
     // Add logic for changing profile here
@@ -126,10 +210,6 @@ const UserProfile = () => {
     navigate("/user-delete");
   }
 
-  const registerManager = () => {
-    navigate("/register/manager");
-  }
-
   const myCoupon = () => {
     navigate("/my-coupon")
   }
@@ -137,6 +217,7 @@ const UserProfile = () => {
   if (error) {
     return <ErrorPage status={error.status} message={error.message} />;
   }
+
 
   const formattedJoinDate = user?.updatedDate
     ? new Date(user.updatedDate).toISOString().split('T')[0]
@@ -172,7 +253,7 @@ const UserProfile = () => {
                     <button onClick={daliyCheck}>일일 출석체크</button>
                     <button onClick={handleLogout}>로그 아웃</button>
                     <button onClick={deleteUser}>회원 탈퇴</button>
-                    <button onClick={registerManager}>메니저 등록</button>
+                    <ManagerBtn role = {role}></ManagerBtn>
                     <button onClick={myCoupon}>쿠폰함</button>
                   </div>
                 </div>
@@ -185,13 +266,8 @@ const UserProfile = () => {
           <div className="loading">Loading user profile...</div>
         )}
         <div className="library">
-          <p>Library</p>
-          <LibraryCards games={games}></LibraryCards>
+          <LibraryCards ></LibraryCards>
         </div>
-        <PageDiv
-          count={games.count}
-          length={games.list.length}
-          onPageChange={(value) => setPage(value)} />
       </div>
     </>
   );
