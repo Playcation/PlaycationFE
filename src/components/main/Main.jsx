@@ -1,14 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import {Link, useNavigate} from 'react-router-dom';
 import axiosInstance from "../api/api";
-import { Pagination } from '@mui/material';
+import {Pagination} from '@mui/material';
 import Stack from '@mui/material/Stack';
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import './styles.css';
-import { Logo } from "../user/jsx/Login";
-import NavPage from "../NavPage";
+import {FaChevronLeft, FaChevronRight} from "react-icons/fa";
+import './styles.css'
+import {Logo} from "../user/jsx/Login";
+import NavPage from '../NavPage';
 
-const Banner = ({ title, description, eventId }) => {
+/**
+ * 단일 배너
+ *
+ * @param {*} props 제목
+ */
+const Banner = ({title, description, eventId}) => {
   const navigate = useNavigate();
 
   const couponDetail = () => {
@@ -28,12 +33,24 @@ const Banner = ({ title, description, eventId }) => {
   );
 }
 
-const Header = ({ onSearch }) => {
-  const [searchTerm, setSearchTerm] = useState("");
+/**
+ * header 태그 이벤트 배너 목록
+ *
+ * @param {*} props 이벤트 목록?
+ */
+const Header = () => {
+  const [searchContent, setSearchContent] = useState("");
   const [events, setEvents] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [userRole, setUserRole] = useState(null);
   const navigate = useNavigate();
 
+  // TODO: 이벤트 목록 DB로 뽑을지 fix할지 상의
+
+  // const bannerList = [];
+  // for (let i = 0; i < props.topics.length; i++) {
+  //     bannerList.push(<Banner key={i} title={props.topics[i]}></Banner>)
+  // }
   useEffect(() => {
     const fetchEvents = async () => {
       try {
@@ -50,15 +67,23 @@ const Header = ({ onSearch }) => {
 
     fetchEvents();
   }, []);
+  useEffect(() => {
+    const token = localStorage.getItem("Authorization"); // JWT 토큰 가져오기
+    if (!token) {
+      try {
+        const payload = JSON.parse(atob(token.split(".")[1])); // 토큰의 Payload 부분 디코딩
+        return payload.role || null; // 역할 정보 반환
+      } catch (error) {
+        console.error("토큰 디코딩 오류:", error);
+        return null;
+      }
+    } // 토큰이 없으면 역할 없음
+  }, []);
 
   const goToEvent = () => {
     if (events[currentIndex]?.eventId) {
       navigate(`/events/${events[currentIndex].eventId}`);
     }
-  };
-
-  const handleSearch = () => {
-    onSearch(searchTerm);
   };
 
   const slideBanner = (direction) => {
@@ -72,28 +97,14 @@ const Header = ({ onSearch }) => {
   return (
       <header>
         <div className="banner-container">
-          {events.length > 0 && (
-              <>
-                <button className="slider-btn slider-btn-prev"
-                        onClick={() => slideBanner("prev")}>
-                  <FaChevronLeft/>
-                </button>
-                <Banner
-                    title={events[currentIndex].title}
-                    description={events[currentIndex].description || ""}
-                    eventId={events[currentIndex].eventId}
-                    onClick={goToEvent}
-                />
-                <button className="slider-btn slider-btn-next"
-                        onClick={() => slideBanner("next")}>
-                  <FaChevronRight/>
-                </button>
-              </>
-          )}
+          <button className="slider-btn slider-btn-prev" onClick={() => slideBanner("prev")}><FaChevronLeft/></button>
+          <Banner {...events[currentIndex]} />
+          <button className="slider-btn slider-btn-next" onClick={() => slideBanner("next")}><FaChevronRight/></button>
         </div>
+        {userRole === "ADMIN" && <button onClick={() => navigate('/events/admin')}>EVENT ADMIN</button>}
         <div className="search-container">
           <input type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} placeholder="게임 검색..." />
-          <button onClick={handleSearch}>검색</button>
+          <button onClick={() => onSearch(searchTerm)}>검색</button>
         </div>
       </header>
   )
@@ -105,58 +116,58 @@ const Header = ({ onSearch }) => {
  *
  * @returns 탭 목록, 장바구니/알림에는 개수 포함
  */
-const NavItems = () => {
-  // TODO: url 추가하기
-  const itemList = [
-    {url: "/profile", class: "fas fa-user", name: "프로필"},
-    {url: "", class: "fas fa-gamepad", name: "라이브러리"},
-  ];
-
-  const list = [];
-  for (let i = 0; i < itemList.length; i++) {
-    list.push(
-        <Link key={i} to={itemList[i].url} className="nav-item">
-          <i className={itemList[i].class}></i>
-          <span>{itemList[i].name}</span>
-        </Link>
-    );
-  }
-
-  return <>
-    {list}
-    <Link to="/carts" className="nav-item">
-      <i className="fas fa-shopping-cart"></i>
-      <span>장바구니</span>
-      <span className="cart-count">0</span>
-    </Link>
-    <a href="" className="nav-item">
-      <i className="fas fa-bell"></i>
-      <span>알림</span>
-      <span className="notification-count">0</span>
-    </a>
-  </>
-}
-
-const Search = ({ onSearch }) => {
-    const [searchTerm, setSearchTerm] = useState("");
-
-    const handleSearch = () => {
-        onSearch(searchTerm);
-    };
-
-    return (
-        <div className="search-container">
-            <input
-                type="text"
-                value={searchTerm}
-                placeholder="게임 검색..."
-                id="searchInput"
-                onChange={(e) => setSearchTerm(e.target.value)}
-            />
-            <button type="button" onClick={handleSearch}>검색</button>
-        </div>
-    );
-};
+// const NavItems = () => {
+//   // TODO: url 추가하기
+//   const itemList = [
+//     {url: "/profile", class: "fas fa-user", name: "프로필"},
+//     {url: "", class: "fas fa-gamepad", name: "라이브러리"},
+//   ];
+//
+//   const list = [];
+//   for (let i = 0; i < itemList.length; i++) {
+//     list.push(
+//         <Link key={i} to={itemList[i].url} className="nav-item">
+//           <i className={itemList[i].class}></i>
+//           <span>{itemList[i].name}</span>
+//         </Link>
+//     );
+//   }
+//
+//   return <>
+//     {list}
+//     <Link to="/carts" className="nav-item">
+//       <i className="fas fa-shopping-cart"></i>
+//       <span>장바구니</span>
+//       <span className="cart-count">0</span>
+//     </Link>
+//     <a href="" className="nav-item">
+//       <i className="fas fa-bell"></i>
+//       <span>알림</span>
+//       <span className="notification-count">0</span>
+//     </a>
+//   </>
+// }
+//
+// const Search = ({ onSearch }) => {
+//     const [searchTerm, setSearchTerm] = useState("");
+//
+//     const handleSearch = () => {
+//         onSearch(searchTerm);
+//     };
+//
+//     return (
+//         <div className="search-container">
+//             <input
+//                 type="text"
+//                 value={searchTerm}
+//                 placeholder="게임 검색..."
+//                 id="searchInput"
+//                 onChange={(e) => setSearchTerm(e.target.value)}
+//             />
+//             <button type="button" onClick={handleSearch}>검색</button>
+//         </div>
+//     );
+// };
 
 /**
  * 게임 보드 생성
@@ -280,40 +291,6 @@ export const Games = ({ searchTitle }) => {
             onPageChange={(value) => setPage(value)} />
     </>
 }
-
-// export const GameCard = ({ id, image, title, price }) => {
-//   const navigate = useNavigate();
-//
-//   return (
-//       <div className="game-card" onClick={() => navigate(`/games/${id}`)}>
-//         <div className="game-image">
-//           {image ? <img src={image} className="game-img" alt={title} /> : <Logo />}
-//         </div>
-//         <div className="game-info">
-//           <h3>{title}</h3>
-//           <p className="price">₩{price}</p>
-//           <button className="buy-btn">상세 페이지</button>
-//         </div>
-//       </div>
-//   );
-// };
-//
-// export const PageDiv = ({ count, length, onPageChange }) => {
-//   const [page, setPage] = useState(1);
-//
-//   const handlePageChange = (event, value) => {
-//     setPage(value);
-//     onPageChange(value);
-//   };
-//
-//   return (
-//       <div className="pagination">
-//         <Stack spacing={2}>
-//           <Pagination count={Math.ceil(count / length)} color="primary" page={page} onChange={handlePageChange} />
-//         </Stack>
-//       </div>
-//   );
-// };
 
 const Main = () => {
     const [searchTitle, setSearchTitle] = useState(""); // 검색어 상태
