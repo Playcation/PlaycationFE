@@ -47,7 +47,8 @@ const App = () => {
           <Route path="/oauth2/callback" element={<OAuth2RedirectHandler/>}/>
           <Route path="/error" element={<ErrorPage/>}/>
           <Route path="/error" element={<ErrorHandler
-              apiEndpoint="http://api.playcation.store:8080/error"/>}/>
+              // apiEndpoint="http://api.playcation.store:8080/error"/>}/>
+              apiEndpoint="http://localhost:8080/error"/>}/>
           <Route path="/sandbox/success" element={<SuccessPage/>}/>
           <Route path="/sandbox" element={<CheckoutPage/>}/>
           <Route path="/sandbox/fail" element={<FailPage/>}/>

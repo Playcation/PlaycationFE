@@ -44,7 +44,8 @@ const Login = () => {
 
   // SSE 이벤트 리스너 추가
   useEffect(() => {
-    const eventSource = new EventSource("http://api.playcation.store:8080/sse");
+    // const eventSource = new EventSource("http://api.playcation.store:8080/sse");
+    const eventSource = new EventSource("http://localhost:8080/sse");
 
     eventSource.onmessage = (event) => {
       console.log("SSE Message Received:", event.data);
@@ -75,18 +76,20 @@ const Login = () => {
 
   const googleLogin = () => {
     window.location.href =
-        "http://api.playcation.store:8080/oauth2/authorization/google?redirect_uri=http://playcation.store/redirect";
-        // "http://localhost:8080/oauth2/authorization/google?redirect_uri=http://localhost:3000/redirect";
+        // "http://api.playcation.store:8080/oauth2/authorization/google?redirect_uri=http://playcation.store/redirect";
+        "http://localhost:8080/oauth2/authorization/google?redirect_uri=http://localhost:3000/redirect";
   };
 
   const naverLogin = () => {
     window.location.href =
-        "http://api.playcation.store:8080/oauth2/authorization/naver?redirect_uri=http://playcation.store/redirect";
+        // "http://api.playcation.store:8080/oauth2/authorization/naver?redirect_uri=http://playcation.store/redirect";
+        "http://localhost:8080/oauth2/authorization/naver?redirect_uri=http://playcation.store/redirect";
   };
 
   const kakaoLogin = () => {
     window.location.href =
-        "http://api.playcation.store:8080/oauth2/authorization/kakao?redirect_uri=http://playcation.store/redirect";
+        // "http://api.playcation.store:8080/oauth2/authorization/kakao?redirect_uri=http://playcation.store/redirect";
+        "http://localhost:8080/oauth2/authorization/kakao?redirect_uri=http://playcation.store/redirect";
   };
 
   return (
