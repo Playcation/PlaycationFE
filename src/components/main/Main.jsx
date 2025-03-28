@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Link, useNavigate} from 'react-router-dom';
+import {Link, Navigate, useNavigate} from 'react-router-dom';
 import axiosInstance from "../api/api";
 import {Pagination} from '@mui/material';
 import Stack from '@mui/material/Stack';
@@ -60,18 +60,6 @@ const Header = ({ onSearch }) => {
     };
 
     fetchEvents();
-  }, []);
-
-  useEffect(() => {
-    const token = localStorage.getItem("Authorization");
-    if (token) {
-      try {
-        const payload = JSON.parse(atob(token.split(".")[1])); // 토큰 디코딩
-        setUserRole(payload.role || null);
-      } catch (error) {
-        console.error("토큰 디코딩 오류:", error);
-      }
-    }
   }, []);
 
   const goToEvent = () => {
