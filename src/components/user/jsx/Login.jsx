@@ -83,13 +83,13 @@ const Login = () => {
   const naverLogin = () => {
     window.location.href =
         // "http://api.playcation.store:8080/oauth2/authorization/naver?redirect_uri=http://playcation.store/redirect";
-        "http://localhost:8080/oauth2/authorization/naver?redirect_uri=http://playcation.store/redirect";
+        "http://localhost:8080/oauth2/authorization/naver?redirect_uri=http://localhost:3000/redirect";
   };
 
   const kakaoLogin = () => {
     window.location.href =
         // "http://api.playcation.store:8080/oauth2/authorization/kakao?redirect_uri=http://playcation.store/redirect";
-        "http://localhost:8080/oauth2/authorization/kakao?redirect_uri=http://playcation.store/redirect";
+        "http://localhost:8080/oauth2/authorization/kakao?redirect_uri=http://localhost:3000/redirect";
   };
 
   return (
